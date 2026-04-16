@@ -1,0 +1,526 @@
+"use client";
+
+import React, { useRef, useEffect, useState } from "react";
+import { motion, useInView } from "framer-motion";
+
+/* ─── SVG canvas ──────────────────────────────────────────────────── */
+const SVG_W  = 300;
+const SVG_H  = 2200;
+
+const CREAM = "#EBE3D1";
+const TEAL  = "#284351";
+const CORAL = "#E74F44";
+
+/* ─── Anchors ─────────────────────────────────────────────────────────
+   dotY   → target y coordinate; 11 values equally spaced from y=20
+             to y=2100 (step ≈173px) → equal vertical gaps between dots
+   isLeft → text on LEFT (true) or RIGHT (false) of the thread
+   offset → distance in px from the 50% centerline to the text inner edge
+   Exact (x,y) is computed at runtime via binary search + getPointAtLength.
+──────────────────────────────────────────────────────────────────── */
+const STEP = (2100 - 20) / 12; // ≈ 173.3
+const ANCHORS = [
+  { dotY: Math.round(20 + STEP *  1), isLeft: true,  offset: 158 }, // 0
+  { dotY: Math.round(20 + STEP *  2), isLeft: false, offset: 155 }, // 1
+  { dotY: Math.round(20 + STEP *  3), isLeft: true,  offset: 142 }, // 2
+  { dotY: Math.round(20 + STEP *  4), isLeft: false, offset: 142 }, // 3
+  { dotY: Math.round(20 + STEP *  5), isLeft: true,  offset: 200 }, // 4
+  { dotY: Math.round(20 + STEP *  6), isLeft: false, offset: 125 }, // 5
+  { dotY: Math.round(20 + STEP *  7), isLeft: true,  offset: 180 }, // 6
+  { dotY: Math.round(20 + STEP *  8), isLeft: false, offset: 135 }, // 7
+  { dotY: Math.round(20 + STEP *  9), isLeft: true,  offset: 138 }, // 8
+  { dotY: Math.round(20 + STEP * 10), isLeft: false, offset: 162 }, // 9
+  { dotY: Math.round(20 + STEP * 11), isLeft: true,  offset: 170 }, // 10
+];
+
+/* ─── Path ──────────────────────────────────────────────────────────── */
+const PATH = "M150 20 C140 80,200 120,160 180 C120 240,60 200,80 300 C100 400,260 320,240 480 C220 600,120 540,110 700 C100 820,220 860,180 950 C140 1040,40 1000,60 1150 C80 1300,240 1200,200 1400 C170 1550,80 1500,120 1700 C160 1850,230 1700,180 2100";
+
+/* ─── Highlighted phrases per item (index-matched to ITEMS) ──────── */
+const HIGHLIGHTS: readonly (readonly string[])[] = [
+  /* 01 */ ["engineering student at Arts et Métiers", "French and Mandarin as native languages", "Industrial Engineering and Operations Research"],
+  /* 02 */ ["Programme Grande École", "Baccalauréat Général with Honours", "two years of Classes Préparatoires aux Grandes Écoles"],
+  /* 03 */ ["optimise the preparation of a polyacrylamide hydrogel for atmospheric water harvesting"],
+  /* 04 */ ["consolidating functional requirements, selecting and justifying technical solutions through comparative analysis, and pre-dimensioning the main components"],
+  /* 05 */ ["redesign of metal cyclist miniatures at 1/43 scale for Fonderie Roger", "3D modeling of the cyclist body"],
+  /* 06 */ ["full manufacturing cycle of an industrial mixer bearing, from raw casting to dimensional inspection", "define the process plans, workholding setups, and cutting parameters"],
+  /* 07 */ ["70,000 spectators accumulated since 1995", "I played the role of Ajax I", "responsible for the installation and calibration of all stage lighting equipment", "member of the logistics team"],
+  /* 08 */ ["I raced at departmental and national level in dinghy sailing", "1st place finish at a departmental event"],
+  /* 09 */ ["I organised a temporary thrift shop", "promote more sustainable habits"],
+  /* 10 */ ["student-run consulting firm of ENSAM, ranked #1 among French engineering school junior enterprises in 2024", "drive the visibility and brand presence of the firm"],
+  /* 11 */ ["compete at the Monaco Energy Boat Challenge (MEBC) 2027, organised by the Yacht Club de Monaco", "3.5 million people across 70 countries", "zero-emission electric catamaran", "member of the sponsorship team"],
+];
+
+/* ─── Flippable items (0-indexed): items 3,4,5,6,7,8,11 ──────────── */
+const FLIPPABLE = new Set([2, 3, 4, 5, 6, 7, 10]);
+
+const BACK_CONTENT: Record<number, React.ReactNode> = {
+  2: (
+    <iframe
+      src="/api/docs/tipe"
+      style={{ width: "100%", height: "420px", border: "none", borderRadius: "2px", display: "block" }}
+      title="TIPE — Estéban Loubère"
+    />
+  ),
+  3:  (
+    <iframe
+      src="/api/docs/reducteur"
+      style={{ width: "100%", height: "420px", border: "none", borderRadius: "2px", display: "block" }}
+      title="Rapport Réducteur"
+    />
+  ),
+  4:  (
+    <iframe
+      src="/api/docs/figurines"
+      style={{ width: "100%", height: "420px", border: "none", borderRadius: "2px", display: "block" }}
+      title="Rapport Figurines"
+    />
+  ),
+  5:  (
+    <iframe
+      src="/api/docs/fabrication"
+      style={{ width: "100%", height: "420px", border: "none", borderRadius: "2px", display: "block" }}
+      title="Rapport Fabrication"
+    />
+  ),
+  6:  (
+    <img
+      src="/theater.jpg"
+      alt="Theater — Compagnie du Graal"
+      style={{ width: "100%", borderRadius: "2px", display: "block", objectFit: "cover" }}
+    />
+  ),
+  7:  (
+    <img
+      src="/sailing.jpg"
+      alt="Competitive Sailing"
+      style={{ width: "100%", borderRadius: "2px", display: "block", objectFit: "cover" }}
+    />
+  ),
+  10: (
+    <iframe
+      src="/api/docs/mebc"
+      style={{ width: "100%", height: "420px", border: "none", borderRadius: "2px", display: "block" }}
+      title="Brochure Sponsoring MEBC"
+    />
+  ),
+};
+
+/* ─── Render body text with inline orange highlights ─────────────── */
+function renderBody(text: string, phrases: readonly string[]) {
+  if (!phrases.length) return <>{text}</>;
+  const escaped = phrases.map(p => p.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+  const regex = new RegExp(`(${escaped.join("|")})`, "g");
+  const parts = text.split(regex);
+  return (
+    <>
+      {parts.map((part, i) =>
+        phrases.includes(part)
+          ? <span key={i} style={{ color: CORAL, fontWeight: 400 }}>{part}</span>
+          : part
+      )}
+    </>
+  );
+}
+
+/* ─── Content ─────────────────────────────────────────────────────── */
+const ITEMS = [
+  {
+    id: "about", label: "01", tag: "Introduction",
+    title: "About me",
+    body: "I am a 20-year-old first-year engineering student at Arts et Métiers, one of France's most prestigious engineering schools. Before that, I completed two years of intensive scientific preparatory classes (PT track) at Lycée Ferdinand Buisson in Voiron, Isère.\nI grew up between two cultures: my father is French, my mother is Taiwanese, and I have the privilege of speaking both French and Mandarin as native languages. This dual identity informs the way I think, the way I connect with people, and the way I approach complexity.\nI am particularly interested in Industrial Engineering and Operations Research — a field that combines mathematical optimisation, system design, and operational efficiency. I am drawn to its applications in semiconductor manufacturing and global supply chain management, where rigorous analytical thinking meets real industrial impact.",
+  },
+  {
+    id: null, label: "02", tag: "Education",
+    title: "Education",
+    body: "I graduated in 2022 from Lycée Saint Joseph La Salle in Thonon-les-Bains with a Baccalauréat Général with Honours in mathematics, physics-chemistry, and life sciences. I then completed two years of Classes Préparatoires aux Grandes Écoles (PTSI–PT) at Lycée Ferdinand Buisson in Voiron, an intensive programme in mathematics, physics, engineering science, and computer science preparing for entrance exams to France's top engineering schools. In 2024, I was admitted to Arts et Métiers ParisTech, where I am currently pursuing the Programme Grande École, a three-year Master of Engineering covering solid mechanics, materials science, mechanical design, electronics, and computer science.",
+  },
+  {
+    id: null, label: "03", tag: "Project",
+    title: "Atmospheric water harvesting using hygroscopic hydrogels",
+    body: "Motivated by growing global water scarcity, I investigated how to optimise the preparation of a polyacrylamide hydrogel for atmospheric water harvesting. Building on a MIT research publication, I designed experiments to determine the effect of NaCl concentration on water recovery and salt diffusion, processed results using Python, and developed numerical simulations of the hydrogel's swelling behaviour. The key finding was that a NaCl concentration of ~0.10 g/mL offers the best balance between water uptake, fabrication time, and cost. This project was conducted in direct collaboration with an external researcher from MIT, entirely in English.",
+  },
+  {
+    id: null, label: "04", tag: "Project",
+    title: "Preliminary design, dimensioning and 3D modeling of a 12.5 kW industrial gear reducer",
+    body: "As part of a team project at ENSAM Châlons-en-Champagne, I contributed to the preliminary design of a 12.5 kW single-stage spur gear reducer with a 2.5 reduction ratio and a 16,000-hour service life requirement. My work involved consolidating functional requirements, selecting and justifying technical solutions through comparative analysis, and pre-dimensioning the main components — gear pair (ISO 6336), transmission shafts (beam model with Tresca criterion), rolling bearings (SKF catalogue), shaft seals, and keys. I also contributed to defining the housing architecture (cast aluminium, straddled bearing arrangement) and produced detailed assembly schematics and full-scale cross-sectional sketches of the complete system.",
+  },
+  {
+    id: "projects", label: "05", tag: "Project",
+    title: "Design and 3D modeling of a 1:43 scale cyclist figurine for casting manufacturing",
+    body: "As part of a six-member engineering team, I contributed to the redesign of metal cyclist miniatures at 1/43 scale for Fonderie Roger, a Zamak die casting manufacturer. My responsibilities covered the 3D modeling of the cyclist body (Blender) and CAD research coordination, as well as material characterization planning through tensile and Charpy impact testing of the Zamak alloy. The project also involved identifying non-destructive testing methods — 3D scanning and X-ray tomography — for post-casting quality control. Deliverables included production-ready CAD files and a structured technical handover for casting trials.",
+  },
+  {
+    id: null, label: "06", tag: "Project",
+    title: "Manufacturing process analysis and industrialisation of a mixer bearing housing",
+    body: "As part of a team project at ENSAM Châlons-en-Champagne, I went through the full manufacturing cycle of an industrial mixer bearing, from raw casting to dimensional inspection. This involved sand casting the blank (including mould study, core design, and metal pouring), followed by two machining phases — turning on a conventional lathe and milling on a 5-axis CNC machining centre — for which I helped define the process plans, workholding setups, and cutting parameters. The project concluded with dimensional quality control using a coordinate measuring machine (CMM), where we verified flatness, perpendicularity, and hole location tolerances, identifying casting-induced defects that caused several non-conformities on the final part.",
+  },
+  {
+    id: null, label: "07", tag: "Passion",
+    title: "Theater with the Compagnie du Graal",
+    body: "As part of a three-week touring production of La Belle Hélène (after Offenbach) organised by the Compagnie du Graal — a well-established amateur theatre company based in Thonon-les-Bains with over 70,000 spectators accumulated since 1995 — I took on both artistic and technical responsibilities. On stage, I played the role of Ajax I, a comic and boastful Greek king paired with his inseparable counterpart Ajax II, appearing in several key scenes including the kings' contest and the deliberations over Menelaus' fate. Off stage, I was responsible for the installation and calibration of all stage lighting equipment, adapting the setup to a variety of historic outdoor venues including châteaux, abbeys and cloisters across the Haute-Savoie region. I also served as a member of the logistics team, contributing to set assembly, venue preparation and the overall coordination required to run a demanding itinerant production over nearly three weeks.",
+  },
+  {
+    id: "passions", label: "08", tag: "Passion",
+    title: "Competitive Sailing",
+    body: "Competing for several years with the club of Sciez (Auvergne-Rhône-Alpes), I raced at departmental and national level in dinghy sailing, on Optimist and catamaran. I regularly took part in official regattas on the FFVoile calendar, competing against large fleets at both regional and national scale, including a 1st place finish at a departmental event. This experience sharpened my technical sailing skills, decision-making under pressure, and real-time strategic thinking — abilities that directly complement my engineering training through the applied understanding of physical parameters such as wind, currents, and trajectory optimisation.",
+  },
+  {
+    id: null, label: "09", tag: "Extracurricular",
+    title: "Sustainability representative in High School",
+    body: "As Sustainability Representative at my high school, my role was to raise awareness and promote more sustainable habits within the school community. As part of this commitment, I organised a temporary thrift shop event on school grounds, inviting students to bring in second-hand clothes and give them a new life — encouraging a more conscious approach to consumption and reducing textile waste.",
+  },
+  {
+    id: null, label: "10", tag: "Extracurricular",
+    title: "Arts et Métiers Junior Étude",
+    body: "As Marketing Officer at Arts et Métiers Junior Études — the student-run consulting firm of ENSAM, ranked #1 among French engineering school junior enterprises in 2024 — my role is to drive the visibility and brand presence of the firm. This involves producing LinkedIn posts, Instagram content, and written articles to communicate our projects, achievements, and values to both academic and professional audiences, and to attract new clients and talent.",
+  },
+  {
+    id: null, label: "11", tag: "Extracurricular",
+    title: "Monaco Energy Boat Challenge",
+    body: "As part of the Regatt'Arts project — a student engineering team from Châlons-en-Champagne Arts et Métiers campus building a zero-emission electric catamaran to compete at the Monaco Energy Boat Challenge (MEBC) 2027, organised by the Yacht Club de Monaco — I serve as a member of the sponsorship team. My role consists of presenting the project to potential partners, both industrial and institutional, and securing support in the form of funding or products in exchange for visibility on the boat, social media, and at the event in Monaco. The MEBC is an internationally recognised sustainable propulsion competition, with the 2025 edition reaching over 3.5 million people across 70 countries, making it a compelling platform for partner brands.",
+  },
+] as const;
+
+/* ─── Text block — outer div positioned by useEffect, inner motion.div animated ── */
+function Block({ item, index }: { item: (typeof ITEMS)[number]; index: number }) {
+  const ref      = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-10% 0px" });
+  const { isLeft, offset } = ANCHORS[index];
+  const canFlip  = FLIPPABLE.has(index);
+  const [flipped, setFlipped] = useState(false);
+
+  return (
+    /* Outer wrapper: positioned absolutely; top is set by useEffect once the
+       path length is known. Starts below the section so useInView doesn't fire early. */
+    <div
+      data-block={index}
+      id={item.id ?? undefined}
+      style={{
+        position: "absolute",
+        top: SVG_H + 100,
+        ...(isLeft
+          ? { right: `calc(50% + ${offset}px)` }
+          : { left:  `calc(50% + ${offset}px)` }),
+        width: "clamp(200px, 38vw, 480px)",
+        zIndex: flipped ? 100 : 10,
+      }}
+    >
+      <motion.div
+        ref={ref}
+        initial={{ opacity: 0, x: isLeft ? -22 : 22 }}
+        animate={isInView ? { opacity: 1, x: 0 } : {}}
+        transition={{ duration: 0.6, delay: 0.22, ease: [0.25, 0.46, 0.45, 0.94] }}
+      >
+        {/* label */}
+        <div style={{
+          marginBottom: "0.5rem",
+          ...(isLeft ? { textAlign: "right" } : {}),
+        }}>
+          <span
+            id={`num-${index}`}
+            style={{
+              fontFamily: "var(--font-dm-sans)", fontSize: "1.8rem",
+              letterSpacing: "0.18em", textTransform: "uppercase",
+              color: `${TEAL}60`, fontWeight: 300,
+              transition: "color 0.4s ease",
+            }}
+          >{item.label}</span>
+        </div>
+
+        {/* title + flip button */}
+        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", flexWrap: "wrap", marginBottom: "0.55rem" }}>
+          <h3 style={{
+            fontFamily: "var(--font-playfair)", color: TEAL, fontWeight: 700,
+            fontSize: "clamp(0.9rem, 1.6vw, 1.22rem)", lineHeight: 1.25,
+            margin: 0,
+          }}>{item.title}</h3>
+          {canFlip && (
+            <button
+              onClick={() => setFlipped(f => !f)}
+              style={{
+                fontSize: "0.52rem", letterSpacing: "0.06em",
+                color: flipped ? `${TEAL}99` : CORAL,
+                border: `1px solid ${flipped ? `${TEAL}44` : `${CORAL}66`}`,
+                background: "none", borderRadius: "3px",
+                padding: "2px 7px", cursor: "pointer",
+                fontFamily: "var(--font-dm-sans)",
+                flexShrink: 0, transition: "color 0.3s, border-color 0.3s",
+              }}
+            >
+              {flipped ? "flip back ↩" : "click to flip ↩"}
+            </button>
+          )}
+        </div>
+
+        {/* body — flip card for flippable items */}
+        {canFlip ? (
+          <div style={{ perspective: "900px" }}>
+            <div style={{
+              position: "relative",
+              transformStyle: "preserve-3d",
+              transition: "transform 0.55s cubic-bezier(0.4,0.2,0.2,1)",
+              transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)",
+            }}>
+              {/* Front face */}
+              <div style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" }}>
+                <p style={{
+                  fontFamily: "var(--font-dm-sans)", color: `${TEAL}99`, fontWeight: 300,
+                  fontSize: "clamp(0.65rem, 1vw, 0.78rem)", lineHeight: 1.65,
+                  whiteSpace: "pre-line", textAlign: "justify", margin: 0,
+                }}>{renderBody(item.body, HIGHLIGHTS[index])}</p>
+              </div>
+              {/* Back face — only mounted once flipped to avoid PDF controls leaking through */}
+              <div style={{
+                position: "absolute", top: 0, left: 0, right: 0, minHeight: "100%",
+                backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden",
+                transform: "rotateY(180deg)",
+                ...(BACK_CONTENT[index] ? {
+                  background: `${TEAL}0d`,
+                  borderLeft: `2px solid ${CORAL}`,
+                  padding: "0.6rem 0.7rem",
+                  borderRadius: "2px",
+                } : {}),
+              }}>
+                {flipped ? BACK_CONTENT[index] : null}
+              </div>
+            </div>
+          </div>
+        ) : (
+          <p style={{
+            fontFamily: "var(--font-dm-sans)", color: `${TEAL}99`, fontWeight: 300,
+            fontSize: "clamp(0.65rem, 1vw, 0.78rem)", lineHeight: 1.65,
+            whiteSpace: "pre-line", textAlign: "justify",
+          }}>{renderBody(item.body, HIGHLIGHTS[index])}</p>
+        )}
+      </motion.div>
+    </div>
+  );
+}
+
+/* ─── Inline grid layer (shared by both background layers) ─────── */
+const GRID = 44;
+function GridLayer({ id }: { id: string }) {
+  return (
+    <svg style={{ width: "100%", height: "100%" }}>
+      <defs>
+        <motion.pattern id={id} width={GRID} height={GRID} patternUnits="userSpaceOnUse">
+          <path d={`M ${GRID} 0 L 0 0 0 ${GRID}`} fill="none" stroke={TEAL} strokeWidth="1" />
+        </motion.pattern>
+      </defs>
+      <rect width="100%" height="100%" fill={`url(#${id})`} />
+    </svg>
+  );
+}
+
+/* ─── Main section ───────────────────────────────────────────────── */
+export default function TimelineSection() {
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const lineRef    = useRef<SVGPathElement>(null);
+  const markerRef  = useRef<SVGGElement>(null);
+
+  useEffect(() => {
+    const section = sectionRef.current;
+    const line    = lineRef.current;
+    const marker  = markerRef.current;
+    if (!line || !section) return;
+
+    const TOTAL = line.getTotalLength();
+    const EASE  = 0.09;
+
+    /* Initialise fully hidden */
+    line.style.strokeDasharray  = String(TOTAL);
+    line.style.strokeDashoffset = String(TOTAL);
+    if (marker) marker.style.opacity = "0";
+
+    /* ── Binary search: arc length where path y = targetY ─────────────
+       The path's y is monotonically increasing along its length, so
+       this converges reliably to the exact point on the curve.         */
+    function findLen(targetY: number): number {
+      let lo = 0, hi = TOTAL;
+      for (let k = 0; k < 64; k++) {
+        const mid = (lo + hi) / 2;
+        if (line!.getPointAtLength(mid).y < targetY) lo = mid; else hi = mid;
+      }
+      return (lo + hi) / 2;
+    }
+
+    /* ── Compute exact anchor positions ─────────────────────────────── */
+    const lens: number[]       = [];
+    const connEls: HTMLElement[] = [];
+
+    ANCHORS.forEach((a, i) => {
+      const len = findLen(a.dotY);
+      const pt  = line!.getPointAtLength(len);
+      lens.push(len);
+
+      /* ── Position SVG dot */
+      const dotEl = document.getElementById(`dot-${i}`);
+      if (dotEl) {
+        dotEl.setAttribute("cx", String(pt.x));
+        dotEl.setAttribute("cy", String(pt.y));
+      }
+
+      /* ── Position text block wrapper */
+      const blockEl = section.querySelector(`[data-block="${i}"]`) as HTMLElement | null;
+      if (blockEl) blockEl.style.top = `${pt.y - 8}px`;
+
+      /* ── Create HTML connector ──────────────────────────────────────
+         Dot page-x    = 50% + (pt.x - 150) px   (SVG centered at 50%)
+         Text inner-x  = 50% ± offset px
+         isLeft: connector left = 50%-offset, width = pt.x - 150 + offset
+         isRight: connector left = 50%+(pt.x-150), width = offset + 150 - pt.x */
+      const isLeft   = a.isLeft;
+      const off      = a.offset;
+      const connLeft  = isLeft ? `calc(50% - ${off}px)`   : `calc(50% + ${pt.x - 150}px)`;
+      const connWidth = isLeft ? `${pt.x - 150 + off}px`  : `${off + 150 - pt.x}px`;
+
+      const connEl = document.createElement("div");
+      connEl.id = `conn-${i}`;
+      Object.assign(connEl.style, {
+        position        : "absolute",
+        zIndex          : "15",
+        pointerEvents   : "none",
+        top             : `${pt.y - 0.5}px`,
+        left            : connLeft,
+        width           : connWidth,
+        height          : "1px",
+        background      : `${TEAL}22`,
+        transition      : "background 0.4s ease, transform 0.35s ease",
+        transformOrigin : isLeft ? "right" : "left",
+        transform       : "scaleX(0)",
+      });
+      section.appendChild(connEl);
+      connEls.push(connEl);
+
+      setTimeout(() => { connEl.style.transform = "scaleX(1)"; }, 300 + i * 60);
+    });
+
+    /* ── Thresholds: progress value at which each dot activates ──────── */
+    const thresholds = lens.map(len => len / TOTAL);
+
+    /* ── Animation state ──────────────────────────────────────────── */
+    let rendered = TOTAL;
+    let target   = TOTAL;
+    let rafId: number | null = null;
+
+    function tick() {
+      rendered += (target - rendered) * EASE;
+      if (!line) return;
+      line.style.strokeDashoffset = String(rendered);
+
+      const drawn = TOTAL - rendered;
+      if (marker) {
+        if (drawn > 1) {
+          const pt = line.getPointAtLength(drawn - 1);
+          marker.setAttribute("transform", `translate(${pt.x},${pt.y})`);
+          marker.style.opacity = "1";
+        } else {
+          marker.style.opacity = "0";
+        }
+      }
+
+      if (Math.abs(rendered - target) > 0.1) {
+        rafId = requestAnimationFrame(tick);
+      } else {
+        rendered = target;
+        line.style.strokeDashoffset = String(rendered);
+        rafId = null;
+      }
+    }
+
+    function onScroll() {
+      const scrolled  = window.scrollY;
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+      const progress  = maxScroll > 0 ? Math.min(scrolled / maxScroll, 1) : 0;
+
+      target = TOTAL * (1 - progress);
+      if (!rafId) rafId = requestAnimationFrame(tick);
+
+      /* ── Anchor colour activation ──────────────────────────────────
+         Thresholds are arc-length-based — the dot turns coral at the
+         exact moment the drawing tip crosses its position on the path. */
+      thresholds.forEach((threshold, i) => {
+        const on   = progress >= threshold;
+        const dot  = document.getElementById(`dot-${i}`);
+        const conn = document.getElementById(`conn-${i}`);
+        const num  = document.getElementById(`num-${i}`);
+        if (dot)  dot.style.fill       = on ? CORAL        : `${TEAL}60`;
+        if (conn) conn.style.background = on ? `${CORAL}55` : `${TEAL}22`;
+        if (num)  num.style.color       = on ? CORAL        : `${TEAL}60`;
+      });
+    }
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (rafId) cancelAnimationFrame(rafId);
+      connEls.forEach(el => el.remove());
+    };
+  }, []);
+
+  return (
+    <section
+      ref={sectionRef}
+      style={{ position: "relative", background: CREAM, height: SVG_H + 60, overflow: "hidden" }}
+    >
+      {/* Grid layer — always visible, subtle */}
+      <div aria-hidden style={{ position: "absolute", inset: 0, zIndex: 0, opacity: 0.05, pointerEvents: "none" }}>
+        <GridLayer id="tl-grid-bg" />
+      </div>
+
+      {/* Thread SVG — centered strip */}
+      <div style={{
+        position: "absolute", left: "50%", top: 0,
+        transform: "translateX(-50%)",
+        width: SVG_W, height: SVG_H,
+        pointerEvents: "none", zIndex: 5,
+      }}>
+        <svg width={SVG_W} height={SVG_H} viewBox={`0 0 ${SVG_W} ${SVG_H}`} overflow="visible">
+
+          {/* Ghost path — always faintly visible */}
+          <path d={PATH} fill="none"
+            stroke={`${TEAL}18`} strokeWidth="1"
+            strokeLinecap="round" strokeLinejoin="round"
+          />
+
+          {/* Drawing path — animated via strokeDashoffset */}
+          <path ref={lineRef} d={PATH} fill="none"
+            stroke={TEAL} strokeWidth="1"
+            strokeLinecap="round" strokeLinejoin="round"
+          />
+
+          {/* Anchor dots — SVG circles share the exact coordinate system
+              of the path. useEffect computes exact cx/cy via getPointAtLength
+              so every dot is mathematically on the curve.               */}
+          {ANCHORS.map((_, i) => (
+            <circle
+              key={i}
+              id={`dot-${i}`}
+              cx="0" cy="0"
+              r="4"
+              style={{ fill: `${TEAL}60`, transition: "fill 0.4s ease" }}
+            />
+          ))}
+
+          {/* Tip marker */}
+          <g ref={markerRef} style={{ opacity: 0 }}>
+            <circle cx="0" cy="0" r="2.5" fill="none" stroke={TEAL} strokeWidth="0.7">
+              <animate attributeName="r"              from="2.5" to="14" dur="1.4s" repeatCount="indefinite" />
+              <animate attributeName="stroke-opacity" from="0.5" to="0"  dur="1.4s" repeatCount="indefinite" />
+            </circle>
+            <circle cx="0" cy="0" r="2.5" fill={TEAL} />
+          </g>
+
+        </svg>
+      </div>
+
+      {/* Text blocks */}
+      {ITEMS.map((item, i) => (
+        <Block key={i} item={item} index={i} />
+      ))}
+    </section>
+  );
+}
