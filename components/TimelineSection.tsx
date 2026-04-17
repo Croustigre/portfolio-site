@@ -264,11 +264,15 @@ function Block({ item, index }: { item: (typeof ITEMS)[number]; index: number })
               transition: "color 0.4s ease",
             }}
           >{item.label}</span>
-          {item.tag && <span style={{
-            fontFamily: "var(--font-dm-sans)", fontSize: "0.68rem",
-            letterSpacing: "0.14em", textTransform: "uppercase",
-            color: CORAL, fontWeight: 500,
-          }}>{item.tag}</span>}
+          {item.tag && <span
+            id={`tag-${index}`}
+            style={{
+              fontFamily: "var(--font-dm-sans)", fontSize: "0.68rem",
+              letterSpacing: "0.14em", textTransform: "uppercase",
+              color: `${TEAL}55`, fontWeight: 500,
+              transition: "color 0.4s ease",
+            }}
+          >{item.tag}</span>}
         </div>
 
         {/* title */}
@@ -375,10 +379,14 @@ const MobileRow = React.forwardRef<HTMLDivElement, { item: (typeof ITEMS)[number
               {item.label}
             </span>
             {item.tag && (
-              <span style={{
-                fontFamily: "var(--font-dm-sans)", fontSize: "0.68rem", letterSpacing: "0.12em",
-                textTransform: "uppercase", color: CORAL, fontWeight: 500,
-              }}>
+              <span
+                id={`m-tag-${index}`}
+                style={{
+                  fontFamily: "var(--font-dm-sans)", fontSize: "0.68rem", letterSpacing: "0.12em",
+                  textTransform: "uppercase", color: `${TEAL}55`, fontWeight: 500,
+                  transition: "color 0.4s ease",
+                }}
+              >
                 {item.tag}
               </span>
             )}
@@ -580,9 +588,11 @@ export default function TimelineSection() {
         const dot  = document.getElementById(`dot-${i}`);
         const conn = document.getElementById(`conn-${i}`);
         const num  = document.getElementById(`num-${i}`);
-        if (dot)  dot.style.fill       = on ? CORAL        : `${TEAL}60`;
-        if (conn) conn.style.background = on ? `${CORAL}55` : `${TEAL}22`;
-        if (num)  num.style.color       = on ? CORAL        : `${TEAL}60`;
+        const tag  = document.getElementById(`tag-${i}`);
+        if (dot)  dot.style.fill        = on ? CORAL        : `${TEAL}60`;
+        if (conn) conn.style.background  = on ? `${CORAL}55` : `${TEAL}22`;
+        if (num)  num.style.color        = on ? CORAL        : `${TEAL}60`;
+        if (tag)  tag.style.color        = on ? CORAL        : `${TEAL}55`;
       });
     }
 
@@ -653,8 +663,10 @@ export default function TimelineSection() {
         const on    = rendered >= dotY;
         const dotEl = document.getElementById(`m-dot-${i}`);
         const numEl = document.getElementById(`m-num-${i}`);
-        if (dotEl) dotEl.style.fill  = on ? CORAL       : `${TEAL}60`;
-        if (numEl) numEl.style.color = on ? CORAL       : `${TEAL}55`;
+        const tagEl = document.getElementById(`m-tag-${i}`);
+        if (dotEl) dotEl.style.fill  = on ? CORAL : `${TEAL}60`;
+        if (numEl) numEl.style.color = on ? CORAL : `${TEAL}55`;
+        if (tagEl) tagEl.style.color = on ? CORAL : `${TEAL}55`;
       });
 
       if (Math.abs(rendered - targetDrawn) > 0.1) {
