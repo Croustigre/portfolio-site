@@ -682,8 +682,10 @@ export default function TimelineSection() {
       if (total === 0) return;
       const sectionTop    = section!.getBoundingClientRect().top + window.scrollY;
       const sectionHeight = section!.offsetHeight;
-      const scrollable    = Math.max(sectionHeight - window.innerHeight, 1);
-      const progress      = Math.min(Math.max((window.scrollY - sectionTop) / scrollable, 0), 1);
+      // Start drawing as soon as the section enters the viewport bottom
+      const earlyStart    = sectionTop - window.innerHeight;
+      const scrollable    = Math.max(sectionHeight, 1);
+      const progress      = Math.min(Math.max((window.scrollY - earlyStart) / scrollable, 0), 1);
 
       targetDrawn = progress * total;
       if (!rafId) rafId = requestAnimationFrame(tick);
