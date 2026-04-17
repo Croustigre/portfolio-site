@@ -53,8 +53,8 @@ const HIGHLIGHTS: readonly (readonly string[])[] = [
   /* 11 */ ["compete at the Monaco Energy Boat Challenge (MEBC) 2027, organised by the Yacht Club de Monaco", "3.5 million people across 70 countries", "zero-emission electric catamaran", "member of the sponsorship team"],
 ];
 
-/* ─── Flippable items (0-indexed): items 3,4,5,6,7,8,11 ──────────── */
-const FLIPPABLE = new Set([2, 3, 4, 5, 6, 7, 10]);
+/* ─── Flippable items (0-indexed) ────────────────────────────────── */
+const FLIPPABLE = new Set([2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
 const BACK_CONTENT: Record<number, React.ReactNode> = {
   2: (
@@ -99,12 +99,40 @@ const BACK_CONTENT: Record<number, React.ReactNode> = {
       style={{ width: "100%", borderRadius: "2px", display: "block", objectFit: "cover" }}
     />
   ),
-  10: (
-    <iframe
-      src="/api/docs/mebc"
-      style={{ width: "100%", height: "420px", border: "none", borderRadius: "2px", display: "block" }}
-      title="Brochure Sponsoring MEBC"
+  8: (
+    <div style={{ display: "flex", gap: "0.5rem" }}>
+      <img
+        src="/friperie-1.jpeg"
+        alt="Friperie éphémère — 1"
+        style={{ width: "50%", borderRadius: "2px", objectFit: "cover", display: "block" }}
+      />
+      <img
+        src="/friperie-2.jpeg"
+        alt="Friperie éphémère — 2"
+        style={{ width: "50%", borderRadius: "2px", objectFit: "cover", display: "block" }}
+      />
+    </div>
+  ),
+  9: (
+    <img
+      src="/amje.jpeg"
+      alt="Arts et Métiers Junior Études"
+      style={{ width: "100%", borderRadius: "2px", display: "block", objectFit: "cover" }}
     />
+  ),
+  10: (
+    <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
+      <iframe
+        src="/api/docs/mebc"
+        style={{ width: "100%", height: "340px", border: "none", borderRadius: "2px", display: "block" }}
+        title="Brochure Sponsoring MEBC"
+      />
+      <img
+        src="/mebc-boat.jpg"
+        alt="Regatt'Arts — Monaco Energy Boat Challenge"
+        style={{ width: "100%", borderRadius: "2px", display: "block", objectFit: "cover" }}
+      />
+    </div>
   ),
 };
 
