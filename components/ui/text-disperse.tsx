@@ -1,6 +1,6 @@
 'use client';
 import { useState } from 'react';
-import type { JSX, ComponentProps } from 'react';
+import type { JSX, ComponentProps, ReactNode } from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
@@ -28,58 +28,72 @@ const transforms: Transform[] = [
 
 type TextDisperseProps = ComponentProps<'div'> & {
   children: string;
+  icon?: ReactNode;
   onHover?: (isActive: boolean) => void;
 };
 
 export function TextDisperse({
   children,
+  icon,
   onHover,
   className,
   ...props
 }: Omit<TextDisperseProps, 'onMouseEnter' | 'onMouseLeave'>) {
   const [isAnimated, setIsAnimated] = useState(false);
 
-  const splitWord = (word: string) => {
-    const chars: JSX.Element[] = [];
-    word.split('').forEach((char, i) => {
-      const t = transforms[i] ?? transforms[transforms.length - 1];
-      chars.push(
-        <motion.span
-          custom={i}
-          variants={{
-            open: {
-              x: t.x + 'em',
-              y: t.y + 'em',
-              rotateZ: t.rotationZ,
-              transition: { duration: 0.75, ease: [0.33, 1, 0.68, 1] },
-              zIndex: 1,
-            },
-            closed: {
-              x: 0,
-              y: 0,
-              rotateZ: 0,
-              transition: { duration: 0.75, ease: [0.33, 1, 0.68, 1] },
-              zIndex: 0,
-            },
-          }}
-          animate={isAnimated ? 'open' : 'closed'}
-          key={char + i}
-        >
-          {char === ' ' ? '\u00A0' : char}
-        </motion.span>,
-      );
-    });
-    return chars;
-  };
+  const makeVariants = (t: Transform) => ({
+    open: {
+      x: t.x + 'em',
+      y: t.y + 'em',
+      rotateZ: t.rotationZ,
+      transition: { duration: 0.75, ease: [0.33, 1, 0.68, 1] as const },
+    },
+    closed: {
+      x: 0,
+      y: 0,
+      rotateZ: 0,
+      transition: { duration: 0.75, ease: [0.33, 1, 0.68, 1] as const },
+    },
+  });
+
+  const elements: JSX.Element[] = [];
+
+  children.split('').forEach((char, i) => {
+    const t = transforms[i] ?? transforms[transforms.length - 1];
+    elements.push(
+      <motion.span
+        key={char + i}
+        variants={makeVariants(t)}
+        animate={isAnimated ? 'open' : 'closed'}
+      >
+        {char === ' ' ? '\u00A0' : char}
+      </motion.span>,
+    );
+  });
+
+  if (icon) {
+    const iconIndex = children.length;
+    const t = transforms[iconIndex] ?? transforms[transforms.length - 1];
+    elements.push(
+      <motion.span
+        key="icon"
+        variants={makeVariants(t)}
+        animate={isAnimated ? 'open' : 'closed'}
+        style={{ display: 'inline-flex', alignItems: 'center' }}
+      >
+        {icon}
+      </motion.span>,
+    );
+  }
 
   return (
     <div
-      className={cn('relative flex cursor-pointer', className)}
+      className={cn('relative flex cursor-pointer items-center', className)}
       onMouseEnter={() => { onHover?.(true); setIsAnimated(true); }}
       onMouseLeave={() => { onHover?.(false); setIsAnimated(false); }}
       {...props}
     >
-      {splitWord(children)}
+      {elements}
     </div>
   );
 }
