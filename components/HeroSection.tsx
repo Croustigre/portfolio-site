@@ -73,7 +73,7 @@ export default function HeroSection() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.6 }}
           className="px-6 z-10 relative"
-          style={{ paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 2.5rem)" }}
+          style={{ paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 0.75rem)" }}
         >
           <p className="text-sm leading-relaxed mb-4" style={{ color: "#EBE3D1", fontFamily: "var(--font-dm-sans)", fontWeight: 300 }}>
             Arts et Métiers ParisTech. French and Mandarin native, fluent in English. Pursuing graduate engineering studies in the United States.
