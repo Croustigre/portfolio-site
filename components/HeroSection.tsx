@@ -168,16 +168,16 @@ export default function HeroSection() {
           className="absolute right-8 flex flex-col justify-center"
           style={{ top: "50%", transform: "translateY(-50%)", maxWidth: "min(260px, 28vw)", zIndex: 10 }}
         >
-          <h2 className="font-bold leading-snug mb-4" style={{ fontFamily: "var(--font-playfair)", color: "#FFFFFF", fontSize: "clamp(1.15rem, 2vw, 1.45rem)" }}>
+          <h2 className="font-bold leading-snug mb-4" style={{ fontFamily: "var(--font-playfair)", color: "#FFFFFF", fontSize: "clamp(1.4rem, 2.4vw, 1.8rem)" }}>
             Engineering Student,<br />based in France.
           </h2>
-          <p className="leading-relaxed mb-6" style={{ color: "#EBE3D1", fontFamily: "var(--font-dm-sans)", fontWeight: 300, fontSize: "clamp(0.8rem, 1.1vw, 0.92rem)" }}>
+          <p className="leading-relaxed mb-6" style={{ color: "#EBE3D1", fontFamily: "var(--font-dm-sans)", fontWeight: 300, fontSize: "clamp(0.9rem, 1.3vw, 1.05rem)" }}>
             Arts et Métiers ParisTech. French and Mandarin native, fluent in English. Pursuing graduate engineering studies in the United States.
           </p>
           <button
             onClick={() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })}
-            className="flex items-center gap-2 text-sm font-medium transition-opacity duration-200 hover:opacity-70 cursor-pointer w-fit"
-            style={{ color: "#E74F44", fontFamily: "var(--font-dm-sans)", background: "none", border: "none", padding: 0 }}
+            className="flex items-center gap-2 font-medium transition-opacity duration-200 hover:opacity-70 cursor-pointer w-fit"
+            style={{ color: "#E74F44", fontFamily: "var(--font-dm-sans)", background: "none", border: "none", padding: 0, fontSize: "clamp(0.9rem, 1.2vw, 1rem)" }}
           >
             My story →
           </button>

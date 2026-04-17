@@ -20,17 +20,17 @@ const CORAL = "#E74F44";
 ──────────────────────────────────────────────────────────────────── */
 const STEP = (2100 - 20) / 12; // ≈ 173.3
 const ANCHORS = [
-  { dotY: Math.round(20 + STEP *  1), isLeft: true,  offset: 158 }, // 0
-  { dotY: Math.round(20 + STEP *  2), isLeft: false, offset: 155 }, // 1
-  { dotY: Math.round(20 + STEP *  3), isLeft: true,  offset: 142 }, // 2
-  { dotY: Math.round(20 + STEP *  4), isLeft: false, offset: 142 }, // 3
-  { dotY: Math.round(20 + STEP *  5), isLeft: true,  offset: 200 }, // 4
-  { dotY: Math.round(20 + STEP *  6), isLeft: false, offset: 125 }, // 5
-  { dotY: Math.round(20 + STEP *  7), isLeft: true,  offset: 180 }, // 6
-  { dotY: Math.round(20 + STEP *  8), isLeft: false, offset: 135 }, // 7
-  { dotY: Math.round(20 + STEP *  9), isLeft: true,  offset: 138 }, // 8
-  { dotY: Math.round(20 + STEP * 10), isLeft: false, offset: 162 }, // 9
-  { dotY: Math.round(20 + STEP * 11), isLeft: true,  offset: 170 }, // 10
+  { dotY: Math.round(20 + STEP *  1), isLeft: true,  offset: 165 }, // 0
+  { dotY: Math.round(20 + STEP *  2), isLeft: false, offset: 145 }, // 1
+  { dotY: Math.round(20 + STEP *  3), isLeft: true,  offset: 165 }, // 2
+  { dotY: Math.round(20 + STEP *  4), isLeft: false, offset: 145 }, // 3
+  { dotY: Math.round(20 + STEP *  5), isLeft: true,  offset: 165 }, // 4
+  { dotY: Math.round(20 + STEP *  6), isLeft: false, offset: 145 }, // 5
+  { dotY: Math.round(20 + STEP *  7), isLeft: true,  offset: 165 }, // 6
+  { dotY: Math.round(20 + STEP *  8), isLeft: false, offset: 145 }, // 7
+  { dotY: Math.round(20 + STEP *  9), isLeft: true,  offset: 165 }, // 8
+  { dotY: Math.round(20 + STEP * 10), isLeft: false, offset: 145 }, // 9
+  { dotY: Math.round(20 + STEP * 11), isLeft: true,  offset: 165 }, // 10
 ];
 
 /* ─── Path ──────────────────────────────────────────────────────────── */
@@ -243,7 +243,7 @@ function Block({ item, index }: { item: (typeof ITEMS)[number]; index: number })
           <h3 style={{
             fontFamily: "var(--font-playfair)", color: TEAL, fontWeight: 700,
             fontSize: "clamp(1rem, 1.7vw, 1.3rem)", lineHeight: 1.25,
-            margin: 0, textAlign: isLeft ? "right" : "left",
+            margin: 0, textAlign: "justify",
           }}>{item.title}</h3>
           {canFlip && (
             <button
@@ -277,7 +277,7 @@ function Block({ item, index }: { item: (typeof ITEMS)[number]; index: number })
                 <p style={{
                   fontFamily: "var(--font-dm-sans)", color: `${TEAL}99`, fontWeight: 300,
                   fontSize: "clamp(0.8rem, 1.1vw, 0.92rem)", lineHeight: 1.65,
-                  whiteSpace: "pre-line", textAlign: isLeft ? "right" : "left", margin: 0,
+                  whiteSpace: "pre-line", textAlign: "justify", margin: 0,
                 }}>{renderBody(item.body, HIGHLIGHTS[index])}</p>
               </div>
               {/* Back face — only mounted once flipped to avoid PDF controls leaking through */}
@@ -300,7 +300,7 @@ function Block({ item, index }: { item: (typeof ITEMS)[number]; index: number })
           <p style={{
             fontFamily: "var(--font-dm-sans)", color: `${TEAL}99`, fontWeight: 300,
             fontSize: "clamp(0.8rem, 1.1vw, 0.92rem)", lineHeight: 1.65,
-            whiteSpace: "pre-line", textAlign: isLeft ? "right" : "left",
+            whiteSpace: "pre-line", textAlign: "justify",
           }}>{renderBody(item.body, HIGHLIGHTS[index])}</p>
         )}
       </motion.div>
