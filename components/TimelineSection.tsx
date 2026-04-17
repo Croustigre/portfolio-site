@@ -255,7 +255,7 @@ function Block({ item, index }: { item: (typeof ITEMS)[number]; index: number })
         {/* flip button — always below title */}
         {canFlip && (
           <div style={{ marginBottom: "0.55rem" }}>
-            <GlassButton size="sm" onClick={() => setFlipped(f => !f)} contentClassName="p-0">
+            <GlassButton size="xs" onClick={() => setFlipped(f => !f)} contentClassName="p-0">
               <TextDisperse
                 icon={FlipIcon}
                 style={{ fontFamily: "var(--font-dm-sans)", fontSize: "0.75rem", letterSpacing: "0.06em", color: CORAL, padding: "0.2rem 0.65rem" }}

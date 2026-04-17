@@ -1,9 +1,6 @@
 import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
-
-function cn(...inputs: (string | undefined | null | false)[]): string {
-  return inputs.filter(Boolean).join(" ");
-}
+import { cn } from "@/lib/utils";
 
 const glassButtonVariants = cva(
   "relative isolate cursor-pointer rounded-full transition-all glass-button",
@@ -11,31 +8,29 @@ const glassButtonVariants = cva(
     variants: {
       size: {
         default: "text-base font-medium",
-        sm: "text-sm font-medium",
-        lg: "text-lg font-medium",
-        icon: "h-10 w-10",
+        sm:      "text-sm font-medium",
+        xs:      "text-xs font-medium",
+        lg:      "text-lg font-medium",
+        icon:    "h-10 w-10",
       },
     },
-    defaultVariants: {
-      size: "default",
-    },
+    defaultVariants: { size: "default" },
   }
 );
 
 const glassButtonTextVariants = cva(
-  "glass-button-text relative block select-none tracking-tighter",
+  "glass-button-text relative block select-none",
   {
     variants: {
       size: {
-        default: "px-6 py-3.5",
-        sm: "px-4 py-2",
-        lg: "px-8 py-4",
-        icon: "flex h-10 w-10 items-center justify-center",
+        default: "px-5 py-2.5",
+        sm:      "px-4 py-2",
+        xs:      "px-3 py-1",
+        lg:      "px-8 py-4",
+        icon:    "flex h-10 w-10 items-center justify-center",
       },
     },
-    defaultVariants: {
-      size: "default",
-    },
+    defaultVariants: { size: "default" },
   }
 );
 
