@@ -339,106 +339,106 @@ function Block({ item, index }: { item: (typeof ITEMS)[number]; index: number })
   );
 }
 
-/* ─── Mobile row: dot + connecting line on left, content on right ── */
-function MobileRow({ item, index, isLast }: { item: (typeof ITEMS)[number]; index: number; isLast: boolean }) {
-  const ref      = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-8% 0px" });
-  const canFlip  = FLIPPABLE.has(index);
-  const [flipped, setFlipped] = useState(false);
+/* ─── Mobile row: left spacer (SVG overlay draws the line/dot) + right content ── */
+const MobileRow = React.forwardRef<HTMLDivElement, { item: (typeof ITEMS)[number]; index: number; isLast: boolean }>(
+  function MobileRow({ item, index }, ref) {
+    const inViewRef = useRef<HTMLDivElement>(null);
+    const isInView  = useInView(inViewRef, { once: true, margin: "-8% 0px" });
+    const canFlip   = FLIPPABLE.has(index);
+    const [flipped, setFlipped] = useState(false);
 
-  return (
-    <div ref={ref} style={{ display: "flex" }}>
+    return (
+      <div ref={ref} style={{ display: "flex" }}>
 
-      {/* ── Left: dot + vertical connector ── */}
-      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "28px", flexShrink: 0 }}>
+        {/* ── Left: 28px spacer — SVG overlay replaces the dot/line ── */}
+        <div style={{ width: "28px", flexShrink: 0 }} />
+
+        {/* ── Right: content ── */}
         <motion.div
-          initial={{ scale: 0 }}
-          animate={isInView ? { scale: 1 } : {}}
-          transition={{ duration: 0.35, delay: 0.1 }}
-          style={{
-            width: "9px", height: "9px", borderRadius: "50%", flexShrink: 0, marginTop: "5px",
-            background: isInView ? CORAL : `${TEAL}40`,
-            transition: "background 0.4s ease",
-          }}
-        />
-        {!isLast && (
-          <div style={{ flex: 1, width: "1px", background: `${TEAL}22`, marginTop: "5px", minHeight: "20px" }} />
-        )}
-      </div>
-
-      {/* ── Right: content ── */}
-      <motion.div
-        id={item.id ?? undefined}
-        initial={{ opacity: 0, x: 10 }}
-        animate={isInView ? { opacity: 1, x: 0 } : {}}
-        transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
-        style={{ flex: 1, paddingLeft: "12px", paddingBottom: "2rem" }}
-      >
-        {/* number + tag */}
-        <div style={{ display: "flex", alignItems: "baseline", gap: "0.5rem", marginBottom: "0.25rem" }}>
-          <span style={{ fontFamily: "var(--font-dm-sans)", fontSize: "1.1rem", letterSpacing: "0.15em", color: `${TEAL}55`, fontWeight: 300 }}>
-            {item.label}
-          </span>
-          {item.tag && (
-            <span style={{ fontFamily: "var(--font-dm-sans)", fontSize: "0.68rem", letterSpacing: "0.12em", textTransform: "uppercase", color: CORAL, fontWeight: 500 }}>
-              {item.tag}
+          ref={inViewRef}
+          id={item.id ?? undefined}
+          initial={{ opacity: 0, x: 10 }}
+          animate={isInView ? { opacity: 1, x: 0 } : {}}
+          transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+          style={{ flex: 1, paddingLeft: "12px", paddingBottom: "2rem" }}
+        >
+          {/* number + tag */}
+          <div style={{ display: "flex", alignItems: "baseline", gap: "0.5rem", marginBottom: "0.25rem" }}>
+            <span
+              id={`m-num-${index}`}
+              style={{
+                fontFamily: "var(--font-dm-sans)", fontSize: "1.1rem", letterSpacing: "0.15em",
+                color: `${TEAL}55`, fontWeight: 300,
+                transition: "color 0.4s ease",
+              }}
+            >
+              {item.label}
             </span>
-          )}
-        </div>
-
-        {/* title */}
-        <div style={{ marginBottom: canFlip ? "0.25rem" : "0.45rem" }}>
-          <h3 style={{ fontFamily: "var(--font-playfair)", color: TEAL, fontWeight: 700, fontSize: "1.05rem", lineHeight: 1.3, margin: 0 }}>
-            {item.title}
-          </h3>
-        </div>
-
-        {/* flip button */}
-        {canFlip && (
-          <div style={{ marginBottom: "0.45rem" }}>
-            <GlassButton size="xs" onClick={() => setFlipped(f => !f)} contentClassName="p-0">
-              <TextDisperse
-                icon={FlipIcon}
-                style={{ fontFamily: "var(--font-dm-sans)", fontSize: "0.75rem", letterSpacing: "0.06em", color: CORAL, padding: "0.2rem 0.65rem" }}
-              >
-                click to flip
-              </TextDisperse>
-            </GlassButton>
-          </div>
-        )}
-
-        {/* body / flip card */}
-        {canFlip ? (
-          <div style={{ perspective: "900px" }}>
-            <div style={{
-              position: "relative", transformStyle: "preserve-3d",
-              transition: "transform 0.55s cubic-bezier(0.4,0.2,0.2,1)",
-              transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)",
-            }}>
-              <div style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" }}>
-                <p style={{ fontFamily: "var(--font-dm-sans)", color: `${TEAL}99`, fontWeight: 300, fontSize: "0.88rem", lineHeight: 1.7, whiteSpace: "pre-line", margin: 0 }}>
-                  {renderBody(item.body, HIGHLIGHTS[index])}
-                </p>
-              </div>
-              <div style={{
-                position: "absolute", top: 0, left: 0, right: 0, minHeight: "100%",
-                backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden",
-                transform: "rotateY(180deg)",
-                ...(BACK_CONTENT[index] ? { background: `${TEAL}0d`, borderLeft: `2px solid ${CORAL}`, padding: "0.6rem 0.7rem", borderRadius: "2px" } : {}),
+            {item.tag && (
+              <span style={{
+                fontFamily: "var(--font-dm-sans)", fontSize: "0.68rem", letterSpacing: "0.12em",
+                textTransform: "uppercase", color: CORAL, fontWeight: 500,
               }}>
-                {flipped ? BACK_CONTENT[index] : null}
+                {item.tag}
+              </span>
+            )}
+          </div>
+
+          {/* title */}
+          <div style={{ marginBottom: canFlip ? "0.25rem" : "0.45rem" }}>
+            <h3 style={{ fontFamily: "var(--font-playfair)", color: TEAL, fontWeight: 700, fontSize: "1.05rem", lineHeight: 1.3, margin: 0 }}>
+              {item.title}
+            </h3>
+          </div>
+
+          {/* flip button */}
+          {canFlip && (
+            <div style={{ marginBottom: "0.45rem" }}>
+              <GlassButton size="xs" onClick={() => setFlipped(f => !f)} contentClassName="p-0">
+                <TextDisperse
+                  icon={FlipIcon}
+                  style={{ fontFamily: "var(--font-dm-sans)", fontSize: "0.75rem", letterSpacing: "0.06em", color: CORAL, padding: "0.2rem 0.65rem" }}
+                >
+                  click to flip
+                </TextDisperse>
+              </GlassButton>
+            </div>
+          )}
+
+          {/* body / flip card */}
+          {canFlip ? (
+            <div style={{ perspective: "900px" }}>
+              <div style={{
+                position: "relative", transformStyle: "preserve-3d",
+                transition: "transform 0.55s cubic-bezier(0.4,0.2,0.2,1)",
+                transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)",
+              }}>
+                <div style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" }}>
+                  <p style={{ fontFamily: "var(--font-dm-sans)", color: `${TEAL}99`, fontWeight: 300, fontSize: "0.88rem", lineHeight: 1.7, whiteSpace: "pre-line", margin: 0 }}>
+                    {renderBody(item.body, HIGHLIGHTS[index])}
+                  </p>
+                </div>
+                <div style={{
+                  position: "absolute", top: 0, left: 0, right: 0, minHeight: "100%",
+                  backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden",
+                  transform: "rotateY(180deg)",
+                  ...(BACK_CONTENT[index] ? { background: `${TEAL}0d`, borderLeft: `2px solid ${CORAL}`, padding: "0.6rem 0.7rem", borderRadius: "2px" } : {}),
+                }}>
+                  {flipped ? BACK_CONTENT[index] : null}
+                </div>
               </div>
             </div>
-          </div>
-        ) : (
-          <p style={{ fontFamily: "var(--font-dm-sans)", color: `${TEAL}99`, fontWeight: 300, fontSize: "0.88rem", lineHeight: 1.7, whiteSpace: "pre-line", margin: 0 }}>
-            {renderBody(item.body, HIGHLIGHTS[index])}
-          </p>
-        )}
-      </motion.div>
-    </div>
-  );
-}
+          ) : (
+            <p style={{ fontFamily: "var(--font-dm-sans)", color: `${TEAL}99`, fontWeight: 300, fontSize: "0.88rem", lineHeight: 1.7, whiteSpace: "pre-line", margin: 0 }}>
+              {renderBody(item.body, HIGHLIGHTS[index])}
+            </p>
+          )}
+        </motion.div>
+      </div>
+    );
+  }
+);
+MobileRow.displayName = "MobileRow";
 
 /* ─── Inline grid layer (shared by both background layers) ─────── */
 const GRID = 44;
@@ -457,10 +457,20 @@ function GridLayer({ id }: { id: string }) {
 
 /* ─── Main section ───────────────────────────────────────────────── */
 export default function TimelineSection() {
+  /* ── Desktop refs ── */
   const sectionRef = useRef<HTMLDivElement>(null);
   const lineRef    = useRef<SVGPathElement>(null);
   const markerRef  = useRef<SVGGElement>(null);
 
+  /* ── Mobile refs ── */
+  const mobileSectionRef   = useRef<HTMLElement>(null);
+  const mobileContainerRef = useRef<HTMLDivElement>(null);
+  const mobileLineRef      = useRef<SVGPathElement>(null);
+  const mobileTipRef       = useRef<SVGGElement>(null);
+  const mobileRowRefs      = useRef<(HTMLDivElement | null)[]>([]);
+  const [mobileHeight, setMobileHeight] = useState(0);
+
+  /* ── Desktop scroll animation ─────────────────────────────────── */
   useEffect(() => {
     const section = sectionRef.current;
     const line    = lineRef.current;
@@ -470,14 +480,10 @@ export default function TimelineSection() {
     const TOTAL = line.getTotalLength();
     const EASE  = 0.09;
 
-    /* Initialise fully hidden */
     line.style.strokeDasharray  = String(TOTAL);
     line.style.strokeDashoffset = String(TOTAL);
     if (marker) marker.style.opacity = "0";
 
-    /* ── Binary search: arc length where path y = targetY ─────────────
-       The path's y is monotonically increasing along its length, so
-       this converges reliably to the exact point on the curve.         */
     function findLen(targetY: number): number {
       let lo = 0, hi = TOTAL;
       for (let k = 0; k < 64; k++) {
@@ -487,8 +493,7 @@ export default function TimelineSection() {
       return (lo + hi) / 2;
     }
 
-    /* ── Compute exact anchor positions ─────────────────────────────── */
-    const lens: number[]       = [];
+    const lens: number[]        = [];
     const connEls: HTMLElement[] = [];
 
     ANCHORS.forEach((a, i) => {
@@ -496,22 +501,15 @@ export default function TimelineSection() {
       const pt  = line!.getPointAtLength(len);
       lens.push(len);
 
-      /* ── Position SVG dot */
       const dotEl = document.getElementById(`dot-${i}`);
       if (dotEl) {
         dotEl.setAttribute("cx", String(pt.x));
         dotEl.setAttribute("cy", String(pt.y));
       }
 
-      /* ── Position text block wrapper */
       const blockEl = section.querySelector(`[data-block="${i}"]`) as HTMLElement | null;
       if (blockEl) blockEl.style.top = `${pt.y - 8}px`;
 
-      /* ── Create HTML connector ──────────────────────────────────────
-         Dot page-x    = 50% + (pt.x - 150) px   (SVG centered at 50%)
-         Text inner-x  = 50% ± offset px
-         isLeft: connector left = 50%-offset, width = pt.x - 150 + offset
-         isRight: connector left = 50%+(pt.x-150), width = offset + 150 - pt.x */
       const isLeft   = a.isLeft;
       const off      = a.offset;
       const connLeft  = isLeft ? `calc(50% - ${off}px)`   : `calc(50% + ${pt.x - 150}px)`;
@@ -538,10 +536,8 @@ export default function TimelineSection() {
       setTimeout(() => { connEl.style.transform = "scaleX(1)"; }, 300 + i * 60);
     });
 
-    /* ── Thresholds: progress value at which each dot activates ──────── */
     const thresholds = lens.map(len => len / TOTAL);
 
-    /* ── Animation state ──────────────────────────────────────────── */
     let rendered = TOTAL;
     let target   = TOTAL;
     let rafId: number | null = null;
@@ -579,9 +575,6 @@ export default function TimelineSection() {
       target = TOTAL * (1 - progress);
       if (!rafId) rafId = requestAnimationFrame(tick);
 
-      /* ── Anchor colour activation ──────────────────────────────────
-         Thresholds are arc-length-based — the dot turns coral at the
-         exact moment the drawing tip crosses its position on the path. */
       thresholds.forEach((threshold, i) => {
         const on   = progress >= threshold;
         const dot  = document.getElementById(`dot-${i}`);
@@ -603,13 +596,179 @@ export default function TimelineSection() {
     };
   }, []);
 
+  /* ── Mobile scroll animation ──────────────────────────────────── */
+  useEffect(() => {
+    const section   = mobileSectionRef.current;
+    const container = mobileContainerRef.current;
+    if (!section || !container) return;
+
+    const EASE = 0.09;
+    let rendered    = 0;
+    let targetDrawn = 0;
+    let rafId: number | null = null;
+    let total       = 0;
+    const dotYs: number[] = [];
+
+    function updatePositions() {
+      total = container!.scrollHeight;
+      setMobileHeight(total);
+
+      dotYs.length = 0;
+      mobileRowRefs.current.forEach(rowEl => {
+        dotYs.push(rowEl ? rowEl.offsetTop + 5 : 0);
+      });
+
+      /* Update SVG dot positions directly on the DOM */
+      dotYs.forEach((y, i) => {
+        const el = document.getElementById(`m-dot-${i}`);
+        if (el) el.setAttribute("cy", String(y));
+      });
+
+      /* Re-sync strokeDasharray after height change */
+      const line = mobileLineRef.current;
+      if (line && total > 0) {
+        line.style.strokeDasharray  = String(total);
+        line.style.strokeDashoffset = String(total - rendered);
+      }
+    }
+
+    function tick() {
+      rendered += (targetDrawn - rendered) * EASE;
+      const line = mobileLineRef.current;
+      const tip  = mobileTipRef.current;
+      if (!line || total === 0) return;
+
+      line.style.strokeDashoffset = String(total - rendered);
+
+      if (tip) {
+        if (rendered > 1) {
+          tip.setAttribute("transform", `translate(14,${rendered})`);
+          tip.style.opacity = "1";
+        } else {
+          tip.style.opacity = "0";
+        }
+      }
+
+      dotYs.forEach((dotY, i) => {
+        const on    = rendered >= dotY;
+        const dotEl = document.getElementById(`m-dot-${i}`);
+        const numEl = document.getElementById(`m-num-${i}`);
+        if (dotEl) dotEl.style.fill  = on ? CORAL       : `${TEAL}60`;
+        if (numEl) numEl.style.color = on ? CORAL       : `${TEAL}55`;
+      });
+
+      if (Math.abs(rendered - targetDrawn) > 0.1) {
+        rafId = requestAnimationFrame(tick);
+      } else {
+        rendered = targetDrawn;
+        if (line) line.style.strokeDashoffset = String(total - rendered);
+        rafId = null;
+      }
+    }
+
+    function onScroll() {
+      if (total === 0) return;
+      const sectionTop    = section!.getBoundingClientRect().top + window.scrollY;
+      const sectionHeight = section!.offsetHeight;
+      const scrollable    = Math.max(sectionHeight - window.innerHeight, 1);
+      const progress      = Math.min(Math.max((window.scrollY - sectionTop) / scrollable, 0), 1);
+
+      targetDrawn = progress * total;
+      if (!rafId) rafId = requestAnimationFrame(tick);
+    }
+
+    /* Measure after first paint so layout is complete */
+    requestAnimationFrame(updatePositions);
+
+    const ro = new ResizeObserver(updatePositions);
+    ro.observe(container);
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (rafId) cancelAnimationFrame(rafId);
+      ro.disconnect();
+    };
+  }, []);
+
   return (
     <>
     {/* ── MOBILE LAYOUT ── */}
-    <section id="timeline" className="lg:hidden" style={{ background: CREAM, paddingTop: "3.5rem", paddingBottom: "3rem" }}>
-      <div style={{ maxWidth: "600px", margin: "0 auto", paddingLeft: "1rem", paddingRight: "1.25rem" }}>
+    <section
+      id="timeline"
+      ref={mobileSectionRef}
+      className="lg:hidden"
+      style={{ background: CREAM, paddingTop: "3.5rem", paddingBottom: "3rem" }}
+    >
+      <div
+        ref={mobileContainerRef}
+        style={{ position: "relative", maxWidth: "600px", margin: "0 auto", paddingLeft: "1rem", paddingRight: "1.25rem" }}
+      >
+        {/* SVG overlay — covers the 28px left spacer column of each row */}
+        {mobileHeight > 0 && (
+          <svg
+            aria-hidden
+            style={{
+              position: "absolute",
+              left: "1rem",
+              top: 0,
+              width: "28px",
+              height: mobileHeight,
+              pointerEvents: "none",
+              zIndex: 10,
+              overflow: "visible",
+            }}
+            viewBox={`0 0 28 ${mobileHeight}`}
+          >
+            {/* Ghost path */}
+            <path
+              d={`M 14 0 L 14 ${mobileHeight}`}
+              fill="none"
+              stroke={`${TEAL}18`}
+              strokeWidth="1"
+              strokeLinecap="round"
+            />
+            {/* Animated drawn path */}
+            <path
+              ref={mobileLineRef}
+              d={`M 14 0 L 14 ${mobileHeight}`}
+              fill="none"
+              stroke={TEAL}
+              strokeWidth="1"
+              strokeLinecap="round"
+            />
+            {/* Anchor dots — cy set by updatePositions via DOM */}
+            {ITEMS.map((_, i) => (
+              <circle
+                key={i}
+                id={`m-dot-${i}`}
+                cx="14"
+                cy="0"
+                r="4"
+                style={{ fill: `${TEAL}60`, transition: "fill 0.4s ease" }}
+              />
+            ))}
+            {/* Tip marker */}
+            <g ref={mobileTipRef} style={{ opacity: 0 }}>
+              <circle cx="0" cy="0" r="2.5" fill="none" stroke={TEAL} strokeWidth="0.7">
+                <animate attributeName="r"              from="2.5" to="14" dur="1.4s" repeatCount="indefinite" />
+                <animate attributeName="stroke-opacity" from="0.5" to="0"  dur="1.4s" repeatCount="indefinite" />
+              </circle>
+              <circle cx="0" cy="0" r="2.5" fill={TEAL} />
+            </g>
+          </svg>
+        )}
+
         {ITEMS.map((item, i) => (
-          <MobileRow key={i} item={item} index={i} isLast={i === ITEMS.length - 1} />
+          <MobileRow
+            key={i}
+            item={item}
+            index={i}
+            isLast={i === ITEMS.length - 1}
+            ref={el => { mobileRowRefs.current[i] = el; }}
+          />
         ))}
       </div>
     </section>
@@ -647,9 +806,7 @@ export default function TimelineSection() {
             strokeLinecap="round" strokeLinejoin="round"
           />
 
-          {/* Anchor dots — SVG circles share the exact coordinate system
-              of the path. useEffect computes exact cx/cy via getPointAtLength
-              so every dot is mathematically on the curve.               */}
+          {/* Anchor dots */}
           {ANCHORS.map((_, i) => (
             <circle
               key={i}
