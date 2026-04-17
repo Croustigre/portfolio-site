@@ -121,16 +121,16 @@ const BACK_CONTENT: Record<number, React.ReactNode> = {
     />
   ),
   10: (
-    <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
-      <iframe
-        src="/api/docs/mebc"
-        style={{ width: "100%", height: "340px", border: "none", borderRadius: "2px", display: "block" }}
-        title="Brochure Sponsoring MEBC"
-      />
+    <div style={{ display: "flex", gap: "0.6rem" }}>
       <img
         src="/mebc-boat.jpg"
         alt="Regatt'Arts — Monaco Energy Boat Challenge"
-        style={{ width: "100%", borderRadius: "2px", display: "block", objectFit: "cover" }}
+        style={{ width: "50%", borderRadius: "2px", display: "block", objectFit: "cover" }}
+      />
+      <iframe
+        src="/api/docs/mebc"
+        style={{ width: "50%", height: "340px", border: "none", borderRadius: "2px", display: "block" }}
+        title="Brochure Sponsoring MEBC"
       />
     </div>
   ),
