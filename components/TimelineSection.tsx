@@ -678,23 +678,31 @@ export default function TimelineSection() {
       }
     }
 
+    let cachedSectionTop = 0;
+
     function onScroll() {
       if (total === 0) return;
-      const sectionTop    = section!.getBoundingClientRect().top + window.scrollY;
-      const sectionHeight = section!.offsetHeight;
-      // Start drawing when point 01 reaches the middle of the screen
-      const earlyStart    = sectionTop - window.innerHeight / 2;
-      const scrollable    = Math.max(sectionHeight, 1);
-      const progress      = Math.min(Math.max((window.scrollY - earlyStart) / scrollable, 0), 1);
+      // Start: point 01 at screen midpoint
+      const earlyStart = cachedSectionTop - window.innerHeight / 2;
+      // End: user has scrolled to the very bottom of the page
+      const pageBottom = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollable = Math.max(pageBottom - earlyStart, 1);
+      const progress   = Math.min(Math.max((window.scrollY - earlyStart) / scrollable, 0), 1);
 
       targetDrawn = progress * total;
       if (!rafId) rafId = requestAnimationFrame(tick);
     }
 
     /* Measure after first paint so layout is complete */
-    requestAnimationFrame(updatePositions);
+    requestAnimationFrame(() => {
+      cachedSectionTop = section!.getBoundingClientRect().top + window.scrollY;
+      updatePositions();
+    });
 
-    const ro = new ResizeObserver(updatePositions);
+    const ro = new ResizeObserver(() => {
+      cachedSectionTop = section!.getBoundingClientRect().top + window.scrollY;
+      updatePositions();
+    });
     ro.observe(container);
 
     window.addEventListener("scroll", onScroll, { passive: true });
