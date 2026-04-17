@@ -62,7 +62,7 @@ export default function HeroSection() {
               fill
               priority
               className="object-contain object-bottom"
-              style={{ transform: "translateY(20px)" }}
+              style={{ transform: "translateY(-30px)" }}
             />
           </motion.div>
         </div>
