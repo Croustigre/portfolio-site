@@ -57,7 +57,7 @@ export default function HeroSection() {
             style={{ width: "min(340px, 72vw)", height: "100%" }}
           >
             <Image
-              src="/photo-cutout-6.png"
+              src="/photo-cutout-7.png"
               alt="Estéban Loubère"
               fill
               priority
@@ -112,7 +112,7 @@ export default function HeroSection() {
         >
           <div className="relative" style={{ width: "min(520px, 68vw)", height: "100%", transform: "translateY(40px)" }}>
             <Image
-              src="/photo-cutout-6.png"
+              src="/photo-cutout-7.png"
               alt="Estéban Loubère"
               fill
               priority
