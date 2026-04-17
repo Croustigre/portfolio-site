@@ -212,10 +212,11 @@ function Block({ item, index }: { item: (typeof ITEMS)[number]; index: number })
         animate={isInView ? { opacity: 1, x: 0 } : {}}
         transition={{ duration: 0.6, delay: 0.22, ease: [0.25, 0.46, 0.45, 0.94] }}
       >
-        {/* label */}
+        {/* number + tag */}
         <div style={{
-          marginBottom: "0.5rem",
-          ...(isLeft ? { textAlign: "right" } : {}),
+          marginBottom: "0.4rem",
+          display: "flex", alignItems: "baseline", gap: "0.6rem",
+          flexDirection: isLeft ? "row-reverse" : "row",
         }}>
           <span
             id={`num-${index}`}
@@ -226,20 +227,29 @@ function Block({ item, index }: { item: (typeof ITEMS)[number]; index: number })
               transition: "color 0.4s ease",
             }}
           >{item.label}</span>
+          <span style={{
+            fontFamily: "var(--font-dm-sans)", fontSize: "0.68rem",
+            letterSpacing: "0.14em", textTransform: "uppercase",
+            color: CORAL, fontWeight: 500,
+          }}>{item.tag}</span>
         </div>
 
         {/* title + flip button */}
-        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", flexWrap: "wrap", marginBottom: "0.55rem" }}>
+        <div style={{
+          display: "flex", alignItems: "center", gap: "0.5rem", flexWrap: "wrap",
+          marginBottom: "0.55rem",
+          justifyContent: isLeft ? "flex-end" : "flex-start",
+        }}>
           <h3 style={{
             fontFamily: "var(--font-playfair)", color: TEAL, fontWeight: 700,
-            fontSize: "clamp(0.9rem, 1.6vw, 1.22rem)", lineHeight: 1.25,
-            margin: 0,
+            fontSize: "clamp(1rem, 1.7vw, 1.3rem)", lineHeight: 1.25,
+            margin: 0, textAlign: isLeft ? "right" : "left",
           }}>{item.title}</h3>
           {canFlip && (
             <button
               onClick={() => setFlipped(f => !f)}
               style={{
-                fontSize: "0.52rem", letterSpacing: "0.06em",
+                fontSize: "0.65rem", letterSpacing: "0.06em",
                 color: flipped ? `${TEAL}99` : CORAL,
                 border: `1px solid ${flipped ? `${TEAL}44` : `${CORAL}66`}`,
                 background: "none", borderRadius: "3px",
@@ -266,8 +276,8 @@ function Block({ item, index }: { item: (typeof ITEMS)[number]; index: number })
               <div style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" }}>
                 <p style={{
                   fontFamily: "var(--font-dm-sans)", color: `${TEAL}99`, fontWeight: 300,
-                  fontSize: "clamp(0.65rem, 1vw, 0.78rem)", lineHeight: 1.65,
-                  whiteSpace: "pre-line", textAlign: "justify", margin: 0,
+                  fontSize: "clamp(0.8rem, 1.1vw, 0.92rem)", lineHeight: 1.65,
+                  whiteSpace: "pre-line", textAlign: isLeft ? "right" : "left", margin: 0,
                 }}>{renderBody(item.body, HIGHLIGHTS[index])}</p>
               </div>
               {/* Back face — only mounted once flipped to avoid PDF controls leaking through */}
@@ -289,12 +299,99 @@ function Block({ item, index }: { item: (typeof ITEMS)[number]; index: number })
         ) : (
           <p style={{
             fontFamily: "var(--font-dm-sans)", color: `${TEAL}99`, fontWeight: 300,
-            fontSize: "clamp(0.65rem, 1vw, 0.78rem)", lineHeight: 1.65,
-            whiteSpace: "pre-line", textAlign: "justify",
+            fontSize: "clamp(0.8rem, 1.1vw, 0.92rem)", lineHeight: 1.65,
+            whiteSpace: "pre-line", textAlign: isLeft ? "right" : "left",
           }}>{renderBody(item.body, HIGHLIGHTS[index])}</p>
         )}
       </motion.div>
     </div>
+  );
+}
+
+/* ─── Mobile card (reuses flip logic, no SVG thread) ────────────── */
+function MobileBlock({ item, index }: { item: (typeof ITEMS)[number]; index: number }) {
+  const ref      = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-8% 0px" });
+  const canFlip  = FLIPPABLE.has(index);
+  const [flipped, setFlipped] = useState(false);
+
+  return (
+    <motion.div
+      ref={ref}
+      id={item.id ?? undefined}
+      initial={{ opacity: 0, y: 20 }}
+      animate={isInView ? { opacity: 1, y: 0 } : {}}
+      transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+      style={{
+        background: `${TEAL}08`,
+        borderLeft: `3px solid ${CORAL}44`,
+        borderRadius: "3px",
+        padding: "1.2rem 1rem",
+        marginBottom: "1rem",
+      }}
+    >
+      {/* number + tag */}
+      <div style={{ display: "flex", alignItems: "baseline", gap: "0.5rem", marginBottom: "0.35rem" }}>
+        <span style={{ fontFamily: "var(--font-dm-sans)", fontSize: "1.1rem", letterSpacing: "0.15em", color: `${TEAL}55`, fontWeight: 300 }}>
+          {item.label}
+        </span>
+        <span style={{ fontFamily: "var(--font-dm-sans)", fontSize: "0.68rem", letterSpacing: "0.12em", textTransform: "uppercase", color: CORAL, fontWeight: 500 }}>
+          {item.tag}
+        </span>
+      </div>
+
+      {/* title + flip */}
+      <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", flexWrap: "wrap", marginBottom: "0.5rem" }}>
+        <h3 style={{ fontFamily: "var(--font-playfair)", color: TEAL, fontWeight: 700, fontSize: "1.05rem", lineHeight: 1.3, margin: 0 }}>
+          {item.title}
+        </h3>
+        {canFlip && (
+          <button
+            onClick={() => setFlipped(f => !f)}
+            style={{
+              fontSize: "0.65rem", letterSpacing: "0.06em",
+              color: flipped ? `${TEAL}99` : CORAL,
+              border: `1px solid ${flipped ? `${TEAL}44` : `${CORAL}66`}`,
+              background: "none", borderRadius: "3px",
+              padding: "2px 7px", cursor: "pointer",
+              fontFamily: "var(--font-dm-sans)",
+              flexShrink: 0,
+            }}
+          >
+            {flipped ? "flip back ↩" : "click to flip ↩"}
+          </button>
+        )}
+      </div>
+
+      {/* body / flip */}
+      {canFlip ? (
+        <div style={{ perspective: "900px" }}>
+          <div style={{
+            position: "relative", transformStyle: "preserve-3d",
+            transition: "transform 0.55s cubic-bezier(0.4,0.2,0.2,1)",
+            transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)",
+          }}>
+            <div style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" }}>
+              <p style={{ fontFamily: "var(--font-dm-sans)", color: `${TEAL}99`, fontWeight: 300, fontSize: "0.88rem", lineHeight: 1.7, whiteSpace: "pre-line", margin: 0 }}>
+                {renderBody(item.body, HIGHLIGHTS[index])}
+              </p>
+            </div>
+            <div style={{
+              position: "absolute", top: 0, left: 0, right: 0, minHeight: "100%",
+              backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden",
+              transform: "rotateY(180deg)",
+              ...(BACK_CONTENT[index] ? { background: `${TEAL}0d`, borderLeft: `2px solid ${CORAL}`, padding: "0.6rem 0.7rem", borderRadius: "2px" } : {}),
+            }}>
+              {flipped ? BACK_CONTENT[index] : null}
+            </div>
+          </div>
+        </div>
+      ) : (
+        <p style={{ fontFamily: "var(--font-dm-sans)", color: `${TEAL}99`, fontWeight: 300, fontSize: "0.88rem", lineHeight: 1.7, whiteSpace: "pre-line", margin: 0 }}>
+          {renderBody(item.body, HIGHLIGHTS[index])}
+        </p>
+      )}
+    </motion.div>
   );
 }
 
@@ -462,8 +559,20 @@ export default function TimelineSection() {
   }, []);
 
   return (
+    <>
+    {/* ── MOBILE LAYOUT ── */}
+    <section className="md:hidden" style={{ background: CREAM, padding: "4rem 1.25rem 3rem" }}>
+      <div style={{ maxWidth: "600px", margin: "0 auto" }}>
+        {ITEMS.map((item, i) => (
+          <MobileBlock key={i} item={item} index={i} />
+        ))}
+      </div>
+    </section>
+
+    {/* ── DESKTOP LAYOUT ── */}
     <section
       ref={sectionRef}
+      className="hidden md:block"
       style={{ position: "relative", background: CREAM, height: SVG_H + 60, overflow: "hidden" }}
     >
       {/* Grid layer — always visible, subtle */}
@@ -522,5 +631,6 @@ export default function TimelineSection() {
         <Block key={i} item={item} index={i} />
       ))}
     </section>
+    </>
   );
 }

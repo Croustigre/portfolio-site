@@ -8,12 +8,12 @@ export default function Footer() {
           <p className="text-lg font-bold mb-1" style={{ fontFamily: "var(--font-playfair)", color: "rgba(235,227,209,0.9)" }}>
             Estéban Loubère
           </p>
-          <p className="text-xs tracking-wide" style={{ color: "rgba(235,227,209,0.4)", fontWeight: 300 }}>
+          <p className="text-sm tracking-wide" style={{ color: "rgba(235,227,209,0.4)", fontWeight: 300 }}>
             Engineering Student · Arts et Métiers ParisTech
           </p>
         </div>
 <div className="text-center lg:text-right">
-          <p className="text-xs uppercase tracking-widest" style={{ color: "rgba(235,227,209,0.25)" }}>© 2026 · All rights reserved</p>
+          <p className="text-sm uppercase tracking-widest" style={{ color: "rgba(235,227,209,0.25)" }}>© 2026 · All rights reserved</p>
         </div>
       </div>
     </footer>
