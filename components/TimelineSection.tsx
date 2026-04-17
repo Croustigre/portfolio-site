@@ -339,88 +339,104 @@ function Block({ item, index }: { item: (typeof ITEMS)[number]; index: number })
   );
 }
 
-/* ─── Mobile card (reuses flip logic, no SVG thread) ────────────── */
-function MobileBlock({ item, index }: { item: (typeof ITEMS)[number]; index: number }) {
+/* ─── Mobile row: dot + connecting line on left, content on right ── */
+function MobileRow({ item, index, isLast }: { item: (typeof ITEMS)[number]; index: number; isLast: boolean }) {
   const ref      = useRef(null);
   const isInView = useInView(ref, { once: true, margin: "-8% 0px" });
   const canFlip  = FLIPPABLE.has(index);
   const [flipped, setFlipped] = useState(false);
 
   return (
-    <motion.div
-      ref={ref}
-      id={item.id ?? undefined}
-      initial={{ opacity: 0, y: 20 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
-      style={{
-        background: `${TEAL}08`,
-        borderLeft: `3px solid ${CORAL}44`,
-        borderRadius: "3px",
-        padding: "1.2rem 1rem",
-        marginBottom: "1rem",
-      }}
-    >
-      {/* number + tag */}
-      <div style={{ display: "flex", alignItems: "baseline", gap: "0.5rem", marginBottom: "0.35rem" }}>
-        <span style={{ fontFamily: "var(--font-dm-sans)", fontSize: "1.1rem", letterSpacing: "0.15em", color: `${TEAL}55`, fontWeight: 300 }}>
-          {item.label}
-        </span>
-        {item.tag && <span style={{ fontFamily: "var(--font-dm-sans)", fontSize: "0.68rem", letterSpacing: "0.12em", textTransform: "uppercase", color: CORAL, fontWeight: 500 }}>
-          {item.tag}
-        </span>}
+    <div ref={ref} style={{ display: "flex" }}>
+
+      {/* ── Left: dot + vertical connector ── */}
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", width: "28px", flexShrink: 0 }}>
+        <motion.div
+          initial={{ scale: 0 }}
+          animate={isInView ? { scale: 1 } : {}}
+          transition={{ duration: 0.35, delay: 0.1 }}
+          style={{
+            width: "9px", height: "9px", borderRadius: "50%", flexShrink: 0, marginTop: "5px",
+            background: isInView ? CORAL : `${TEAL}40`,
+            transition: "background 0.4s ease",
+          }}
+        />
+        {!isLast && (
+          <div style={{ flex: 1, width: "1px", background: `${TEAL}22`, marginTop: "5px", minHeight: "20px" }} />
+        )}
       </div>
 
-      {/* title */}
-      <div style={{ marginBottom: canFlip ? "0.25rem" : "0.5rem" }}>
-        <h3 style={{ fontFamily: "var(--font-playfair)", color: TEAL, fontWeight: 700, fontSize: "1.05rem", lineHeight: 1.3, margin: 0 }}>
-          {item.title}
-        </h3>
-      </div>
-
-      {/* flip button — always below title */}
-      {canFlip && (
-        <div style={{ marginBottom: "0.5rem" }}>
-          <GlassButton size="sm" onClick={() => setFlipped(f => !f)} contentClassName="p-0">
-            <TextDisperse
-              icon={FlipIcon}
-              style={{ fontFamily: "var(--font-dm-sans)", fontSize: "0.75rem", letterSpacing: "0.06em", color: CORAL, padding: "0.2rem 0.65rem" }}
-            >
-              click to flip
-            </TextDisperse>
-          </GlassButton>
+      {/* ── Right: content ── */}
+      <motion.div
+        id={item.id ?? undefined}
+        initial={{ opacity: 0, x: 10 }}
+        animate={isInView ? { opacity: 1, x: 0 } : {}}
+        transition={{ duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] }}
+        style={{ flex: 1, paddingLeft: "12px", paddingBottom: "2rem" }}
+      >
+        {/* number + tag */}
+        <div style={{ display: "flex", alignItems: "baseline", gap: "0.5rem", marginBottom: "0.25rem" }}>
+          <span style={{ fontFamily: "var(--font-dm-sans)", fontSize: "1.1rem", letterSpacing: "0.15em", color: `${TEAL}55`, fontWeight: 300 }}>
+            {item.label}
+          </span>
+          {item.tag && (
+            <span style={{ fontFamily: "var(--font-dm-sans)", fontSize: "0.68rem", letterSpacing: "0.12em", textTransform: "uppercase", color: CORAL, fontWeight: 500 }}>
+              {item.tag}
+            </span>
+          )}
         </div>
-      )}
 
-      {/* body / flip */}
-      {canFlip ? (
-        <div style={{ perspective: "900px" }}>
-          <div style={{
-            position: "relative", transformStyle: "preserve-3d",
-            transition: "transform 0.55s cubic-bezier(0.4,0.2,0.2,1)",
-            transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)",
-          }}>
-            <div style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" }}>
-              <p style={{ fontFamily: "var(--font-dm-sans)", color: `${TEAL}99`, fontWeight: 300, fontSize: "0.88rem", lineHeight: 1.7, whiteSpace: "pre-line", margin: 0 }}>
-                {renderBody(item.body, HIGHLIGHTS[index])}
-              </p>
-            </div>
+        {/* title */}
+        <div style={{ marginBottom: canFlip ? "0.25rem" : "0.45rem" }}>
+          <h3 style={{ fontFamily: "var(--font-playfair)", color: TEAL, fontWeight: 700, fontSize: "1.05rem", lineHeight: 1.3, margin: 0 }}>
+            {item.title}
+          </h3>
+        </div>
+
+        {/* flip button */}
+        {canFlip && (
+          <div style={{ marginBottom: "0.45rem" }}>
+            <GlassButton size="xs" onClick={() => setFlipped(f => !f)} contentClassName="p-0">
+              <TextDisperse
+                icon={FlipIcon}
+                style={{ fontFamily: "var(--font-dm-sans)", fontSize: "0.75rem", letterSpacing: "0.06em", color: CORAL, padding: "0.2rem 0.65rem" }}
+              >
+                click to flip
+              </TextDisperse>
+            </GlassButton>
+          </div>
+        )}
+
+        {/* body / flip card */}
+        {canFlip ? (
+          <div style={{ perspective: "900px" }}>
             <div style={{
-              position: "absolute", top: 0, left: 0, right: 0, minHeight: "100%",
-              backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden",
-              transform: "rotateY(180deg)",
-              ...(BACK_CONTENT[index] ? { background: `${TEAL}0d`, borderLeft: `2px solid ${CORAL}`, padding: "0.6rem 0.7rem", borderRadius: "2px" } : {}),
+              position: "relative", transformStyle: "preserve-3d",
+              transition: "transform 0.55s cubic-bezier(0.4,0.2,0.2,1)",
+              transform: flipped ? "rotateY(180deg)" : "rotateY(0deg)",
             }}>
-              {flipped ? BACK_CONTENT[index] : null}
+              <div style={{ backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden" }}>
+                <p style={{ fontFamily: "var(--font-dm-sans)", color: `${TEAL}99`, fontWeight: 300, fontSize: "0.88rem", lineHeight: 1.7, whiteSpace: "pre-line", margin: 0 }}>
+                  {renderBody(item.body, HIGHLIGHTS[index])}
+                </p>
+              </div>
+              <div style={{
+                position: "absolute", top: 0, left: 0, right: 0, minHeight: "100%",
+                backfaceVisibility: "hidden", WebkitBackfaceVisibility: "hidden",
+                transform: "rotateY(180deg)",
+                ...(BACK_CONTENT[index] ? { background: `${TEAL}0d`, borderLeft: `2px solid ${CORAL}`, padding: "0.6rem 0.7rem", borderRadius: "2px" } : {}),
+              }}>
+                {flipped ? BACK_CONTENT[index] : null}
+              </div>
             </div>
           </div>
-        </div>
-      ) : (
-        <p style={{ fontFamily: "var(--font-dm-sans)", color: `${TEAL}99`, fontWeight: 300, fontSize: "0.88rem", lineHeight: 1.7, whiteSpace: "pre-line", margin: 0 }}>
-          {renderBody(item.body, HIGHLIGHTS[index])}
-        </p>
-      )}
-    </motion.div>
+        ) : (
+          <p style={{ fontFamily: "var(--font-dm-sans)", color: `${TEAL}99`, fontWeight: 300, fontSize: "0.88rem", lineHeight: 1.7, whiteSpace: "pre-line", margin: 0 }}>
+            {renderBody(item.body, HIGHLIGHTS[index])}
+          </p>
+        )}
+      </motion.div>
+    </div>
   );
 }
 
@@ -590,10 +606,10 @@ export default function TimelineSection() {
   return (
     <>
     {/* ── MOBILE LAYOUT ── */}
-    <section id="timeline" className="lg:hidden" style={{ background: CREAM, padding: "4rem 1.25rem 3rem" }}>
-      <div style={{ maxWidth: "600px", margin: "0 auto" }}>
+    <section id="timeline" className="lg:hidden" style={{ background: CREAM, paddingTop: "3.5rem", paddingBottom: "3rem" }}>
+      <div style={{ maxWidth: "600px", margin: "0 auto", paddingLeft: "1rem", paddingRight: "1.25rem" }}>
         {ITEMS.map((item, i) => (
-          <MobileBlock key={i} item={item} index={i} />
+          <MobileRow key={i} item={item} index={i} isLast={i === ITEMS.length - 1} />
         ))}
       </div>
     </section>
