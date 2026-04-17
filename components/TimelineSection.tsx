@@ -722,8 +722,13 @@ export default function TimelineSection() {
       id="timeline"
       ref={mobileSectionRef}
       className="lg:hidden"
-      style={{ background: CREAM, paddingTop: "3.5rem", paddingBottom: "3rem" }}
+      style={{ position: "relative", background: CREAM, paddingTop: "3.5rem", paddingBottom: "3rem" }}
     >
+      {/* Grid background — same as desktop */}
+      <div aria-hidden style={{ position: "absolute", inset: 0, zIndex: 0, opacity: 0.05, pointerEvents: "none" }}>
+        <GridLayer id="tl-grid-mobile" />
+      </div>
+
       <div
         ref={mobileContainerRef}
         style={{ position: "relative", maxWidth: "600px", margin: "0 auto", paddingLeft: "1rem", paddingRight: "1.25rem" }}
