@@ -682,8 +682,8 @@ export default function TimelineSection() {
       if (total === 0) return;
       const sectionTop    = section!.getBoundingClientRect().top + window.scrollY;
       const sectionHeight = section!.offsetHeight;
-      // Start drawing as soon as the section enters the viewport bottom
-      const earlyStart    = sectionTop - window.innerHeight;
+      // Start drawing when point 01 reaches the middle of the screen
+      const earlyStart    = sectionTop - window.innerHeight / 2;
       const scrollable    = Math.max(sectionHeight, 1);
       const progress      = Math.min(Math.max((window.scrollY - earlyStart) / scrollable, 0), 1);
 
