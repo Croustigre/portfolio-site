@@ -8,7 +8,7 @@ const BG = "#8FAAB6";
 function slowScrollTo(target: number) {
   const start = window.scrollY;
   const distance = target - start;
-  const duration = 1400;
+  const duration = window.innerWidth < 768 ? 600 : 1400;
   const startTime = performance.now();
   function step(now: number) {
     const t = Math.min((now - startTime) / duration, 1);
