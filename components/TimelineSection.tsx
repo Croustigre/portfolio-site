@@ -239,7 +239,7 @@ function Block({ item, index }: { item: (typeof ITEMS)[number]; index: number })
         ...(isLeft
           ? { right: `calc(50% + ${offset}px)` }
           : { left:  `calc(50% + ${offset}px)` }),
-        width: "clamp(200px, 38vw, 480px)",
+        width: "clamp(180px, calc(50vw - 185px), 480px)",
         zIndex: flipped ? 100 : 10,
       }}
     >
@@ -590,7 +590,7 @@ export default function TimelineSection() {
   return (
     <>
     {/* ── MOBILE LAYOUT ── */}
-    <section id="timeline" className="md:hidden" style={{ background: CREAM, padding: "4rem 1.25rem 3rem" }}>
+    <section id="timeline" className="lg:hidden" style={{ background: CREAM, padding: "4rem 1.25rem 3rem" }}>
       <div style={{ maxWidth: "600px", margin: "0 auto" }}>
         {ITEMS.map((item, i) => (
           <MobileBlock key={i} item={item} index={i} />
@@ -602,7 +602,7 @@ export default function TimelineSection() {
     <section
       id="timeline"
       ref={sectionRef}
-      className="hidden md:block"
+      className="hidden lg:block"
       style={{ position: "relative", background: CREAM, height: SVG_H + 112, overflow: "hidden" }}
     >
       {/* Grid layer — always visible, subtle */}
