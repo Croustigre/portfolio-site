@@ -65,19 +65,19 @@ export default function HeroSection() {
           </p>
           <div className="flex items-center gap-5">
             <button
-              onClick={() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })}
+              onClick={() => document.getElementById("timeline")?.scrollIntoView({ behavior: "smooth" })}
               className="text-sm font-medium transition-opacity hover:opacity-70"
               style={{ color: "#E74F44", fontFamily: "var(--font-dm-sans)", background: "none", border: "none", padding: 0, cursor: "pointer" }}
             >
               My story →
             </button>
-            <a href="mailto:esteban.loubere@ensam.eu" className="opacity-60 hover:opacity-100 transition-opacity flex items-center">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ display: "block" }}>
+            <a href="mailto:esteban.loubere@ensam.eu" className="opacity-70 hover:opacity-100 transition-opacity flex items-center">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#E74F44" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ display: "block" }}>
                 <rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/>
               </svg>
             </a>
-            <a href="https://www.linkedin.com/in/esteban-loubere" target="_blank" rel="noopener noreferrer" className="opacity-60 hover:opacity-100 transition-opacity flex items-center">
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ display: "block" }}>
+            <a href="https://www.linkedin.com/in/esteban-loubere" target="_blank" rel="noopener noreferrer" className="opacity-70 hover:opacity-100 transition-opacity flex items-center">
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#E74F44" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ display: "block" }}>
                 <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
                 <rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/>
               </svg>
@@ -147,13 +147,13 @@ export default function HeroSection() {
           className="absolute bottom-8 left-8 flex items-center gap-5"
           style={{ zIndex: 10 }}
         >
-          <a href="mailto:esteban.loubere@ensam.eu" aria-label="Email" className="opacity-60 hover:opacity-100 transition-opacity" style={{ display: "flex", alignItems: "center" }}>
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ display: "block", marginTop: "2px" }}>
+          <a href="mailto:esteban.loubere@ensam.eu" aria-label="Email" className="opacity-70 hover:opacity-100 transition-opacity" style={{ display: "flex", alignItems: "center" }}>
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#E74F44" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ display: "block", marginTop: "2px" }}>
               <rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 7l10 7 10-7"/>
             </svg>
           </a>
-          <a href="https://www.linkedin.com/in/esteban-loubere" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="opacity-60 hover:opacity-100 transition-opacity" style={{ display: "flex", alignItems: "center" }}>
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ display: "block" }}>
+          <a href="https://www.linkedin.com/in/esteban-loubere" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" className="opacity-70 hover:opacity-100 transition-opacity" style={{ display: "flex", alignItems: "center" }}>
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#E74F44" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ display: "block" }}>
               <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
               <rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/>
             </svg>
@@ -175,7 +175,7 @@ export default function HeroSection() {
             Arts et Métiers ParisTech. French and Mandarin native, fluent in English. Pursuing graduate engineering studies in the United States.
           </p>
           <button
-            onClick={() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })}
+            onClick={() => document.getElementById("timeline")?.scrollIntoView({ behavior: "smooth" })}
             className="flex items-center gap-2 font-medium transition-opacity duration-200 hover:opacity-70 cursor-pointer w-fit"
             style={{ color: "#E74F44", fontFamily: "var(--font-dm-sans)", background: "none", border: "none", padding: 0, fontSize: "clamp(0.9rem, 1.2vw, 1rem)" }}
           >

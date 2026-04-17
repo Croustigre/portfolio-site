@@ -20,17 +20,17 @@ const CORAL = "#E74F44";
 ──────────────────────────────────────────────────────────────────── */
 const STEP = (2820 - 20) / 12; // ≈ 233.3
 const ANCHORS = [
-  { dotY: Math.round(20 + STEP *  1), isLeft: true,  offset: 165 }, // 0
-  { dotY: Math.round(20 + STEP *  2), isLeft: false, offset: 145 }, // 1
-  { dotY: Math.round(20 + STEP *  3), isLeft: true,  offset: 165 }, // 2
-  { dotY: Math.round(20 + STEP *  4), isLeft: false, offset: 145 }, // 3
-  { dotY: Math.round(20 + STEP *  5), isLeft: true,  offset: 165 }, // 4
-  { dotY: Math.round(20 + STEP *  6), isLeft: false, offset: 145 }, // 5
-  { dotY: Math.round(20 + STEP *  7), isLeft: true,  offset: 165 }, // 6
-  { dotY: Math.round(20 + STEP *  8), isLeft: false, offset: 145 }, // 7
-  { dotY: Math.round(20 + STEP *  9), isLeft: true,  offset: 165 }, // 8
-  { dotY: Math.round(20 + STEP * 10), isLeft: false, offset: 145 }, // 9
-  { dotY: Math.round(20 + STEP * 11), isLeft: true,  offset: 165 }, // 10
+  { dotY: Math.round(20 + STEP *  0.5), isLeft: true,  offset: 165 }, // 0
+  { dotY: Math.round(20 + STEP *  1.5), isLeft: false, offset: 145 }, // 1
+  { dotY: Math.round(20 + STEP *  2.5), isLeft: true,  offset: 165 }, // 2
+  { dotY: Math.round(20 + STEP *  3.5), isLeft: false, offset: 145 }, // 3
+  { dotY: Math.round(20 + STEP *  4.5), isLeft: true,  offset: 165 }, // 4
+  { dotY: Math.round(20 + STEP *  5.5), isLeft: false, offset: 145 }, // 5
+  { dotY: Math.round(20 + STEP *  6.5), isLeft: true,  offset: 165 }, // 6
+  { dotY: Math.round(20 + STEP *  7.5), isLeft: false, offset: 145 }, // 7
+  { dotY: Math.round(20 + STEP *  8.5), isLeft: true,  offset: 165 }, // 8
+  { dotY: Math.round(20 + STEP *  9.5), isLeft: false, offset: 145 }, // 9
+  { dotY: Math.round(20 + STEP * 10.5), isLeft: true,  offset: 165 }, // 10
 ];
 
 /* ─── Path ──────────────────────────────────────────────────────────── */
@@ -126,12 +126,12 @@ function renderBody(text: string, phrases: readonly string[]) {
 /* ─── Content ─────────────────────────────────────────────────────── */
 const ITEMS = [
   {
-    id: "about", label: "01", tag: "Introduction",
+    id: "about", label: "01", tag: "",
     title: "About me",
     body: "I am a 20-year-old first-year engineering student at Arts et Métiers, one of France's most prestigious engineering schools. Before that, I completed two years of intensive scientific preparatory classes (PT track) at Lycée Ferdinand Buisson in Voiron, Isère.\nI grew up between two cultures: my father is French, my mother is Taiwanese, and I have the privilege of speaking both French and Mandarin as native languages. This dual identity informs the way I think, the way I connect with people, and the way I approach complexity.\nI am particularly interested in Industrial Engineering and Operations Research — a field that combines mathematical optimisation, system design, and operational efficiency. I am drawn to its applications in semiconductor manufacturing and global supply chain management, where rigorous analytical thinking meets real industrial impact.",
   },
   {
-    id: null, label: "02", tag: "Education",
+    id: null, label: "02", tag: "",
     title: "Education",
     body: "I graduated in 2022 from Lycée Saint Joseph La Salle in Thonon-les-Bains with a Baccalauréat Général with Honours in mathematics, physics-chemistry, and life sciences. I then completed two years of Classes Préparatoires aux Grandes Écoles (PTSI–PT) at Lycée Ferdinand Buisson in Voiron, an intensive programme in mathematics, physics, engineering science, and computer science preparing for entrance exams to France's top engineering schools. In 2024, I was admitted to Arts et Métiers ParisTech, where I am currently pursuing the Programme Grande École, a three-year Master of Engineering covering solid mechanics, materials science, mechanical design, electronics, and computer science.",
   },
@@ -216,7 +216,7 @@ function Block({ item, index }: { item: (typeof ITEMS)[number]; index: number })
         <div style={{
           marginBottom: "0.4rem",
           display: "flex", alignItems: "baseline", gap: "0.6rem",
-          flexDirection: isLeft ? "row-reverse" : "row",
+          flexDirection: "row",
         }}>
           <span
             id={`num-${index}`}
@@ -227,23 +227,23 @@ function Block({ item, index }: { item: (typeof ITEMS)[number]; index: number })
               transition: "color 0.4s ease",
             }}
           >{item.label}</span>
-          <span style={{
+          {item.tag && <span style={{
             fontFamily: "var(--font-dm-sans)", fontSize: "0.68rem",
             letterSpacing: "0.14em", textTransform: "uppercase",
             color: CORAL, fontWeight: 500,
-          }}>{item.tag}</span>
+          }}>{item.tag}</span>}
         </div>
 
         {/* title + flip button */}
         <div style={{
           display: "flex", alignItems: "center", gap: "0.5rem", flexWrap: "wrap",
           marginBottom: "0.55rem",
-          justifyContent: isLeft ? "flex-end" : "flex-start",
+          justifyContent: "flex-start",
         }}>
           <h3 style={{
             fontFamily: "var(--font-playfair)", color: TEAL, fontWeight: 700,
             fontSize: "clamp(1rem, 1.7vw, 1.3rem)", lineHeight: 1.25,
-            margin: 0, textAlign: "justify",
+            margin: 0, textAlign: "left",
           }}>{item.title}</h3>
           {canFlip && (
             <button
@@ -335,9 +335,9 @@ function MobileBlock({ item, index }: { item: (typeof ITEMS)[number]; index: num
         <span style={{ fontFamily: "var(--font-dm-sans)", fontSize: "1.1rem", letterSpacing: "0.15em", color: `${TEAL}55`, fontWeight: 300 }}>
           {item.label}
         </span>
-        <span style={{ fontFamily: "var(--font-dm-sans)", fontSize: "0.68rem", letterSpacing: "0.12em", textTransform: "uppercase", color: CORAL, fontWeight: 500 }}>
+        {item.tag && <span style={{ fontFamily: "var(--font-dm-sans)", fontSize: "0.68rem", letterSpacing: "0.12em", textTransform: "uppercase", color: CORAL, fontWeight: 500 }}>
           {item.tag}
-        </span>
+        </span>}
       </div>
 
       {/* title + flip */}
@@ -561,7 +561,7 @@ export default function TimelineSection() {
   return (
     <>
     {/* ── MOBILE LAYOUT ── */}
-    <section className="md:hidden" style={{ background: CREAM, padding: "4rem 1.25rem 3rem" }}>
+    <section id="timeline" className="md:hidden" style={{ background: CREAM, padding: "4rem 1.25rem 3rem" }}>
       <div style={{ maxWidth: "600px", margin: "0 auto" }}>
         {ITEMS.map((item, i) => (
           <MobileBlock key={i} item={item} index={i} />
@@ -571,6 +571,7 @@ export default function TimelineSection() {
 
     {/* ── DESKTOP LAYOUT ── */}
     <section
+      id="timeline"
       ref={sectionRef}
       className="hidden md:block"
       style={{ position: "relative", background: CREAM, height: SVG_H + 200, overflow: "hidden" }}
