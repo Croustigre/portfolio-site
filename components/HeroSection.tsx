@@ -5,6 +5,20 @@ import Image from "next/image";
 
 const BG = "#8FAAB6";
 
+function slowScrollTo(target: number) {
+  const start = window.scrollY;
+  const distance = target - start;
+  const duration = 1400;
+  const startTime = performance.now();
+  function step(now: number) {
+    const t = Math.min((now - startTime) / duration, 1);
+    const ease = t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+    window.scrollTo(0, start + distance * ease);
+    if (t < 1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+
 export default function HeroSection() {
   return (
     <section
@@ -65,7 +79,7 @@ export default function HeroSection() {
           </p>
           <div className="flex items-center gap-5">
             <button
-              onClick={() => window.scrollTo({ top: window.innerHeight, behavior: "smooth" })}
+              onClick={() => slowScrollTo(window.innerHeight)}
               className="text-sm font-medium transition-opacity hover:opacity-70"
               style={{ color: "#E74F44", fontFamily: "var(--font-dm-sans)", background: "none", border: "none", padding: 0, cursor: "pointer" }}
             >
@@ -175,7 +189,7 @@ export default function HeroSection() {
             Arts et Métiers ParisTech. French and Mandarin native, fluent in English. Pursuing graduate engineering studies in the United States.
           </p>
           <button
-            onClick={() => window.scrollTo({ top: window.innerHeight, behavior: "smooth" })}
+            onClick={() => slowScrollTo(window.innerHeight)}
             className="flex items-center gap-2 font-medium transition-opacity duration-200 hover:opacity-70 cursor-pointer w-fit"
             style={{ color: "#E74F44", fontFamily: "var(--font-dm-sans)", background: "none", border: "none", padding: 0, fontSize: "clamp(0.9rem, 1.2vw, 1rem)" }}
           >

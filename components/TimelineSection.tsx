@@ -574,7 +574,7 @@ export default function TimelineSection() {
       id="timeline"
       ref={sectionRef}
       className="hidden md:block"
-      style={{ position: "relative", background: CREAM, height: SVG_H + 200, overflow: "hidden" }}
+      style={{ position: "relative", background: CREAM, height: SVG_H + 112, overflow: "hidden" }}
     >
       {/* Grid layer — always visible, subtle */}
       <div aria-hidden style={{ position: "absolute", inset: 0, zIndex: 0, opacity: 0.05, pointerEvents: "none" }}>
