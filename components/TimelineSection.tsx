@@ -123,7 +123,7 @@ const BACK_CONTENT: Record<number, React.ReactNode> = {
   10: (
     <div style={{ display: "flex", gap: "0.6rem" }}>
       <img
-        src="/mebc-boat.jpg"
+        src="/mebc-boat-2.jpg"
         alt="Regatt'Arts — Monaco Energy Boat Challenge"
         style={{ width: "50%", borderRadius: "2px", display: "block", objectFit: "cover" }}
       />
