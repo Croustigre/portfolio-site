@@ -252,7 +252,7 @@ function Block({ item, index }: { item: (typeof ITEMS)[number]; index: number })
               onClick={() => setFlipped(f => !f)}
               style={{
                 display: "inline-flex", alignItems: "center",
-                background: "#8FAAB6", borderRadius: "9999px",
+                background: "#FFFFFF", borderRadius: "9999px",
                 padding: "0.35rem 1rem", cursor: "pointer",
               }}
             >
@@ -358,7 +358,7 @@ function MobileBlock({ item, index }: { item: (typeof ITEMS)[number]; index: num
             onClick={() => setFlipped(f => !f)}
             style={{
               display: "inline-flex", alignItems: "center",
-              background: "#8FAAB6", borderRadius: "9999px",
+              background: "#FFFFFF", borderRadius: "9999px",
               padding: "0.35rem 1rem", cursor: "pointer",
             }}
           >
