@@ -216,7 +216,7 @@ function Block({ item, index }: { item: (typeof ITEMS)[number]; index: number })
         <div style={{
           marginBottom: "0.4rem",
           display: "flex", alignItems: "baseline", gap: "0.6rem",
-          flexDirection: "row",
+          flexDirection: isLeft ? "row-reverse" : "row",
         }}>
           <span
             id={`num-${index}`}
