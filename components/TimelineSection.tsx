@@ -3,6 +3,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { TextDisperse } from "@/components/ui/text-disperse";
+import { GlassButton } from "@/components/ui/glass-button";
 
 /* ─── SVG canvas ──────────────────────────────────────────────────── */
 const SVG_W  = 300;
@@ -106,6 +107,13 @@ const BACK_CONTENT: Record<number, React.ReactNode> = {
     />
   ),
 };
+
+const FlipIcon = (
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={CORAL} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ marginLeft: "0.35rem" }}>
+    <path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+    <path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+  </svg>
+);
 
 /* ─── Render body text with inline orange highlights ─────────────── */
 function renderBody(text: string, phrases: readonly string[]) {
@@ -247,22 +255,14 @@ function Block({ item, index }: { item: (typeof ITEMS)[number]; index: number })
         {/* flip button — always below title */}
         {canFlip && (
           <div style={{ marginBottom: "0.55rem" }}>
-            <div
-              role="button"
-              onClick={() => setFlipped(f => !f)}
-              style={{
-                display: "inline-flex", alignItems: "center",
-                background: "#FFFFFF", borderRadius: "9999px",
-                padding: "0.35rem 1rem", cursor: "pointer",
-              }}
-            >
+            <GlassButton size="sm" onClick={() => setFlipped(f => !f)} contentClassName="p-0">
               <TextDisperse
-                icon={<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={CORAL} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ marginLeft: "0.35rem" }}><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>}
-                style={{ fontFamily: "var(--font-dm-sans)", fontSize: "0.88rem", letterSpacing: "0.06em", color: CORAL }}
+                icon={FlipIcon}
+                style={{ fontFamily: "var(--font-dm-sans)", fontSize: "0.88rem", letterSpacing: "0.06em", color: CORAL, padding: "0.3rem 0.9rem" }}
               >
                 click to flip
               </TextDisperse>
-            </div>
+            </GlassButton>
           </div>
         )}
 
@@ -353,22 +353,14 @@ function MobileBlock({ item, index }: { item: (typeof ITEMS)[number]; index: num
       {/* flip button — always below title */}
       {canFlip && (
         <div style={{ marginBottom: "0.5rem" }}>
-          <div
-            role="button"
-            onClick={() => setFlipped(f => !f)}
-            style={{
-              display: "inline-flex", alignItems: "center",
-              background: "#FFFFFF", borderRadius: "9999px",
-              padding: "0.35rem 1rem", cursor: "pointer",
-            }}
-          >
-          <TextDisperse
-            icon={<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={CORAL} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ marginLeft: "0.35rem" }}><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>}
-            style={{ fontFamily: "var(--font-dm-sans)", fontSize: "0.88rem", letterSpacing: "0.06em", color: CORAL }}
-          >
-            click to flip
-          </TextDisperse>
-          </div>
+          <GlassButton size="sm" onClick={() => setFlipped(f => !f)} contentClassName="p-0">
+            <TextDisperse
+              icon={FlipIcon}
+              style={{ fontFamily: "var(--font-dm-sans)", fontSize: "0.88rem", letterSpacing: "0.06em", color: CORAL, padding: "0.3rem 0.9rem" }}
+            >
+              click to flip
+            </TextDisperse>
+          </GlassButton>
         </div>
       )}
 
