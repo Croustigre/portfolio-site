@@ -247,21 +247,26 @@ function Block({ item, index }: { item: (typeof ITEMS)[number]; index: number })
         {/* flip button — always below title */}
         {canFlip && (
           <div style={{ marginBottom: "0.55rem" }}>
-            <TextDisperse
+            <div
+              role="button"
               onClick={() => setFlipped(f => !f)}
               style={{
-                fontFamily: "var(--font-dm-sans)",
-                fontSize: "0.9rem",
-                letterSpacing: "0.08em",
-                color: CORAL,
-                background: "none",
-                border: "none",
-                padding: 0,
-                cursor: "pointer",
+                display: "inline-flex", alignItems: "center", gap: "0.45rem",
+                background: TEAL, borderRadius: "9999px",
+                padding: "0.35rem 1rem", cursor: "pointer",
               }}
             >
-              click to flip
-            </TextDisperse>
+              <TextDisperse style={{
+                fontFamily: "var(--font-dm-sans)", fontSize: "0.88rem",
+                letterSpacing: "0.06em", color: CORAL,
+              }}>
+                click to flip
+              </TextDisperse>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={CORAL} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+                <path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+              </svg>
+            </div>
           </div>
         )}
 
@@ -352,21 +357,30 @@ function MobileBlock({ item, index }: { item: (typeof ITEMS)[number]; index: num
       {/* flip button — always below title */}
       {canFlip && (
         <div style={{ marginBottom: "0.5rem" }}>
-          <TextDisperse
+          <div
+            role="button"
             onClick={() => setFlipped(f => !f)}
             style={{
+              display: "inline-flex", alignItems: "center", gap: "0.45rem",
+              background: TEAL, borderRadius: "9999px",
+              padding: "0.35rem 1rem", cursor: "pointer",
+            }}
+          >
+          <TextDisperse
+            style={{
               fontFamily: "var(--font-dm-sans)",
-              fontSize: "0.68rem",
-              letterSpacing: "0.08em",
-              color: TEAL,
-              background: "none",
-              border: "none",
-              padding: 0,
-              cursor: "pointer",
+              fontSize: "0.88rem",
+              letterSpacing: "0.06em",
+              color: CORAL,
             }}
           >
             click to flip
           </TextDisperse>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={CORAL} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+            <path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+          </svg>
+          </div>
         </div>
       )}
 
