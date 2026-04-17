@@ -65,7 +65,7 @@ export default function HeroSection() {
           </p>
           <div className="flex items-center gap-5">
             <button
-              onClick={() => { const el = document.getElementById("about"); if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY, behavior: "smooth" }); }}
+              onClick={() => window.scrollTo({ top: window.innerHeight, behavior: "smooth" })}
               className="text-sm font-medium transition-opacity hover:opacity-70"
               style={{ color: "#E74F44", fontFamily: "var(--font-dm-sans)", background: "none", border: "none", padding: 0, cursor: "pointer" }}
             >
@@ -175,7 +175,7 @@ export default function HeroSection() {
             Arts et Métiers ParisTech. French and Mandarin native, fluent in English. Pursuing graduate engineering studies in the United States.
           </p>
           <button
-            onClick={() => { const el = document.getElementById("about"); if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY, behavior: "smooth" }); }}
+            onClick={() => window.scrollTo({ top: window.innerHeight, behavior: "smooth" })}
             className="flex items-center gap-2 font-medium transition-opacity duration-200 hover:opacity-70 cursor-pointer w-fit"
             style={{ color: "#E74F44", fontFamily: "var(--font-dm-sans)", background: "none", border: "none", padding: 0, fontSize: "clamp(0.9rem, 1.2vw, 1rem)" }}
           >
