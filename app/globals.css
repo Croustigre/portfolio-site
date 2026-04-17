@@ -125,22 +125,10 @@
 .glass-button {
   display: block;
   width: 100%;
-  background: linear-gradient(145deg, rgba(255,255,255,0.97) 0%, rgba(235,227,209,0.88) 100%);
-  border: 1px solid rgba(255,255,255,0.95);
-  box-shadow:
-    0 1px 4px rgba(40,67,81,0.13),
-    inset 0 1px 0 rgba(255,255,255,1),
-    inset 0 -1px 0 rgba(40,67,81,0.05);
+  background: transparent;
+  border: 1px solid rgba(40,67,81,0.25);
+  box-shadow: none;
   padding: 0;
-}
-
-.glass-button::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: linear-gradient(180deg, rgba(255,255,255,0.55) 0%, transparent 60%);
-  pointer-events: none;
 }
 
 .glass-button:active {
@@ -148,13 +136,7 @@
 }
 
 .glass-button-shadow {
-  position: absolute;
-  inset: 3px -3px -5px 3px;
-  background: rgba(40,67,81,0.14);
-  filter: blur(8px);
-  border-radius: 9999px;
-  z-index: -1;
-  pointer-events: none;
+  display: none;
 }
 
 /* Section divider */

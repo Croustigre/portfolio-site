@@ -258,7 +258,7 @@ function Block({ item, index }: { item: (typeof ITEMS)[number]; index: number })
             <GlassButton size="sm" onClick={() => setFlipped(f => !f)} contentClassName="p-0">
               <TextDisperse
                 icon={FlipIcon}
-                style={{ fontFamily: "var(--font-dm-sans)", fontSize: "0.88rem", letterSpacing: "0.06em", color: CORAL, padding: "0.3rem 0.9rem" }}
+                style={{ fontFamily: "var(--font-dm-sans)", fontSize: "0.75rem", letterSpacing: "0.06em", color: CORAL, padding: "0.2rem 0.65rem" }}
               >
                 click to flip
               </TextDisperse>
@@ -356,7 +356,7 @@ function MobileBlock({ item, index }: { item: (typeof ITEMS)[number]; index: num
           <GlassButton size="sm" onClick={() => setFlipped(f => !f)} contentClassName="p-0">
             <TextDisperse
               icon={FlipIcon}
-              style={{ fontFamily: "var(--font-dm-sans)", fontSize: "0.88rem", letterSpacing: "0.06em", color: CORAL, padding: "0.3rem 0.9rem" }}
+              style={{ fontFamily: "var(--font-dm-sans)", fontSize: "0.75rem", letterSpacing: "0.06em", color: CORAL, padding: "0.2rem 0.65rem" }}
             >
               click to flip
             </TextDisperse>
