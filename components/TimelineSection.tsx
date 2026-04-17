@@ -137,7 +137,7 @@ const BACK_CONTENT: Record<number, React.ReactNode> = {
 };
 
 const FlipIcon = (
-  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={CORAL} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ marginLeft: "0.35rem" }}>
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ marginLeft: "0.35rem", stroke: "var(--coral-active)" }}>
     <path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/>
     <path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/>
   </svg>
@@ -153,7 +153,7 @@ function renderBody(text: string, phrases: readonly string[]) {
     <>
       {parts.map((part, i) =>
         phrases.includes(part)
-          ? <span key={i} style={{ color: CORAL, fontWeight: 400 }}>{part}</span>
+          ? <span key={i} style={{ color: "var(--coral-active)", fontWeight: 400 }}>{part}</span>
           : part
       )}
     </>
@@ -241,7 +241,8 @@ function Block({ item, index }: { item: (typeof ITEMS)[number]; index: number })
           : { left:  `calc(50% + ${offset}px)` }),
         width: "clamp(180px, calc(50vw - 185px), 480px)",
         zIndex: flipped ? 100 : 10,
-      }}
+        "--coral-active": `${TEAL}99`,
+      } as React.CSSProperties}
     >
       <motion.div
         ref={ref}
@@ -290,7 +291,7 @@ function Block({ item, index }: { item: (typeof ITEMS)[number]; index: number })
             <GlassButton size="xs" onClick={() => setFlipped(f => !f)} contentClassName="p-0">
               <TextDisperse
                 icon={FlipIcon}
-                style={{ fontFamily: "var(--font-dm-sans)", fontSize: "0.75rem", letterSpacing: "0.06em", color: CORAL, padding: "0.2rem 0.65rem" }}
+                style={{ fontFamily: "var(--font-dm-sans)", fontSize: "0.75rem", letterSpacing: "0.06em", color: "var(--coral-active)", padding: "0.2rem 0.65rem" }}
               >
                 click to flip
               </TextDisperse>
@@ -352,7 +353,7 @@ const MobileRow = React.forwardRef<HTMLDivElement, { item: (typeof ITEMS)[number
     const [flipped, setFlipped] = useState(false);
 
     return (
-      <div ref={ref} style={{ display: "flex" }}>
+      <div ref={ref} id={`m-block-${index}`} style={{ display: "flex", "--coral-active": `${TEAL}99` } as React.CSSProperties}>
 
         {/* ── Left: 28px spacer — SVG overlay replaces the dot/line ── */}
         <div style={{ width: "28px", flexShrink: 0 }} />
@@ -405,7 +406,7 @@ const MobileRow = React.forwardRef<HTMLDivElement, { item: (typeof ITEMS)[number
               <GlassButton size="xs" onClick={() => setFlipped(f => !f)} contentClassName="p-0">
                 <TextDisperse
                   icon={FlipIcon}
-                  style={{ fontFamily: "var(--font-dm-sans)", fontSize: "0.75rem", letterSpacing: "0.06em", color: CORAL, padding: "0.2rem 0.65rem" }}
+                  style={{ fontFamily: "var(--font-dm-sans)", fontSize: "0.75rem", letterSpacing: "0.06em", color: "var(--coral-active)", padding: "0.2rem 0.65rem" }}
                 >
                   click to flip
                 </TextDisperse>
@@ -584,15 +585,17 @@ export default function TimelineSection() {
       if (!rafId) rafId = requestAnimationFrame(tick);
 
       thresholds.forEach((threshold, i) => {
-        const on   = progress >= threshold;
-        const dot  = document.getElementById(`dot-${i}`);
-        const conn = document.getElementById(`conn-${i}`);
-        const num  = document.getElementById(`num-${i}`);
-        const tag  = document.getElementById(`tag-${i}`);
-        if (dot)  dot.style.fill        = on ? CORAL        : `${TEAL}60`;
-        if (conn) conn.style.background  = on ? `${CORAL}55` : `${TEAL}22`;
-        if (num)  num.style.color        = on ? CORAL        : `${TEAL}60`;
-        if (tag)  tag.style.color        = on ? CORAL        : `${TEAL}55`;
+        const on    = progress >= threshold;
+        const dot   = document.getElementById(`dot-${i}`);
+        const conn  = document.getElementById(`conn-${i}`);
+        const num   = document.getElementById(`num-${i}`);
+        const tag   = document.getElementById(`tag-${i}`);
+        const block = document.querySelector(`[data-block="${i}"]`) as HTMLElement | null;
+        if (dot)   dot.style.fill        = on ? CORAL        : `${TEAL}60`;
+        if (conn)  conn.style.background  = on ? `${CORAL}55` : `${TEAL}22`;
+        if (num)   num.style.color        = on ? CORAL        : `${TEAL}60`;
+        if (tag)   tag.style.color        = on ? CORAL        : `${TEAL}55`;
+        if (block) block.style.setProperty("--coral-active",  on ? CORAL : `${TEAL}99`);
       });
     }
 
@@ -660,13 +663,15 @@ export default function TimelineSection() {
       }
 
       dotYs.forEach((dotY, i) => {
-        const on    = rendered >= dotY;
-        const dotEl = document.getElementById(`m-dot-${i}`);
-        const numEl = document.getElementById(`m-num-${i}`);
-        const tagEl = document.getElementById(`m-tag-${i}`);
-        if (dotEl) dotEl.style.fill  = on ? CORAL : `${TEAL}60`;
-        if (numEl) numEl.style.color = on ? CORAL : `${TEAL}55`;
-        if (tagEl) tagEl.style.color = on ? CORAL : `${TEAL}55`;
+        const on      = rendered >= dotY;
+        const dotEl   = document.getElementById(`m-dot-${i}`);
+        const numEl   = document.getElementById(`m-num-${i}`);
+        const tagEl   = document.getElementById(`m-tag-${i}`);
+        const blockEl = document.getElementById(`m-block-${i}`);
+        if (dotEl)   dotEl.style.fill  = on ? CORAL : `${TEAL}60`;
+        if (numEl)   numEl.style.color = on ? CORAL : `${TEAL}55`;
+        if (tagEl)   tagEl.style.color = on ? CORAL : `${TEAL}55`;
+        if (blockEl) blockEl.style.setProperty("--coral-active", on ? CORAL : `${TEAL}99`);
       });
 
       if (Math.abs(rendered - targetDrawn) > 0.1) {
