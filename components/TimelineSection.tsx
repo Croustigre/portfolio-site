@@ -251,9 +251,9 @@ function Block({ item, index }: { item: (typeof ITEMS)[number]; index: number })
               onClick={() => setFlipped(f => !f)}
               style={{
                 fontFamily: "var(--font-dm-sans)",
-                fontSize: "0.68rem",
+                fontSize: "0.9rem",
                 letterSpacing: "0.08em",
-                color: TEAL,
+                color: CORAL,
                 background: "none",
                 border: "none",
                 padding: 0,
