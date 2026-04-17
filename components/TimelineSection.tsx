@@ -2,6 +2,7 @@
 
 import React, { useRef, useEffect, useState } from "react";
 import { motion, useInView } from "framer-motion";
+import { TextDisperse } from "@/components/ui/text-disperse";
 
 /* ─── SVG canvas ──────────────────────────────────────────────────── */
 const SVG_W  = 300;
@@ -234,34 +235,35 @@ function Block({ item, index }: { item: (typeof ITEMS)[number]; index: number })
           }}>{item.tag}</span>}
         </div>
 
-        {/* title + flip button */}
-        <div style={{
-          display: "flex", alignItems: "center", gap: "0.5rem", flexWrap: "wrap",
-          marginBottom: "0.55rem",
-          justifyContent: "flex-start",
-        }}>
+        {/* title */}
+        <div style={{ marginBottom: canFlip ? "0.25rem" : "0.55rem" }}>
           <h3 style={{
             fontFamily: "var(--font-playfair)", color: TEAL, fontWeight: 700,
             fontSize: "clamp(1rem, 1.7vw, 1.3rem)", lineHeight: 1.25,
             margin: 0, textAlign: "left",
           }}>{item.title}</h3>
-          {canFlip && (
-            <button
+        </div>
+
+        {/* flip button — always below title */}
+        {canFlip && (
+          <div style={{ marginBottom: "0.55rem" }}>
+            <TextDisperse
               onClick={() => setFlipped(f => !f)}
               style={{
-                fontSize: "0.65rem", letterSpacing: "0.06em",
-                color: flipped ? `${TEAL}99` : CORAL,
-                border: `1px solid ${flipped ? `${TEAL}44` : `${CORAL}66`}`,
-                background: "none", borderRadius: "3px",
-                padding: "2px 7px", cursor: "pointer",
                 fontFamily: "var(--font-dm-sans)",
-                flexShrink: 0, transition: "color 0.3s, border-color 0.3s",
+                fontSize: "0.68rem",
+                letterSpacing: "0.08em",
+                color: TEAL,
+                background: "none",
+                border: "none",
+                padding: 0,
+                cursor: "pointer",
               }}
             >
-              {flipped ? "flip back ↩" : "click to flip ↩"}
-            </button>
-          )}
-        </div>
+              click to flip
+            </TextDisperse>
+          </div>
+        )}
 
         {/* body — flip card for flippable items */}
         {canFlip ? (
@@ -340,28 +342,33 @@ function MobileBlock({ item, index }: { item: (typeof ITEMS)[number]; index: num
         </span>}
       </div>
 
-      {/* title + flip */}
-      <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", flexWrap: "wrap", marginBottom: "0.5rem" }}>
+      {/* title */}
+      <div style={{ marginBottom: canFlip ? "0.25rem" : "0.5rem" }}>
         <h3 style={{ fontFamily: "var(--font-playfair)", color: TEAL, fontWeight: 700, fontSize: "1.05rem", lineHeight: 1.3, margin: 0 }}>
           {item.title}
         </h3>
-        {canFlip && (
-          <button
+      </div>
+
+      {/* flip button — always below title */}
+      {canFlip && (
+        <div style={{ marginBottom: "0.5rem" }}>
+          <TextDisperse
             onClick={() => setFlipped(f => !f)}
             style={{
-              fontSize: "0.65rem", letterSpacing: "0.06em",
-              color: flipped ? `${TEAL}99` : CORAL,
-              border: `1px solid ${flipped ? `${TEAL}44` : `${CORAL}66`}`,
-              background: "none", borderRadius: "3px",
-              padding: "2px 7px", cursor: "pointer",
               fontFamily: "var(--font-dm-sans)",
-              flexShrink: 0,
+              fontSize: "0.68rem",
+              letterSpacing: "0.08em",
+              color: TEAL,
+              background: "none",
+              border: "none",
+              padding: 0,
+              cursor: "pointer",
             }}
           >
-            {flipped ? "flip back ↩" : "click to flip ↩"}
-          </button>
-        )}
-      </div>
+            click to flip
+          </TextDisperse>
+        </div>
+      )}
 
       {/* body / flip */}
       {canFlip ? (
