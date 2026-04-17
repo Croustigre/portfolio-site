@@ -5,7 +5,7 @@ import { motion, useInView } from "framer-motion";
 
 /* ─── SVG canvas ──────────────────────────────────────────────────── */
 const SVG_W  = 300;
-const SVG_H  = 2200;
+const SVG_H  = 2900;
 
 const CREAM = "#EBE3D1";
 const TEAL  = "#284351";
@@ -18,7 +18,7 @@ const CORAL = "#E74F44";
    offset → distance in px from the 50% centerline to the text inner edge
    Exact (x,y) is computed at runtime via binary search + getPointAtLength.
 ──────────────────────────────────────────────────────────────────── */
-const STEP = (2100 - 20) / 12; // ≈ 173.3
+const STEP = (2820 - 20) / 12; // ≈ 233.3
 const ANCHORS = [
   { dotY: Math.round(20 + STEP *  1), isLeft: true,  offset: 165 }, // 0
   { dotY: Math.round(20 + STEP *  2), isLeft: false, offset: 145 }, // 1
@@ -34,7 +34,7 @@ const ANCHORS = [
 ];
 
 /* ─── Path ──────────────────────────────────────────────────────────── */
-const PATH = "M150 20 C140 80,200 120,160 180 C120 240,60 200,80 300 C100 400,260 320,240 480 C220 600,120 540,110 700 C100 820,220 860,180 950 C140 1040,40 1000,60 1150 C80 1300,240 1200,200 1400 C170 1550,80 1500,120 1700 C160 1850,230 1700,180 2100";
+const PATH = "M150 20 C140 101,200 155,160 235 C120 316,60 262,80 397 C100 532,260 424,240 639 C220 801,120 720,110 935 C100 1097,220 1151,180 1272 C140 1393,40 1339,60 1541 C80 1743,240 1609,200 1878 C170 2080,80 2012,120 2282 C160 2484,230 2282,180 2820";
 
 /* ─── Highlighted phrases per item (index-matched to ITEMS) ──────── */
 const HIGHLIGHTS: readonly (readonly string[])[] = [
@@ -573,7 +573,7 @@ export default function TimelineSection() {
     <section
       ref={sectionRef}
       className="hidden md:block"
-      style={{ position: "relative", background: CREAM, height: SVG_H + 60, overflow: "hidden" }}
+      style={{ position: "relative", background: CREAM, height: SVG_H + 200, overflow: "hidden" }}
     >
       {/* Grid layer — always visible, subtle */}
       <div aria-hidden style={{ position: "absolute", inset: 0, zIndex: 0, opacity: 0.05, pointerEvents: "none" }}>
