@@ -1,0 +1,797 @@
+/* ==========================================================================
+   Portfolio — Estéban Loubère (v02)
+   Source of truth: Figma "Portfolio Estéban Loubère v02" (1280 × 832 frames),
+   with every spacing snapped to the 4 / 8 px scale below.
+
+   Scaling model
+   -------------
+   1rem = 10 design-px (29rem = 290 px = one column).
+   - ≥ 768 px  : the 1280 × 832 frame is scaled to FIT the viewport, like a
+                 Figma frame in presentation mode: 1rem = min(100vw/128, 100vh/83.2).
+                 In full screen on a MacBook (1512 × 982, 1470 × 956 …) the frame
+                 fills the screen exactly; on wider ratios the canvas is centred
+                 with the backgrounds running full-bleed.
+   - < 768 px  : 1rem = 10px and the layout reflows (mobile block at the end).
+
+   Alignment axes (rule: every structural element sits on one of these)
+   ---------------------------------------------------------------------
+   - Gutter axis   : x = 60 / 1220 (--gutter). Section titles, logo, Resume,
+                     hero name, social icons, overlay content, footer.
+   - Inset axis    : x = column line + 24 (--col-inset). Running text inside a
+                     column: project list, About paragraphs, Extracurricular cells.
+   - Column lines  : 60, 350, 640, 930, 1220 (4 × --col-w).
+   ========================================================================== */
+
+/* ---------- Fonts (self-hosted Inter, SIL OFL — see assets/fonts/) -------- */
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 400; font-display: swap;
+  src: url("assets/fonts/inter-latin-ext-400-normal.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 400; font-display: swap;
+  src: url("assets/fonts/inter-latin-400-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 600; font-display: swap;
+  src: url("assets/fonts/inter-latin-ext-600-normal.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 600; font-display: swap;
+  src: url("assets/fonts/inter-latin-600-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 700; font-display: swap;
+  src: url("assets/fonts/inter-latin-ext-700-normal.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 700; font-display: swap;
+  src: url("assets/fonts/inter-latin-700-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 900; font-display: swap;
+  src: url("assets/fonts/inter-latin-ext-900-normal.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF; }
+@font-face { font-family: "Inter"; font-style: normal; font-weight: 900; font-display: swap;
+  src: url("assets/fonts/inter-latin-900-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD; }
+
+/* ==========================================================================
+   1. DESIGN TOKENS
+   ========================================================================== */
+:root {
+  /* Colour (Figma variables + inspected values) */
+  --navy: #0b2545;
+  --accent: #f83e02;
+  --slate: #94a9b5;
+  --white: #ffffff;
+  --sheet: #f4f4f4;
+  --placeholder: #d9d9d9;
+  --line: rgba(11, 37, 69, 0.25);        /* 1 px column / separator lines     */
+  --line-strong: rgba(11, 37, 69, 0.25); /* 2 px leader lines in the overlay  */
+  --grid: rgba(11, 37, 69, 0.07);        /* 40 px grid (Figma 0.5 px @ 12 %)  */
+  --muted: rgba(11, 37, 69, 0.5);
+  --btn-bg: rgba(11, 37, 69, 0.2);
+  --btn-bg-hover: rgba(11, 37, 69, 0.5);
+  --btn-accent-bg: rgba(248, 62, 2, 0.2);
+  --btn-accent-bg-hover: rgba(248, 62, 2, 0.5);
+  --glass-tint: rgba(255, 255, 255, 0.25);  /* glass band: white tint          */
+
+  /* Type */
+  --font-sans: "Inter", -apple-system, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+  --font-serif: "Times New Roman", Times, "Liberation Serif", serif;
+  --fs-display: 10rem;   /* hero name           */
+  --fs-title: 4rem;      /* section titles      */
+  --fs-sheet-title: 3.2rem;
+  --fs-cta: 3rem;
+  --fs-body: 2.4rem;     /* default text        */
+  --fs-small: 2rem;      /* overlay body text   */
+  --lh: 1.2;             /* one line-height for everything (28.8 px at 24 px) */
+  --lh-display: 1.1;
+
+  /* Spacing scale — 4 px base, 8 px rhythm (1rem = 10 px) */
+  --sp-1: 0.4rem;   /*  4 */
+  --sp-2: 0.8rem;   /*  8 */
+  --sp-3: 1.2rem;   /* 12 */
+  --sp-4: 1.6rem;   /* 16 */
+  --sp-6: 2.4rem;   /* 24 */
+  --sp-8: 3.2rem;   /* 32 */
+  --sp-10: 4rem;    /* 40 */
+  --sp-12: 4.8rem;  /* 48 */
+  --sp-16: 6.4rem;  /* 64 */
+  --sp-20: 8rem;    /* 80 */
+  --sp-24: 9.6rem;  /* 96 */
+
+  /* Semantic spacing (every margin/padding below uses one of these) */
+  --gutter: round(6rem, 1px);             /* 60 — screen edge → first element (whole px, see --col-w) */
+  --col-inset: var(--sp-6);               /* column line → running text        */
+  --spacing-text-to-line: var(--sp-2);    /* text → separator / leader line    */
+  --spacing-title-to-body: var(--sp-4);   /* heading → its paragraph           */
+  --spacing-block: var(--sp-16);          /* between blocks inside a sheet     */
+  --section-title-top: 8.8rem;            /* header (64) + 24                  */
+  --section-content-top: 16rem;           /* 160 — first content row           */
+  --section-bottom: var(--sp-16);
+
+  /* Layout */
+  --frame-w: calc(var(--sheet-w) + 2 * var(--gutter)); /* 1280: gutter axes = outer column lines */
+  /* Column width rounded to a whole pixel: every column line and every image
+     edge then sits at the same sub-pixel offset and rounds the same way, so
+     images touch their lines exactly at any window size. */
+  --col-w: round(29rem, 1px);
+  --sheet-w: calc(4 * var(--col-w));
+  --lw: 1px;                             /* line width: whole pixel, never scaled */
+  --header-h: 6.4rem;
+  --overlay-top: var(--sp-20);
+  --overlay-w: 120.8rem;                  /* 1280 − 2 × 36; + 24 padding = gutter axis */
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* ==========================================================================
+   2. BASE
+   ========================================================================== */
+html {
+  /* frame-to-viewport scale; floor at 0.65 so text never becomes unreadable
+     in a very short window. Refined with clientWidth/innerHeight in script.js. */
+  font-size: max(6.5px, min(calc(100vw / 128), calc(100vh / 83.2)));
+  scroll-behavior: smooth;
+  scrollbar-gutter: stable; /* locking the scroll for a sheet never shifts the page */
+  -webkit-text-size-adjust: 100%;
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  overflow-x: clip;
+  overflow-wrap: break-word;
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: var(--lh);
+  color: var(--navy);
+  background: var(--white);
+  -webkit-font-smoothing: antialiased;
+}
+body.has-overlay { overflow: hidden; }
+
+img, svg { display: block; }
+a { color: inherit; }
+button { font: inherit; color: inherit; }
+p, h1, h2, h3, dl, dd, ul, figure { margin: 0; }
+ul { padding: 0; list-style: none; }
+
+.frame {
+  position: relative;
+  width: var(--frame-w);
+  margin: 0 auto;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0);
+  white-space: nowrap; border: 0;
+}
+
+/* 40 px background grid, visible in the outer margins */
+.grid-bg {
+  background-color: var(--white);
+  background-image:
+    linear-gradient(to right, var(--grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
+  background-size: 4rem 4rem;
+  background-position: calc(50% - 2rem) 0;
+}
+
+/* ==========================================================================
+   3. UTILITIES (the spacing system as classes, usable in the HTML)
+   ========================================================================== */
+.u-stack > * + * { margin-top: var(--stack, var(--sp-4)); }   /* vertical rhythm */
+.u-stack--block { --stack: var(--spacing-block); }
+.u-stack--tight { --stack: var(--sp-2); }
+
+/* Text followed by a rule: identical gap everywhere */
+.u-ruled { padding-bottom: var(--spacing-text-to-line); border-bottom: var(--lw) solid var(--line); }
+
+/* Heading with a leader line running to the right, sitting on the baseline */
+.u-leader { display: flex; align-items: baseline; gap: var(--spacing-text-to-line); }
+.u-leader::after { content: ""; flex: 1; height: 0.2rem; background: var(--line-strong); }
+
+/* ==========================================================================
+   4. COMPONENTS
+   ========================================================================== */
+
+/* ---------- Bracket buttons "[ Resume ]" / "[ View my projects ]" --------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 var(--sp-4);
+  min-height: var(--sp-8);
+  border: 0;
+  font-weight: 400;
+  font-size: var(--fs-body);
+  line-height: var(--lh);
+  color: var(--navy);
+  background: var(--btn-bg);
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+.btn:hover,
+.btn:focus-visible { background: var(--btn-bg-hover); }
+.btn:focus-visible { outline: 0.2rem solid var(--navy); outline-offset: 0.2rem; }
+.btn--accent {
+  min-height: var(--sp-10);
+  font-size: var(--fs-cta);
+  color: var(--accent);
+  background: var(--btn-accent-bg);
+}
+.btn--accent:hover,
+.btn--accent:focus-visible { background: var(--btn-accent-bg-hover); }
+
+/* ---------- Header (fixed, logo + Resume) --------------------------------- */
+/* Over the hero only "[ Resume ]" shows, on a transparent header. As the hero
+   scrolls out, the glass band and the logo fade in progressively
+   (--p, written by script.js: 0 → 1 over the last 30 % of the hero) and are
+   fully present once the next section reaches the top of the viewport.
+
+   Glass = ::before (backdrop blur 3 px) + ::after (white tint 25 %, inner light
+   edge, soft outer shadow) — the reference component without its refraction
+   filter. */
+.site-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 50;
+  height: var(--header-h);
+  --p: 0;
+  --p-eff: var(--p);   /* the header keeps its scroll state even while a sheet is open */
+}
+.site-header::before,
+.site-header::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: var(--p-eff);
+  transition: opacity 0.15s linear;
+  pointer-events: none;
+}
+.site-header::before {
+  z-index: 0;
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .site-header::before { background: rgba(255, 255, 255, 0.9); }
+}
+.site-header::after {
+  z-index: 1;
+  background: var(--glass-tint);
+  box-shadow:
+    inset 2px 2px 1px 0 rgba(255, 255, 255, 0.5),
+    inset -1px -1px 1px 1px rgba(255, 255, 255, 0.5),
+    0 6px 6px rgba(0, 0, 0, 0.2),
+    0 0 20px rgba(0, 0, 0, 0.1);
+}
+.site-header .header-cols { display: none; }
+
+/* Logo and Resume share one row, vertically centred, on the gutter axis */
+.site-header .frame {
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  padding: 0 var(--gutter);
+}
+.logo {
+  font-weight: 900;
+  font-size: var(--fs-body);
+  line-height: var(--lh);
+  letter-spacing: -0.02em;
+  color: var(--accent);
+  text-decoration: none;
+  text-transform: uppercase;
+  white-space: nowrap;
+  opacity: var(--p-eff);
+  visibility: hidden;
+  transform: translateY(calc(-0.6rem * (1 - var(--p-eff))));
+  transition: opacity 0.15s linear, transform 0.15s linear;
+}
+.site-header.is-solid .logo { visibility: visible; }
+@media (prefers-reduced-motion: reduce) { .logo { transform: none; } }
+.logo:focus-visible { outline: 0.2rem solid var(--accent); outline-offset: 0.2rem; }
+.btn-resume { width: 13.8rem; }
+
+/* ---------- Columns sheet (white area with 5 vertical lines) ------------- */
+.sheet {
+  position: relative;
+  width: var(--sheet-w);
+  margin: 0 auto;
+  background-color: var(--white);
+  border-right: var(--lw) solid var(--line);
+  isolation: isolate;            /* lets the lines below sit under the content */
+}
+/* Column lines (x = 0, 1, 2, 3 × --col-w) drawn as element borders rather than
+   a repeating background gradient: browsers (Safari especially) round the tile
+   size of a gradient, so its lines drift away from the images' edges column
+   after column. Borders snap to pixels exactly like the images do, so an image
+   placed at "line + --lw" always touches its line without covering it.
+   ::after carries lines 0 and 2, ::before lines 1 and 3. */
+.sheet::before,
+.sheet::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: calc(2 * var(--col-w) + var(--lw));
+  border-left: var(--lw) solid var(--line);
+  border-right: var(--lw) solid var(--line);
+  pointer-events: none;
+  z-index: -1;                   /* above the white sheet, under text and images */
+}
+.sheet::after  { left: 0; }
+.sheet::before { left: var(--col-w); }
+.section-title {
+  position: absolute;
+  left: 0;                       /* gutter axis */
+  top: var(--section-title-top);
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: var(--fs-title);
+  line-height: var(--lh);
+  color: var(--navy);
+}
+
+/* ---------- Home / hero --------------------------------------------------- */
+.hero {
+  position: relative;
+  height: 83.2rem;
+  overflow: hidden;
+  background: var(--slate);
+}
+.hero .frame { height: 100%; }
+.hero-name {
+  position: absolute;
+  left: var(--gutter);
+  top: 16rem;
+  width: 64.6rem;
+  z-index: 1;
+  font-weight: 900;
+  font-size: var(--fs-display);
+  line-height: var(--lh-display);
+  letter-spacing: -0.05em;       /* base tracking; script.js balances the two
+                                    lines so their left AND right edges align */
+  color: var(--accent);
+  text-transform: uppercase;
+}
+.hero-name__line { display: inline-block; white-space: nowrap; }
+.hero-photo {
+  position: absolute;
+  left: 37.5rem;
+  top: 12.6rem;                  /* bottom edge on the bottom of the section */
+  width: 52.9rem;
+  height: 70.6rem;
+}
+.hero-photo img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+
+/* Bio + CTA: a stack on the 4th column line, text-to-button gap from the scale */
+.hero-side {
+  position: absolute;
+  left: calc(var(--gutter) + 3 * var(--col-w)); /* column line 4 (930) */
+  top: 41.6rem;
+  width: 27.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--spacing-title-to-body);
+}
+.hero-bio { color: var(--white); }
+.accent { color: var(--accent); font-style: normal; }
+.hero-cta { width: 100%; }
+
+.socials {
+  position: absolute;
+  left: var(--gutter);
+  bottom: var(--sp-8);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-6);
+}
+.socials a { display: block; transition: opacity 0.2s ease; }
+.socials a:hover,
+.socials a:focus-visible { opacity: 0.6; }
+.socials img { height: 2.4rem; width: auto; }
+
+/* ---------- Projects ------------------------------------------------------ */
+.projects .sheet { min-height: 83.2rem; }
+
+.project-list {
+  position: absolute;
+  left: var(--lw);               /* right of the column line */
+  top: 80rem;                    /* = bottom of .project-visual (19.2 + 60.8) */
+  transform: translateY(-100%);  /* list grows upward: last line sits on the visual's bottom edge */
+  width: 25.9rem;
+}
+.project-list li { height: var(--sp-20); }          /* 80 px pitch */
+.project-list li:last-child { height: auto; }       /* no gap under the last line */
+.project-link {
+  display: block;
+  width: 100%;
+  padding: 0 0 var(--spacing-text-to-line) calc(var(--col-inset) - var(--lw)); /* inset axis */
+  border: 0;
+  border-bottom: var(--lw) solid var(--line);
+  background: none;
+  text-align: left;
+  font-size: var(--fs-body);
+  line-height: var(--lh);
+  color: var(--muted);
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+.project-link strong { font-weight: 600; }
+.project-link.is-active,
+.project-link:hover,
+.project-link:focus-visible { color: var(--accent); }
+.project-link:focus-visible { outline: 0.2rem solid var(--accent); outline-offset: -0.2rem; }
+
+.project-visual {
+  position: absolute;
+  left: calc(var(--col-w) + var(--lw));
+  top: 19.2rem;
+  right: 0;
+  height: 60.8rem;
+  overflow: hidden;
+  background: var(--placeholder);
+}
+.project-visual__item {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--placeholder);
+  will-change: transform;
+  transition: transform 0.45s var(--ease);
+}
+.project-visual__item img { width: 100%; height: 100%; object-fit: cover; }
+.project-visual__label { font-size: var(--fs-small); color: rgba(11, 37, 69, 0.3); user-select: none; }
+.project-visual__credit { position: absolute; left: 1.2rem; bottom: 1rem; padding: 0.3rem 0.8rem; font-size: 1.3rem; line-height: 1.4; color: #fff; background: rgba(11, 37, 69, 0.55); user-select: none; }
+@media (prefers-reduced-motion: reduce) { .project-visual__item { transition: none; } }
+
+.project-detail[hidden],
+.ext-detail[hidden] { display: none; }
+
+/* ---------- About --------------------------------------------------------- */
+.about .sheet {
+  display: grid;
+  /* last track stops at the sheet's right line instead of running under it */
+  grid-template-columns: calc(2 * var(--col-w)) calc(2 * var(--col-w) - var(--lw));
+  align-items: start;
+  padding: var(--section-content-top) 0 var(--section-bottom);
+}
+.about-text { padding: 0 var(--col-inset); }         /* inset axis, both sides */
+.about-img {
+  height: 36rem;
+  margin-left: var(--lw);
+  background: var(--placeholder);
+}
+.about-img img { width: 100%; height: 100%; object-fit: cover; }
+
+/* ---------- Extracurricular ----------------------------------------------- */
+.extracurricular .sheet { padding: var(--section-content-top) 0 19.2rem; }
+.ext-grid {
+  display: grid;
+  /* last track stops at the sheet's right line instead of running under it */
+  grid-template-columns: repeat(3, var(--col-w)) calc(var(--col-w) - var(--lw));
+  grid-auto-rows: var(--col-w);
+  border-top: var(--lw) solid var(--line);
+}
+.ext-cell { position: relative; border-bottom: var(--lw) solid var(--line); }
+/* Image cells: the picture fills the cell between its lines, never over them:
+   it starts right of the column line (--lw) and stops above the cell's
+   bottom line (the border sits outside the padding box used by inset). */
+.ext-cell--img::before,
+.ext-cell--img img {
+  position: absolute;
+  inset: 0 0 0 var(--lw);
+}
+.ext-cell--img::before { content: ""; background: var(--placeholder); }
+.ext-cell--img img { width: calc(100% - var(--lw)); height: 100%; object-fit: cover; }
+.ext-cell--text {
+  padding: var(--sp-4) var(--col-inset) 0;           /* inset axis */
+  cursor: pointer;
+}
+.ext-title {
+  font-size: var(--fs-body);
+  font-weight: 700;
+  line-height: var(--lh);
+  color: var(--navy);
+  transition: color 0.2s ease;
+}
+.ext-link {
+  padding: 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.ext-link:focus-visible { outline: 0.2rem solid var(--accent); outline-offset: 0.3rem; }
+.ext-desc {
+  margin-top: var(--sp-12);
+  color: var(--navy);
+  overflow-wrap: anywhere;
+  transition: color 0.2s ease;
+}
+.ext-cell--text:hover .ext-title,
+.ext-cell--text:hover .ext-desc,
+.ext-cell--text:focus-within .ext-title,
+.ext-cell--text:focus-within .ext-desc { color: var(--accent); }
+
+/* ---------- Footer -------------------------------------------------------- */
+.site-footer {
+  position: relative;
+  height: 16rem;
+  background: linear-gradient(to bottom, var(--white) 0%, var(--slate) 80.769%);
+}
+.site-footer .frame {
+  display: flex;
+  align-items: center;            /* icons and © on one axis */
+  justify-content: space-between;
+  height: 100%;
+  padding: var(--sp-8) var(--gutter) 0;  /* row centred in the lower part of the band */
+}
+.site-footer .socials { position: static; }
+.copyright { font-weight: 700; color: var(--navy); }
+
+/* ---------- Overlay (project / extracurricular detail sheet) -------------- */
+.overlay { position: fixed; inset: 0; z-index: 40; display: none; }
+.overlay.is-open { display: block; }
+.overlay__panel {
+  position: absolute;
+  top: var(--overlay-top);
+  bottom: 0;
+  left: 50%;
+  width: var(--overlay-w);
+  transform: translateX(-50%);
+  background: var(--sheet);
+  border-radius: 1rem 1rem 0 0;
+}
+.overlay__scroll {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: var(--sp-6) var(--sp-6) var(--sp-20);   /* 36 + 24 = gutter axis */
+  border-radius: inherit;
+}
+.overlay__close {
+  position: absolute;
+  z-index: 1;
+  top: var(--sp-4);
+  right: var(--sp-6);                              /* right edge on the gutter axis */
+  width: var(--sp-10);
+  height: var(--sp-10);
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.overlay__close img { width: 3rem; height: 3rem; transform: rotate(45deg); transition: transform 0.2s ease; }
+.overlay__close:hover img,
+.overlay__close:focus-visible img { transform: rotate(135deg); }
+.overlay__close:focus-visible { outline: 0.2rem solid var(--navy); outline-offset: 0.2rem; }
+
+/* Overlay content: one vertical rhythm (--spacing-block) between blocks */
+.overlay__scroll > * + * { margin-top: var(--spacing-block); }
+
+.detail__title {
+  padding: 0 var(--sp-12);        /* keeps clear of the close button */
+  text-align: center;
+  font-size: var(--fs-sheet-title);
+  font-weight: 400;
+  line-height: var(--lh);
+  color: var(--navy);
+}
+.detail__title strong { font-weight: 600; }
+
+.detail__meta {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--sp-6);
+}
+.detail__meta > div:nth-child(2) { text-align: center; }
+.detail__meta > div:last-child { text-align: right; }
+.detail__meta dt { font-size: var(--fs-body); color: var(--muted); text-transform: uppercase; }
+.detail__meta dd { font-size: var(--fs-small); font-weight: 700; color: var(--navy); }
+
+/* Text block + leader line: the reference pattern (see README) */
+.detail__section h3 {
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-text-to-line);
+  width: calc(2 * var(--col-w));  /* leader runs to the centre column line (x = 640) */
+  font-size: var(--fs-body);
+  font-weight: 700;
+  line-height: var(--lh);
+  color: var(--navy);
+}
+.detail__section h3::after { content: ""; flex: 1; height: 0.2rem; background: var(--line-strong); }
+.detail__section p,
+.detail__body { font-size: var(--fs-small); color: var(--navy); }
+.detail__section p { margin-top: var(--spacing-title-to-body); }
+.detail__list {
+  margin-top: var(--spacing-title-to-body);
+  padding-left: var(--col-inset);
+  list-style: disc;
+  font-size: var(--fs-small);
+  color: var(--navy);
+}
+.detail__list li + li { margin-top: var(--sp-2); }
+.detail__list li::marker { color: var(--accent); }
+
+.detail__gallery {
+  display: grid;
+  grid-template-columns: calc(2 * var(--col-w)) 1fr;
+  column-gap: var(--sp-12);
+  margin-top: var(--sp-8);
+}
+/* Each picture is a <figure>: image, then a one-line caption of fixed height
+   (--cap-h), so the main image still ends level with the second side image:
+   main = 2 × side + gap + one caption. */
+.detail__gallery { --cap-h: 3.2rem; }
+.fig { margin: 0; }
+.fig + .fig { margin-top: var(--sp-12); }
+.fig__cap {
+  height: var(--cap-h);
+  padding-top: var(--sp-2);
+  font-size: 1.4rem;
+  line-height: 2.4rem;
+  color: var(--navy);
+  opacity: 0.75;
+}
+.detail__gallery .ph { background: var(--placeholder); }
+.detail__gallery .ph img { width: 100%; height: 100%; object-fit: cover; }
+.detail__gallery .ph--main { position: relative; height: calc(60.8rem + var(--cap-h)); }
+.detail__gallery .ph--side { height: 28rem; }
+/* Optional second row under a project gallery: three drawings or photos,
+   shown whole (contain) on white, one caption each. */
+.detail__row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: var(--sp-12); margin-top: var(--sp-12); --cap-h: 3.2rem; }
+.detail__row .fig + .fig { margin-top: 0; }
+.detail__row .ph { aspect-ratio: 4 / 3; background: var(--white); }
+.detail__row .ph img { width: 100%; height: 100%; object-fit: contain; }
+.detail__download {
+  position: absolute;
+  left: 50%;
+  bottom: var(--sp-2);
+  transform: translateX(-50%);
+  width: 20rem;
+  font-size: var(--fs-sheet-title);
+}
+.detail__gallery--ext {
+  grid-template-columns: var(--col-w) 1fr;
+  column-gap: var(--sp-24);
+  margin: var(--sp-6) var(--sp-24) 0;
+}
+.detail__gallery--ext .ph { height: 29.2rem; }
+.detail__gallery--ext .fig + .fig { margin-top: 0; }   /* side by side here */
+.detail__gallery--ext { row-gap: var(--sp-6); }
+.detail__gallery--ext .fig__cap { height: auto; }
+.detail__gallery--single { grid-template-columns: minmax(0, 1fr); margin-left: auto; margin-right: auto; max-width: 68.7rem; }
+.detail__gallery--single .ph { height: auto; aspect-ratio: 2 / 1; }
+/* Farmers' market: one portrait picture, shown at 4:5 */
+.detail__gallery--single.detail__gallery--portrait { max-width: 44rem; }
+.detail__gallery--single.detail__gallery--portrait .ph { height: auto; aspect-ratio: 4 / 5; }
+/* AMJE: the whole poster is shown (portrait A1, never cropped) in a tall
+   frame; the second picture sits beside it at its own 2:1 ratio. */
+/* Explicit column widths: an "auto" track sized from aspect-ratio falls back
+   to the image's intrinsic width in Safari and squeezes the second picture. */
+.detail__gallery--poster { grid-template-columns: 50.8rem minmax(0, 1fr); align-items: start; margin-left: 0; margin-right: 0; column-gap: var(--sp-12); }
+.detail__gallery--poster .ph--poster { width: 50.8rem; height: 72rem; }
+.detail__gallery--poster .fig:not(:first-child) .ph { width: 100%; }
+.detail__gallery--poster .ph--poster img { object-fit: contain; }
+.detail__gallery--poster .fig:first-child { grid-row: span 2; }
+.detail__gallery--poster .fig:not(:first-child) .ph { height: auto; aspect-ratio: 2 / 1; }
+/* Row of recruitment posters under the AMJE gallery: five portrait posters
+   side by side, shown whole, one caption for the series. */
+.poster-row { align-self: end; }   /* bottom aligned with the Ministry poster */
+.poster-row__imgs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--sp-4); }
+.poster-row__imgs img { width: 100%; height: auto; aspect-ratio: 1587 / 2245; object-fit: contain; display: block; }
+.poster-row .fig__cap { height: auto; }
+/* Sailing: three square pictures in one row */
+.detail__gallery--three { grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: var(--sp-8); }
+.detail__gallery--three .ph { height: auto; aspect-ratio: 1 / 1; }
+
+/* ==========================================================================
+   5. MOBILE (< 768 px): reflow on the same tokens
+   ========================================================================== */
+@media (max-width: 767.98px) {
+  :root {
+    --gutter: var(--sp-4);
+    --col-inset: 0rem;
+    --section-title-top: 0rem;
+    --section-content-top: 0rem;
+    --header-h: 5.2rem;
+    --overlay-top: 5.2rem;
+    --overlay-w: 100%;
+    --fs-display: 5.6rem;
+    --fs-title: 3.2rem;
+    --fs-sheet-title: 2.2rem;
+    --fs-cta: 2rem;
+    --fs-body: 1.8rem;
+    --fs-small: 1.6rem;
+    --spacing-block: var(--sp-8);
+  }
+  html { font-size: 10px; }
+
+  .frame { width: auto; padding: 0 var(--gutter); }
+  .grid-bg { background-position: 0 0; }
+
+  .logo { font-size: 1.8rem; }
+  .btn-resume { width: auto; font-size: 1.6rem; min-height: var(--sp-8); }
+
+  .hero { height: auto; padding-top: calc(var(--header-h) + var(--sp-6)); }
+  .hero .frame { display: flex; flex-direction: column; gap: var(--sp-6); }
+  .hero-name { position: static; width: auto; }
+  .hero-side { position: static; width: auto; }
+  .hero-cta { width: auto; }
+  .hero .socials { position: static; order: 4; }
+  .hero-photo { position: static; order: 5; width: 72%; max-width: 32rem; height: auto; aspect-ratio: 529 / 706; margin: 0 auto; }
+
+  .sheet { width: auto; border-right: 0; }
+  .sheet::before, .sheet::after { display: none; }
+  .section-title { position: static; padding: var(--sp-16) 0 var(--sp-6); }
+
+  .projects .sheet { min-height: 0; padding-bottom: var(--sp-10); }
+  .project-visual { position: relative; left: auto; top: auto; right: auto; width: 100%; height: 24rem; margin-bottom: var(--sp-4); }
+  .project-list { position: static; width: auto; transform: none; }
+  .project-list li { height: auto; }
+  .project-link { padding: var(--sp-3) 0 var(--spacing-text-to-line); }
+
+  .about .sheet { grid-template-columns: 1fr; padding: 0 0 var(--sp-10); min-height: 0; gap: var(--sp-6); }
+  .about-text { padding: 0; }
+  .about-img { height: 22rem; margin: 0; }
+
+  .extracurricular .sheet { padding: 0 0 var(--sp-10); }
+  .ext-grid { grid-template-columns: 1fr; grid-auto-rows: auto; }
+  .ext-cell--empty { display: none; }
+  .ext-cell--img { height: 20rem; }
+  .ext-cell--img::before, .ext-cell--img img { left: 0; width: 100%; }
+  .ext-cell--text { padding: var(--sp-4) 0 var(--sp-6); }
+  .ext-desc { margin-top: var(--sp-3); }
+
+  .site-footer { height: 12rem; }
+  .site-footer .frame { padding-top: var(--sp-4); }
+  .site-footer .socials img { height: 2rem; }
+  .copyright { font-size: 1.6rem; }
+
+  .overlay__panel { left: 0; transform: none; border-radius: 0.8rem 0.8rem 0 0; }
+  .overlay__scroll { padding: var(--sp-6) var(--gutter) var(--sp-16); }
+  .overlay__close { top: var(--sp-3); right: var(--sp-3); width: 3.6rem; height: 3.6rem; }
+  .overlay__close img { width: 2.2rem; height: 2.2rem; }
+  .detail__title { padding: 0 var(--sp-10) 0 0; text-align: left; }
+  .detail__meta { grid-template-columns: 1fr 1fr; gap: var(--sp-4) var(--sp-8); }
+  .detail__meta > div:nth-child(2),
+  .detail__meta > div:last-child { text-align: left; }
+  .detail__meta dt { font-size: 1.4rem; }
+  .detail__section h3 { width: auto; }
+  .detail__gallery { grid-template-columns: 1fr; column-gap: 0; margin-top: var(--sp-6); }
+  .detail__gallery .ph--main { height: auto; aspect-ratio: 58 / 60.8; }
+  .detail__gallery .ph--side { height: auto; aspect-ratio: 529 / 280; }
+  .detail__gallery .fig + .fig,
+  .detail__gallery .fig--main + div { margin-top: var(--sp-4); }
+  .fig__cap { height: auto; padding-bottom: var(--sp-2); }
+  .detail__row { grid-template-columns: 1fr; row-gap: var(--sp-4); }
+  .detail__download { width: 16rem; }
+  .detail__gallery--ext { grid-template-columns: 1fr; margin: var(--sp-6) 0 0; }
+  .detail__gallery--ext .ph { height: auto; aspect-ratio: 2 / 1; }
+  .detail__gallery--poster { grid-template-columns: 1fr; }
+  .poster-row__imgs { gap: var(--sp-2); }
+  .detail__gallery--three { grid-template-columns: 1fr; }
+  .detail__gallery--poster .ph--poster { height: auto; width: 100%; aspect-ratio: 1683.72 / 2383.92; }
+}
+.detail__gallery .fig--main + .fig { margin-top: 0; }
+.detail__gallery .ph--tall { height: calc(60.8rem + var(--cap-h)); background: #282c34; }
+.detail__gallery .ph--tall img { object-fit: contain; }
+@media (max-width: 767.98px) { .detail__gallery .ph--tall { height: auto; } .detail__gallery .fig--main + .fig { margin-top: var(--sp-4); } }

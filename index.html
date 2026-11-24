@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Estéban Loubère — Portfolio</title>
+  <meta name="description" content="Mechanical and industrial engineering student at Arts et Métiers, focused on manufacturing processes and precision system design.">
+  <link rel="preload" href="assets/fonts/inter-latin-900-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/inter-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="styles.css?v=20261124h">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-cols sheet" aria-hidden="true"></div>
+    <div class="frame">
+      <a class="logo" href="#home">Esteban Loubere</a>
+      <a class="btn btn-resume" href="assets/Esteban_Loubere_Resume.pdf" target="_blank" rel="noopener">[ Resume ]</a>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ================= Home ================= -->
+    <section class="hero" id="home" aria-labelledby="hero-name">
+      <div class="frame">
+        <h1 class="hero-name" id="hero-name"><span class="hero-name__line">Esteban</span><br><span class="hero-name__line">Loubere</span></h1>
+
+        <figure class="hero-photo">
+          <img src="assets/photo-esteban.png?v=20261124h"
+               srcset="assets/photo-esteban.png 529w, assets/photo-esteban@2x.webp 1058w"
+               sizes="(max-width: 767px) 72vw, (max-width: 1279px) 41vw, 529px"
+               width="529" height="706" alt="Portrait of Estéban Loubère" fetchpriority="high">
+        </figure>
+
+        <div class="hero-side">
+          <p class="hero-bio">Mechanical and industrial engineering student at Arts et Métiers Institute of Technology, focused on manufacturing processes and product design, aiming to work in <span class="accent">semiconductor manufacturing</span>.</p>
+          <a class="btn btn--accent hero-cta" href="#projects">[ View my projects ]</a>
+        </div>
+
+        <ul class="socials">
+          <li><a href="https://linkedin.com/in/esteban-loubere" target="_blank" rel="noopener" aria-label="LinkedIn"><img src="assets/linkedin.svg" width="24" height="24" alt=""></a></li>
+          <li><a href="mailto:esteban.loubere@ensam.eu" aria-label="Email"><img src="assets/mail.svg" width="34" height="24" alt=""></a></li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ================= Projects ================= -->
+    <section class="section projects grid-bg" id="projects" aria-labelledby="projects-title">
+      <div class="frame">
+        <div class="sheet">
+          <h2 class="section-title" id="projects-title">Projects</h2>
+
+          <ul class="project-list" id="project-list">
+        <li>
+          <button class="project-link" type="button" data-project="1" data-image="assets/projects/project-1-cover.jpg?v=20261124h">
+            <strong>Glenoid Implant</strong> CAD &amp; FE modeling
+          </button>
+          <article class="project-detail" hidden>
+            <h2 class="detail__title"><strong>Glenoid Implant</strong>: CAD &amp; Finite Element Modeling</h2>
+            <dl class="detail__meta">
+              <div><dt>Timeline</dt><dd>Sept. 2026 – Jan. 2027</dd></div>
+              <div><dt>Context</dt><dd>Academic project, IBHGC</dd></div>
+              <div><dt>Format</dt><dd>Team (6)</dd></div>
+            </dl>
+          <section class="detail__section">
+            <h3>Objective</h3>
+            <p>Understand why the glenoid component of a shoulder prosthesis loosens over time, and design an implant that reduces this risk. The project is run with the Institute of Human Biomechanics Georges Charpak (IBHGC) and supervised by Dr. Nathalie Maurel and Dr. Amadou Diop.</p>
+          </section>
+          <section class="detail__section">
+            <h3>Approach</h3>
+            <ul class="detail__list"><li>Reviewed the literature on glenoid loosening as a team.</li><li>Modeled the classic keeled implant and its bone substitute in CATIA V5.</li><li>Built a finite element model of this implant in Abaqus, based on a compression test at 150 N.</li><li>Measured shoulder kinematics with electromagnetic sensors and computed joint angles from transformation matrices in Octave.</li><li>Ran a loosening test on the cemented implant: 1 mm of PMMA cement, load applied at 22° and 5 mm from the edge, relative displacement tracked by camera.</li></ul>
+          </section>
+          <section class="detail__section">
+            <h3>My role</h3>
+            <p>I built the CATIA V5 model of the implant and its bone substitute, and its Abaqus model, on my own. The compression and loosening tests were run by the team.</p>
+          </section>
+          <section class="detail__section">
+            <h3>Results</h3>
+            <ul class="detail__list"><li>No loosening at 750 N or 900 N, under static and cyclic loading.</li><li>Loosening began at 1,400 N, the baseline our new design has to beat.</li><li>Next steps: design a new implant, combining a keel and a peg, that resists loosening better than this baseline (project ends January 2027).</li></ul>
+          </section>
+            <section class="detail__section">
+              <h3>Overview</h3>
+              <div class="detail__gallery">
+                <figure class="fig fig--main"><div class="ph ph--main">
+                  <img src="assets/projects/project-1-main.jpg?v=20261124h" alt="CATIA model of the glenoid implant seated in its bone substitute" loading="lazy">
+                </div><figcaption class="fig__cap">My CATIA V5 model of the glenoid implant seated in its bone substitute</figcaption></figure>
+                <div>
+                  <figure class="fig"><div class="ph ph--side"><img src="assets/projects/project-1-1.jpg?v=20261124h" alt="Loosening test setup: cemented implant under the testing machine, with the tracking camera" loading="lazy"></div><figcaption class="fig__cap">Loosening test setup on the cemented implant</figcaption></figure>
+                  <figure class="fig"><div class="ph ph--side"><img src="assets/projects/project-1-2.jpg?v=20261124h" alt="Force versus displacement curve of the final loosening test" loading="lazy"></div><figcaption class="fig__cap">Final loosening test: force vs. displacement</figcaption></figure>
+                </div>
+              </div>
+            </section>
+          </article>
+        </li>
+        <li>
+          <button class="project-link" type="button" data-project="5" data-image="assets/projects/project-5-cover.jpg?v=20261124h" data-credit="Image: Nicomatic">
+            <strong>Nicomatic</strong> factory internship
+          </button>
+          <article class="project-detail" hidden>
+            <h2 class="detail__title"><strong>Nicomatic</strong>: Production Internship on the Shop Floor</h2>
+            <dl class="detail__meta">
+              <div><dt>Timeline</dt><dd>June – July 2026</dd></div>
+              <div><dt>Context</dt><dd>Industrial internship</dd></div>
+              <div><dt>Format</dt><dd>Individual</dd></div>
+            </dl>
+          <section class="detail__section">
+            <h3>Objective</h3>
+            <p>Discover industrial production from the operator’s side, through a 4-week rotation across 3 departments of the main plant of Nicomatic, a French manufacturer of miniature connectors for aerospace and defense.</p>
+          </section>
+          <section class="detail__section">
+            <h3>Approach</h3>
+            <ul class="detail__list"><li>Assembly: inserted captive M2 fasteners into connector housings with a manual press and packed them in blisters, 800 to 1,000 housings a day.</li><li>Plastics department: deburred and visually inspected 300 to 400 silicone-overmolded parts each morning against 4 criteria (no short shot, no hole at the injection point, proper silicone adhesion, no tear), then ultrasonically welded about 400 housings each afternoon.</li><li>Logistics: received parcels, ran the 3 daily internal shuttles between departments and joined deliveries to other Nicomatic sites.</li></ul>
+          </section>
+          <section class="detail__section">
+            <h3>My role</h3>
+            <p>I worked as an operator. On my own initiative, I tested a rotary brush to speed up deburring and ended the trial myself after 2 days, to protect part quality and operator safety. On an overmolding line, I deduced from the defects that the silicone was filling the mold unevenly, which a plastics test technician confirmed, and I suggested adjusting the injection time and holding pressure.</p>
+          </section>
+          <section class="detail__section">
+            <h3>Results</h3>
+            <ul class="detail__list"><li>On that line, the technician estimated that about 1 in 3 parts met quality requirements before my rework, compared with 80 to 90% afterward.</li><li>I raised a mismatch between the blister reference on work orders and the one in the internal software with the operations manager, and suggested step-by-step instructions for new operators.</li></ul>
+          </section>
+            <section class="detail__section">
+              <h3>Overview</h3>
+              <div class="detail__gallery">
+                <figure class="fig fig--main"><div class="ph ph--main">
+                  <img src="assets/projects/project-5-main.jpg?v=20261124h" alt="Silicone-overmolded connector housing" loading="lazy">
+                </div><figcaption class="fig__cap">Silicone-overmolded connector housing</figcaption></figure>
+                <div>
+                  <figure class="fig"><div class="ph ph--side"><img src="assets/projects/project-5-1.jpg?v=20261124h" alt="Branson 2000X ultrasonic welder used to weld the housings" loading="lazy"></div><figcaption class="fig__cap">Branson 2000X ultrasonic welder</figcaption></figure>
+                  <figure class="fig"><div class="ph ph--side"><img src="assets/projects/project-5-2.jpg?v=20261124h" alt="Range of Nicomatic miniature connectors" loading="lazy"></div><figcaption class="fig__cap">Nicomatic connectors (image: FC Lane)</figcaption></figure>
+                </div>
+              </div>
+            </section>
+          </article>
+        </li>
+        <li>
+          <button class="project-link" type="button" data-project="2" data-image="assets/projects/project-2-cover.jpg?v=20261124h">
+            <strong>Casting to Data</strong> roughness drivers
+          </button>
+          <article class="project-detail" hidden>
+            <h2 class="detail__title"><strong>Aluminum Casting, Machining &amp; Design of Experiments</strong></h2>
+            <dl class="detail__meta">
+              <div><dt>Timeline</dt><dd>March – June 2026</dd></div>
+              <div><dt>Context</dt><dd>Academic project</dd></div>
+              <div><dt>Format</dt><dd>Team (5)</dd></div>
+            </dl>
+          <section class="detail__section">
+            <h3>Objective</h3>
+            <p>Find which material and process factors govern the surface roughness of a machined aluminum-silicon part, from casting to the finished surface.</p>
+          </section>
+          <section class="detail__section">
+            <h3>Approach</h3>
+            <ul class="detail__list"><li>Sand-cast 2 AlSi22 + Sr parts with fast cooling, with a fluidity spiral test and thermocouple tracking during solidification.</li><li>Turned both parts on a CNC lathe with a dynamometer, over 36 cutting conditions, and mapped the specific cutting energy (minimum near V<sub>c</sub> = 560 m/min, f = 0.5 mm/rev).</li><li>Measured roughness (Rdq) with a stylus profilometer.</li><li>Pooled the data of the whole class (12 teams) into 5-factor, 2-level designs of experiments in Design-Expert.</li></ul>
+          </section>
+          <section class="detail__section">
+            <h3>My role</h3>
+            <p>I took part in casting, machining and metrology with my team, and ran the statistical analysis with 1 teammate.</p>
+          </section>
+          <section class="detail__section">
+            <h3>Results</h3>
+            <ul class="detail__list"><li>Keeping every replicate made all 3 models predictive (predicted R² from 0.49 to 0.63).</li><li>Silicon content governed roughness, ahead of strontium and cooling rate; machining parameters played a secondary role.</li></ul>
+          </section>
+            <section class="detail__section">
+              <h3>Overview</h3>
+              <div class="detail__gallery">
+                <figure class="fig fig--main"><div class="ph ph--main">
+                  <img src="assets/projects/project-2-main.jpg?v=20261124h" alt="Cast part clamped in the CNC lathe" loading="lazy">
+                </div><figcaption class="fig__cap">Cast part clamped in the CNC lathe used for the 36 cutting tests</figcaption></figure>
+                <div>
+                  <figure class="fig"><div class="ph ph--side"><img src="assets/projects/project-2-1.jpg?v=20261124h" alt="Design-Expert normal plot of the effects on roughness (Rdq)" loading="lazy"></div><figcaption class="fig__cap">Design-Expert normal plot: silicon content has the largest effect on Rdq</figcaption></figure>
+                  <figure class="fig"><div class="ph ph--side"><img src="assets/projects/project-2-2.jpg?v=20261124h" alt="Sand mold with the imprint of the part" loading="lazy"></div><figcaption class="fig__cap">Sand mold with the imprint of the part</figcaption></figure>
+                </div>
+              </div>
+            </section>
+          </article>
+        </li>
+        <li>
+          <button class="project-link" type="button" data-project="7" data-image="assets/projects/project-7-cover.jpg?v=20261124h">
+            <strong>Tidal Turbine</strong> preliminary design
+          </button>
+          <article class="project-detail" hidden>
+            <h2 class="detail__title"><strong>Tidal Turbine</strong>: Preliminary Design for a Coastal Town</h2>
+            <dl class="detail__meta">
+              <div><dt>Timeline</dt><dd>Feb. – May 2026</dd></div>
+              <div><dt>Context</dt><dd>Academic project</dd></div>
+              <div><dt>Format</dt><dd>Team (5)</dd></div>
+            </dl>
+          <section class="detail__section">
+            <h3>Objective</h3>
+            <p>Propose a renewable power system that uses local marine resources to supply a coastal or island town of 50,000 people, with a 10-year service life and the lowest possible cost, then define its architecture and pre-size it. Supervised by Jean-Marc Périnet, Professor of Mechanical Design at Arts et Métiers.</p>
+          </section>
+          <section class="detail__section">
+            <h3>Approach</h3>
+            <ul class="detail__list"><li>Studied the product's environment over its whole life cycle: currents, salt corrosion, biofouling, marine life, regulations, IEC TS 62600 standards and patents.</li><li>Benchmarked offshore wind, wave, tidal and floating solar solutions, then used weighted decision matrices to select a horizontal-axis tidal turbine, a gravity tripod foundation and 316L stainless steel.</li><li>Sized the rotor with Betz's actuator disk model (power coefficient 0.42, 90% drivetrain efficiency) for 500 kW at a nominal current of 3.5 m/s in the English Channel.</li><li>Traced the load path from the blades to the seabed and checked the blade root against the rotor thrust.</li></ul>
+          </section>
+          <section class="detail__section">
+            <h3>My role</h3>
+            <p>I wrote most of the functional specification and of the study of the marine environment, standards and patents, and I was a main contributor to the benchmark of existing solutions and to the decision matrices. I carried out the rotor sizing with Betz's model together with 1 teammate.</p>
+          </section>
+          <section class="detail__section">
+            <h3>Results</h3>
+            <ul class="detail__list"><li>A 9 m rotor (8.76 m required, rounded up), which delivers about 530 kW at 3.5 m/s.</li><li>Power scales with the cube of current speed: at 1.5 m/s the same rotor gives only 42 kW, so 13 machines would be needed to keep 500 kW at that speed.</li><li>A nominal thrust of 355 kN per machine, the load case for the mast and foundation, and a blade root stress of about 15 MPa, well below the 133 MPa allowed with a safety factor of 3.</li></ul>
+          </section>
+            <section class="detail__section">
+              <h3>Overview</h3>
+              <div class="detail__gallery">
+                <figure class="fig fig--main"><div class="ph ph--main">
+                  <img src="assets/projects/project-7-main.jpg?v=20261124h" alt="Consolidated functional specification table from the report, in French" loading="lazy">
+                </div><figcaption class="fig__cap">Consolidated functional specification (report, in French)</figcaption></figure>
+                <div>
+                  <figure class="fig"><div class="ph ph--side"><img src="assets/projects/project-7-1.jpg?v=20261124h" alt="Function tree from the slides, in French" loading="lazy"></div><figcaption class="fig__cap">Service function and its 4 objectives (5 Whys)</figcaption></figure>
+                  <figure class="fig"><div class="ph ph--side"><img src="assets/projects/project-7-2.jpg?v=20261124h" alt="Power conversion chain diagram from the slides, in French" loading="lazy"></div><figcaption class="fig__cap">Power conversion chain inside the nacelle</figcaption></figure>
+                </div>
+              </div>
+            </section>
+          </article>
+        </li>
+        <li>
+          <button class="project-link" type="button" data-project="3" data-image="assets/projects/project-3-cover.jpg?v=20261124h">
+            <strong>Gear Reducer</strong> design &amp; 3D CAD
+          </button>
+          <article class="project-detail" hidden>
+            <h2 class="detail__title"><strong>Two-Stage Gear Reducer</strong>: Preliminary Design &amp; 3D CAD</h2>
+            <dl class="detail__meta">
+              <div><dt>Timeline</dt><dd>Sept. 2025 – May 2026</dd></div>
+              <div><dt>Context</dt><dd>Academic project</dd></div>
+              <div><dt>Format</dt><dd>Team (5)</dd></div>
+            </dl>
+          <section class="detail__section">
+            <h3>Objective</h3>
+            <p>Design a gear reducer for Arts et Métiers, acting as the client, from a functional specification to a complete 3D digital mock-up. Supervised by Jean-Marc Périnet, Professor of Mechanical Design at Arts et Métiers.</p>
+          </section>
+          <section class="detail__section">
+            <h3>Approach</h3>
+            <ul class="detail__list"><li>Defined the architecture from the specification and a FAST diagram, and chose a straddle-mounted design over an overhung one for better load transfer.</li><li>Sized the gear pair against fatigue and pitting, and the shafts under combined torsion and bending (Tresca criterion), selecting 30CrMoNi8 steel.</li><li>Selected SKF bearings for a 16,000-hour service life and Paulstra seals, sized the keys, and checked that splash lubrication was sufficient.</li><li>Modeled and assembled the reducer in 3DEXPERIENCE.</li></ul>
+          </section>
+          <section class="detail__section">
+            <h3>My role</h3>
+            <p>I led the preliminary design phase. In the CAD phase, I worked in a team of 2 on the variant without spacers and personally designed and assembled the upper shaft and the outer housing.</p>
+          </section>
+          <section class="detail__section">
+            <h3>Results</h3>
+            <ul class="detail__list"><li>A 60-page technical report whose design meets the specification with margin on admissible power.</li><li>A fully assembled 3D model of the reducer.</li></ul>
+          </section>
+            <section class="detail__section">
+              <h3>Overview</h3>
+              <div class="detail__gallery">
+                <figure class="fig fig--main"><div class="ph ph--main">
+                  <img src="assets/projects/project-3-main.jpg?v=20261124h" alt="Front view of the reducer housing" loading="lazy">
+                </div><figcaption class="fig__cap">Outer housing, which I designed, in front view</figcaption></figure>
+                <div>
+                  <figure class="fig"><div class="ph ph--side"><img src="assets/projects/project-3-1.jpg?v=20261124h" alt="Section view of the reducer assembly" loading="lazy"></div><figcaption class="fig__cap">Section view of the assembled reducer</figcaption></figure>
+                  <figure class="fig"><div class="ph ph--side"><img src="assets/projects/project-3-2.jpg?v=20261124h" alt="Upper shaft with its gear and bearings" loading="lazy"></div><figcaption class="fig__cap">Upper shaft, which I designed, with its gear and bearings</figcaption></figure>
+                </div>
+              </div>
+              <div class="detail__row">
+                <figure class="fig"><div class="ph ph--row"><img src="assets/projects/project-3-3.jpg?v=20261124h" alt="Architecture diagram of the two-stage reducer" loading="lazy"></div><figcaption class="fig__cap">Architecture diagram: straddle-mounted shafts</figcaption></figure>
+                <figure class="fig"><div class="ph ph--row"><img src="assets/projects/project-3-4.jpg?v=20261124h" alt="Technology diagram of the reducer variant without spacers" loading="lazy"></div><figcaption class="fig__cap">Technology diagram of the variant without spacers</figcaption></figure>
+                <figure class="fig"><div class="ph ph--row"><img src="assets/projects/project-3-5.jpg?v=20261124h" alt="Preliminary sketches of the reducer, section and front views" loading="lazy"></div><figcaption class="fig__cap">Preliminary sketches: section and front views</figcaption></figure>
+              </div>
+            </section>
+          </article>
+        </li>
+        <li>
+          <button class="project-link" type="button" data-project="8" data-image="assets/projects/project-8-cover.jpg?v=20261124h">
+            <strong>Mixer Bearing</strong> casting to metrology
+          </button>
+          <article class="project-detail" hidden>
+            <h2 class="detail__title"><strong>Mixer Bearing</strong>: From Casting to Metrology</h2>
+            <dl class="detail__meta">
+              <div><dt>Timeline</dt><dd>Dec. 2025 – Jan. 2026</dd></div>
+              <div><dt>Context</dt><dd>Academic project</dd></div>
+              <div><dt>Format</dt><dd>Team (4)</dd></div>
+            </dl>
+          <section class="detail__section">
+            <h3>Objective</h3>
+            <p>Manufacture a mixer bearing, from the drawing to the inspected part, to understand how each manufacturing step affects whether a part meets its functional requirements before it goes into production.</p>
+          </section>
+          <section class="detail__section">
+            <h3>Approach</h3>
+            <ul class="detail__list"><li>Studied the part drawing and prepared the molding study: parting line, machining allowances, sprue, riser and core.</li><li>Made the mold in a sand of silica, clay and graphite, set the core, and cast the aluminum-silicon part.</li><li>Wrote the operation sheets (order of operations, tools, and locating of the part by long centering and an axial stop), then turned the first functional surfaces on a conventional lathe.</li><li>Added an intermediate soft-jaw operation to finish the second bearing bore, so that tool deflection would not affect the coaxiality of the 2 bearing seats.</li><li>Machined the remaining surfaces on a 5-axis machining center with a 32-tool magazine.</li><li>Inspected flatness, perpendicularity and 3 positions on a coordinate measuring machine (CMM), probing 7 points per plane and per cylinder.</li></ul>
+          </section>
+          <section class="detail__section">
+            <h3>My role</h3>
+            <p>We carried out every step as a team. I took part in making the sand mold, pouring the metal, machining the part on the manual lathe and on the 5-axis machining center, and inspecting it on the CMM, where I probed points on the part.</p>
+          </section>
+          <section class="detail__section">
+            <h3>Results</h3>
+            <ul class="detail__list"><li>A finished part, taken from sand casting through machining to CMM inspection.</li><li>Linked the CMM results back to the casting step, the main lever for final accuracy.</li></ul>
+          </section>
+            <section class="detail__section">
+              <h3>Overview</h3>
+              <div class="detail__gallery">
+                <figure class="fig fig--main"><div class="ph ph--main">
+                  <img src="assets/projects/project-8-main.jpg?v=20261124h" alt="Raw aluminum casting of the mixer bearing after shakeout" loading="lazy">
+                </div><figcaption class="fig__cap">Raw casting after shakeout</figcaption></figure>
+                <div>
+                  <figure class="fig"><div class="ph ph--side"><img src="assets/projects/project-8-1.jpg?v=20261124h" alt="Closed sand mold of the mixer bearing before pouring" loading="lazy"></div><figcaption class="fig__cap">Closed sand mold before pouring</figcaption></figure>
+                  <figure class="fig"><div class="ph ph--side"><img src="assets/projects/project-8-2.jpg?v=20261124h" alt="Operation sheet for the manual lathe, in French" loading="lazy"></div><figcaption class="fig__cap">Operation sheet for the manual lathe (in French)</figcaption></figure>
+                </div>
+              </div>
+            </section>
+          </article>
+        </li>
+        <li>
+          <button class="project-link" type="button" data-project="4" data-image="assets/projects/project-4-cover.jpg?v=20261124h">
+            <strong>Hydrogel Harvester</strong> water from humid air
+          </button>
+          <article class="project-detail" hidden>
+            <h2 class="detail__title"><strong>Hygroscopic Hydrogels for Atmospheric Water Harvesting</strong></h2>
+            <dl class="detail__meta">
+              <div><dt>Timeline</dt><dd>March 2024 – July 2025</dd></div>
+              <div><dt>Context</dt><dd>Independent research (TIPE)</dd></div>
+              <div><dt>Format</dt><dd>Individual</dd></div>
+            </dl>
+          <section class="detail__section">
+            <h3>Objective</h3>
+            <p>Increase the amount of salt loaded into a hydrogel to maximize the water it can capture from humid air, a passive alternative to energy-intensive desalination, inspired by the droughts on my aunts’ farm in Taiwan.</p>
+          </section>
+          <section class="detail__section">
+            <h3>Approach</h3>
+            <ul class="detail__list"><li>Started from Graeber, Díaz-Marín et al. (<em>Advanced Materials</em>, 2024) and corresponded for 10 months with its co-author, Carlos Díaz-Marín, who had just completed his PhD at MIT.</li><li>Loaded a commercial polyacrylamide hydrogel with salt.</li><li>Designed a water harvester in Fusion 360 and built prototypes from cut plastic bottles.</li><li>Measured swelling over 5 days in 5 salt concentrations, and solved a simplified swelling equation in Python with finite differences.</li></ul>
+          </section>
+          <section class="detail__section">
+            <h3>My role</h3>
+            <p>I ran the whole project, from sourcing materials to experiments and modeling.</p>
+          </section>
+          <section class="detail__section">
+            <h3>Results</h3>
+            <ul class="detail__list"><li>1 g of dry gel absorbed up to 0.90 g of water overnight.</li><li>Swelling peaked at a salt concentration of 50% of the solubility limit.</li><li>My model predicted which samples would swell the most.</li><li>Grade: 19.6/20 at the national exam (A+ equivalent).</li></ul>
+          </section>
+            <section class="detail__section">
+              <h3>Overview</h3>
+              <div class="detail__gallery">
+                <figure class="fig fig--main"><div class="ph ph--main">
+                  <img src="assets/projects/project-4-main.jpg?v=20261124h" alt="Fusion 360 model of the humidity harvester with its lid open" loading="lazy">
+                </div><figcaption class="fig__cap">My Fusion 360 model of the harvester, lid open</figcaption></figure>
+                <div>
+                  <figure class="fig"><div class="ph ph--side"><img src="assets/projects/project-4-1.jpg?v=20261124h" alt="Measured swelling ratio over time next to the simulated swelling from my Python model" loading="lazy"></div><figcaption class="fig__cap">Measured swelling (left) vs. my Python simulation (right)</figcaption></figure>
+                  <figure class="fig"><div class="ph ph--side"><img src="assets/projects/project-4-2.jpg?v=20261124h" alt="Water harvester prototype made from a plastic bottle" loading="lazy"></div><figcaption class="fig__cap">Prototype: a cut bottle holding a ramekin of salt-loaded hydrogel</figcaption></figure>
+                </div>
+              </div>
+            </section>
+          </article>
+        </li>
+          </ul>
+
+          <!-- Image of the hovered project; slides left/right (see script.js).
+               Add data-image="assets/projects/project-1.jpg?v=20261124h" on a .project-link to show a real image. -->
+          <div class="project-visual" id="project-visual" aria-hidden="true"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= About ================= -->
+    <section class="section about grid-bg" id="about" aria-labelledby="about-title">
+      <div class="frame">
+        <div class="sheet">
+          <h2 class="section-title" id="about-title">About</h2>
+
+          <p class="about-text">I grew up in Thonon-les-Bains, on the shores of Lake Geneva, in a <span class="accent">French and Taiwanese</span> family, and I speak both French and Mandarin. In 3 words, I would describe myself as <span class="accent">curious</span>, <span class="accent">rigorous</span> and <span class="accent">resourceful</span>.</p>
+          <div class="about-img"><img src="assets/about-1.jpg?v=20261124h" alt="Esteban Loubere on a summit above Lake Geneva" loading="lazy"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= Extracurricular ================= -->
+    <section class="section extracurricular grid-bg" id="extracurricular" aria-labelledby="ext-title">
+      <div class="frame">
+        <div class="sheet">
+          <h2 class="section-title" id="ext-title">Extracurricular</h2>
+          <ul class="ext-grid">
+        <!-- Layout: each card sits next to its own grid image (same row, or
+             just below for card 2); never two images on the same row, and no two
+             images touch, not even by a corner.
+             T1 I1 .  T2 / .  .  .  I2 / I3 T3 .  .  / .  .  I4 T4 / I5 T5 .  . -->
+        <li class="ext-cell ext-cell--text">
+          <h3 class="ext-title"><button class="ext-link" type="button">AMJE Marketing</button></h3>
+          <p class="ext-desc">Leading the Paris marketing team of AMJE, the student-run consulting firm of Arts et Métiers.</p>
+          <article class="ext-detail" hidden>
+            <h2 class="detail__title"><strong>AMJE</strong>: Paris Marketing Manager</h2>
+            <p class="detail__body">Since September 2026, I have headed the Paris marketing team of AMJE, the student-run consulting firm of Arts et Métiers, named the best Junior-Entreprise in France in 2024 (€350K revenue in 2025–26). Our team of 3 produces the social-media content for the whole of AMJE, including a LinkedIn page with more than 6,000 followers, and runs the campaigns that recruit student consultants and new members, such as professional headshot sessions and the annual Club Fair. For the innovation office of the French Ministry of the Interior, I designed a poster presenting an engineering mission carried out by AMJE students, working directly with my contact at the ministry. It is now displayed in 32 locations across 3 ministries.</p>
+            <div class="detail__gallery detail__gallery--ext detail__gallery--poster">
+              <figure class="fig"><div class="ph ph--poster"><img src="assets/extracurricular/item-1-1.jpg?v=20261124h" alt="AMJE poster for the French Ministry of the Interior" loading="lazy"></div><figcaption class="fig__cap">Poster I designed for the Ministry of the Interior</figcaption></figure>
+              <figure class="fig"><div class="ph"><img src="assets/extracurricular/item-1-2.jpg?v=20261124h" alt="10 AMJE members after an EY training on effective presentations" loading="lazy"></div><figcaption class="fig__cap">10 AMJE members after an EY training on effective presentations</figcaption></figure>
+              <figure class="fig poster-row"><div class="poster-row__imgs"><img src="assets/extracurricular/item-1-recruit-2.jpg?v=20261124h" alt="AMJE recruitment poster" loading="lazy"><img src="assets/extracurricular/item-1-recruit-4.jpg?v=20261124h" alt="AMJE recruitment poster" loading="lazy"><img src="assets/extracurricular/item-1-recruit-5.jpg?v=20261124h" alt="AMJE recruitment poster" loading="lazy"></div><figcaption class="fig__cap">Sample of the recruitment posters I designed for AMJE’s September 2026 campaign</figcaption></figure>
+            </div>
+          </article>
+        </li>
+        <li class="ext-cell ext-cell--img" aria-hidden="true"><img src="assets/extracurricular/item-1-grid.jpg?v=20261124h" alt="" loading="lazy"></li>
+        <li class="ext-cell ext-cell--empty" aria-hidden="true"></li>
+        <li class="ext-cell ext-cell--text">
+          <h3 class="ext-title"><button class="ext-link" type="button">Sailing</button></h3>
+          <p class="ext-desc">Sailing on Lake Geneva since childhood, from catamaran racing to adaptive sailing sessions.</p>
+          <article class="ext-detail" hidden>
+            <h2 class="detail__title"><strong>Sailing</strong>: Racing &amp; Adaptive Sailing</h2>
+            <p class="detail__body">I have sailed on Lake Geneva since childhood and raced catamarans at national level, reaching the top 18% of the French national ranking. I still sail during my holidays, now also at sea on cruising sailboats. From 2017 to 2020, with other sailors of my club at the Base Nautique de Sciez, I ran a 4-hour introduction session every month for children and adults who were blind or had lost a limb, on Hansa 303 dinghies. We planned each session ourselves, from the navigation plan to the snack. To blind participants, I described the boat’s heading and had them listen to the sound of a well-trimmed sail. After 1 session, they were trimming the sails by the sound of the air on the canvas alone. My aim was for participants to need me as little as possible on the water.</p>
+            <div class="detail__gallery detail__gallery--ext">
+              <figure class="fig"><div class="ph"><img src="assets/extracurricular/item-2-1.jpg?v=20261124h" alt="Hansa 303 dinghy" loading="lazy"></div><figcaption class="fig__cap">Illustration: a Hansa 303, the dinghy used in the adaptive sessions</figcaption></figure>
+              <figure class="fig"><div class="ph"><img src="assets/extracurricular/item-2-2.jpg?v=20261124h" alt="Start of a catamaran race" loading="lazy"></div><figcaption class="fig__cap">Illustration: start of a national youth catamaran race</figcaption></figure>
+            </div>
+          </article>
+        </li>
+        <li class="ext-cell ext-cell--empty" aria-hidden="true"></li>
+        <li class="ext-cell ext-cell--empty" aria-hidden="true"></li>
+        <li class="ext-cell ext-cell--empty" aria-hidden="true"></li>
+        <li class="ext-cell ext-cell--img" aria-hidden="true"><img src="assets/extracurricular/item-2-grid.jpg?v=20261124h" alt="" loading="lazy"></li>
+        <li class="ext-cell ext-cell--img" aria-hidden="true"><img src="assets/extracurricular/item-3-grid.jpg?v=20261124h" alt="" loading="lazy"></li>
+        <li class="ext-cell ext-cell--text">
+          <h3 class="ext-title"><button class="ext-link" type="button">Theater Tour</button></h3>
+          <p class="ext-desc">Group leader and actor in a youth troupe touring opera and theater before 3,000+ spectators.</p>
+          <article class="ext-detail" hidden>
+            <h2 class="detail__title"><strong>La Compagnie du Graal</strong>: Group Leader &amp; Actor</h2>
+            <p class="detail__body">From 2020 to 2023, I performed with La Compagnie du Graal, a troupe founded by my high-school French teacher. Each year, about 200 people take the stage for 1 large production, which then tours for a month in summer. I led a group of about 20 extras, managing their stage entrances, placement and acting, and served as their liaison with the director. On the 2022 summer tour, I played Ajax I in Offenbach’s <em>La Belle Hélène</em> in châteaux and abbeys of Haute-Savoie, often in mountain villages whose older residents cannot easily travel to the valley, before more than 3,000 spectators in total. I also handled the logistics, installation and wiring of all the stage lights, with 2 dancers working under my instructions.</p>
+            <div class="detail__gallery detail__gallery--ext">
+              <figure class="fig"><div class="ph"><img src="assets/extracurricular/item-3-1.jpg?v=20261124h" alt="Theater where the troupe performs its main production" loading="lazy"></div><figcaption class="fig__cap">The theater where we staged the main production</figcaption></figure>
+              <figure class="fig"><div class="ph"><img src="assets/extracurricular/item-3-2.jpg?v=20261124h" alt="Cast of La Compagnie du Graal on tour" loading="lazy"></div><figcaption class="fig__cap">The cast of La Compagnie du Graal</figcaption></figure>
+            </div>
+          </article>
+        </li>
+        <li class="ext-cell ext-cell--empty" aria-hidden="true"></li>
+        <li class="ext-cell ext-cell--empty" aria-hidden="true"></li>
+        <li class="ext-cell ext-cell--empty" aria-hidden="true"></li>
+        <li class="ext-cell ext-cell--empty" aria-hidden="true"></li>
+        <li class="ext-cell ext-cell--img" aria-hidden="true"><img src="assets/extracurricular/item-4-grid.jpg?v=20261124h" alt="" loading="lazy"></li>
+        <li class="ext-cell ext-cell--text">
+          <h3 class="ext-title"><button class="ext-link" type="button">Fingerboards</button></h3>
+          <p class="ext-desc">Making miniature skateboards, from a hand-made wooden mold to a 3D-printed one.</p>
+          <article class="ext-detail" hidden>
+            <h2 class="detail__title"><strong>Fingerboards</strong>: Molding Miniature Skateboards</h2>
+            <p class="detail__body">From the age of 12 until recently, I spent much of my free time making fingerboards, miniature skateboards. I started with a hand-made wooden mold, then moved to a 3D-printed mold, and checked each board with a caliper so that every deck had the same thickness, curves and angles. I wanted the second deck to come out identical to the first.</p>
+            <div class="detail__gallery detail__gallery--ext">
+              <figure class="fig"><div class="ph"><img src="assets/extracurricular/item-4-1.jpg?v=20261124h" alt="Wood veneer plies and grip tape" loading="lazy"></div><figcaption class="fig__cap">Wood veneer plies and grip tape, before pressing</figcaption></figure>
+              <figure class="fig"><div class="ph"><img src="assets/extracurricular/item-4-2.jpg?v=20261124h" alt="2-part 3D-printed fingerboard mold with threaded rods" loading="lazy"></div><figcaption class="fig__cap">My 2-part 3D-printed mold, clamped with threaded rods</figcaption></figure>
+            </div>
+          </article>
+        </li>
+        <li class="ext-cell ext-cell--img" aria-hidden="true"><img src="assets/extracurricular/item-5-grid.jpg?v=20261124h" alt="" loading="lazy"></li>
+        <li class="ext-cell ext-cell--text">
+          <h3 class="ext-title"><button class="ext-link" type="button">Farmers’ Market</button></h3>
+          <p class="ext-desc">Volunteering at an organic farmers’ market in Kaohsiung, Taiwan, in summer 2026.</p>
+          <article class="ext-detail" hidden>
+            <h2 class="detail__title"><strong>Organic Farmers’ Market</strong>: Volunteer in Kaohsiung, Taiwan</h2>
+            <p class="detail__body">In summer 2026, I spent 3 weeks in Kaohsiung, Taiwan, helping at an organic farmers’ market 2 mornings a week, from 6 to 11 a.m. My aunts sold their produce there, and I also gave unpaid help to other small producers, a rice seller and a fruit and vegetable seller. I set up and organized their stalls, served customers in Mandarin and handled cash.</p>
+            <div class="detail__gallery detail__gallery--ext detail__gallery--single detail__gallery--portrait">
+              <figure class="fig"><div class="ph"><img src="assets/extracurricular/item-5-1.jpg?v=20261124h" alt="Esteban at a market stall in Kaohsiung, with baskets and a scale on the table" loading="lazy"></div><figcaption class="fig__cap">At a producers’ stall in Kaohsiung</figcaption></figure>
+            </div>
+          </article>
+        </li>
+        <li class="ext-cell ext-cell--empty" aria-hidden="true"></li>
+        <li class="ext-cell ext-cell--empty" aria-hidden="true"></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="frame">
+      <ul class="socials">
+        <li><a href="https://linkedin.com/in/esteban-loubere" target="_blank" rel="noopener" aria-label="LinkedIn"><img src="assets/linkedin.svg" width="24" height="24" alt=""></a></li>
+        <li><a href="mailto:esteban.loubere@ensam.eu" aria-label="Email"><img src="assets/mail.svg" width="34" height="24" alt=""></a></li>
+      </ul>
+      <p class="copyright">© 2026</p>
+    </div>
+  </footer>
+
+  <!-- Detail sheet shared by projects and extracurricular items -->
+  <div class="overlay" id="overlay">
+    <div class="overlay__panel" role="dialog" aria-modal="true" aria-labelledby="overlay-title">
+      <button class="overlay__close" type="button" id="overlay-close" aria-label="Close">
+        <img src="assets/close.svg" width="30" height="30" alt="">
+      </button>
+      <div class="overlay__scroll" id="overlay-content" tabindex="-1"></div>
+    </div>
+  </div>
+
+  <script src="script.js?v=20261124h" defer></script>
+</body>
+</html>
