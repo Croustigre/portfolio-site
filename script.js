@@ -88,7 +88,10 @@
         const visible = w / scale;                 // window width in rem
         scale = Math.min(w / 128, w / Math.max(128, visible - 8));
       }
-      scale = Math.max(6.5, scale);
+      // Floor of 6.5 px for very short windows, but never wider than the
+      // window: below 832 px wide (iPad portrait) the frame used to overflow
+      // on the right and the page was off-centre.
+      scale = Math.min(w / 128, Math.max(6.5, scale));
       root.style.fontSize = scale.toFixed(3) + "px";
       // The enlarged frame can be taller than the window: the hero is then cut
       // to the window height, its content moving up so its bottom stays visible.

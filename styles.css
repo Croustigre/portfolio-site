@@ -95,7 +95,7 @@
   --sp-24: 9.6rem;  /* 96 */
 
   /* Semantic spacing (every margin/padding below uses one of these) */
-  --gutter: round(6rem, 1px);             /* 60 — screen edge → first element (whole px, see --col-w) */
+  --gutter: round(down, 6rem, 1px);             /* 60 — screen edge → first element (whole px, see --col-w) */
   --col-inset: var(--sp-6);               /* column line → running text        */
   --spacing-text-to-line: var(--sp-2);    /* text → separator / leader line    */
   --spacing-title-to-body: var(--sp-4);   /* heading → its paragraph           */
@@ -109,7 +109,7 @@
   /* Column width rounded to a whole pixel: every column line and every image
      edge then sits at the same sub-pixel offset and rounds the same way, so
      images touch their lines exactly at any window size. */
-  --col-w: round(29rem, 1px);
+  --col-w: round(down, 29rem, 1px);   /* rounded down: the frame never exceeds the window */
   --sheet-w: calc(4 * var(--col-w));
   --lw: 1px;                             /* line width: whole pixel, never scaled */
   --header-h: 6.4rem;
@@ -124,8 +124,8 @@
 html {
   /* frame-to-viewport scale; floor at 0.65 so text never becomes unreadable
      in a very short window. Refined with clientWidth/innerHeight in script.js. */
-  font-size: max(6.5px, min(calc(100vw / 128), calc(100vh / 83.2)));
-  font-size: max(6.5px, min(calc(100vw / 128), calc(100svh / 83.2)));   /* toolbar-independent height */
+  font-size: min(calc(100vw / 128), max(6.5px, min(calc(100vw / 128), calc(100vh / 83.2))));
+  font-size: min(calc(100vw / 128), max(6.5px, min(calc(100vw / 128), calc(100svh / 83.2))));   /* toolbar-independent height */
   scroll-behavior: smooth;
   scrollbar-gutter: stable; /* locking the scroll for a sheet never shifts the page */
   -webkit-text-size-adjust: 100%;
