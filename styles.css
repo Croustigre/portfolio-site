@@ -204,8 +204,10 @@ body::before {
   background-image:
     linear-gradient(to right, var(--grid) 1px, transparent 1px),
     linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
-  background-size: 4rem 4rem;
-  background-position: calc(50% - 2rem) 0;
+  /* --grid-size / --grid-x are set by script.js from the real sheet: a line
+     then falls exactly on both edges of the sheet, so the margins match. */
+  background-size: var(--grid-size, 4rem) var(--grid-size, 4rem);
+  background-position: var(--grid-x, calc(50% - 2rem)) 0;
 }
 .grid-bg { background: transparent; }
 

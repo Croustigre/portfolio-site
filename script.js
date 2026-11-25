@@ -97,9 +97,21 @@
       // to the window height, its content moving up so its bottom stays visible.
       if (isComputer.matches && 83.2 * scale > h + 0.5) root.style.setProperty("--hero-h", h + "px");
       else root.style.removeProperty("--hero-h");
+      // Background grid anchored on the sheet: 29 squares across its real
+      // (pixel-rounded) width, first line on its left edge. Both edges then
+      // sit on a grid line and the margins are symmetric.
+      const sheet = document.querySelector("#projects .sheet");
+      if (sheet) {
+        const r = sheet.getBoundingClientRect();
+        const size = (r.width - 1) / 29;   // last line on the 1 px right border
+        root.style.setProperty("--grid-size", size.toFixed(4) + "px");
+        root.style.setProperty("--grid-x", (((r.left % size) + size) % size).toFixed(3) + "px");
+      }
     } else {
       root.style.fontSize = "";
       root.style.removeProperty("--hero-h");
+      root.style.removeProperty("--grid-size");
+      root.style.removeProperty("--grid-x");
     }
   }
   applyScale();
