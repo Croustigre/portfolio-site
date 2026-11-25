@@ -196,6 +196,18 @@
     requestAnimationFrame(() => { overlayContent.scrollTop = 0; });
   }
 
+  // "[ Next project ]" at the bottom of a project sheet opens the next one.
+  if (overlayContent) {
+    overlayContent.addEventListener("click", (e) => {
+      const btn = e.target.closest(".detail__next-btn");
+      if (!btn) return;
+      const i = links.findIndex((l) => l.dataset.project === btn.dataset.next);
+      if (i < 0) return;
+      setActive(i);
+      openOverlay(links[i].parentElement.querySelector(".project-detail"), links[i]);
+    });
+  }
+
   function closeOverlay() {
     if (!overlay || !overlay.classList.contains("is-open")) return;
     overlayContent.scrollTop = 0;
