@@ -60,10 +60,21 @@
   // The 1280 × 832 frame is scaled to fit the viewport (same proportions as
   // the Figma frame in full screen). Uses clientWidth so a scrollbar never
   // causes horizontal overflow. Below 768 px the mobile layout takes over.
+  // Height used for the scale: the "small" viewport height (100svh), i.e. the
+  // height with the browser toolbar shown. On iPad and iPhone the toolbar
+  // retracts while scrolling, which changes innerHeight; scaling on it made the
+  // whole page jump. 100svh does not change while scrolling.
+  const svhProbe = document.createElement("div");
+  svhProbe.setAttribute("aria-hidden", "true");
+  svhProbe.style.cssText = "position:fixed;top:0;left:0;width:0;height:100vh;height:100svh;visibility:hidden;pointer-events:none;";
+  document.body.appendChild(svhProbe);
+  function stableHeight() {
+    return svhProbe.offsetHeight || window.innerHeight;
+  }
   function applyScale() {
     const root = document.documentElement;
     const w = root.clientWidth;
-    const h = window.innerHeight;
+    const h = stableHeight();
     if (w >= 768) {
       const scale = Math.max(6.5, Math.min(w / 128, h / 83.2));
       root.style.fontSize = scale.toFixed(3) + "px";

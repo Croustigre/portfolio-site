@@ -125,6 +125,7 @@ html {
   /* frame-to-viewport scale; floor at 0.65 so text never becomes unreadable
      in a very short window. Refined with clientWidth/innerHeight in script.js. */
   font-size: max(6.5px, min(calc(100vw / 128), calc(100vh / 83.2)));
+  font-size: max(6.5px, min(calc(100vw / 128), calc(100svh / 83.2)));   /* toolbar-independent height */
   scroll-behavior: smooth;
   scrollbar-gutter: stable; /* locking the scroll for a sheet never shifts the page */
   -webkit-text-size-adjust: 100%;
