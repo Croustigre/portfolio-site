@@ -405,7 +405,7 @@ ul { padding: 0; list-style: none; }
 .project-list {
   position: absolute;
   left: var(--lw);               /* right of the column line */
-  top: 80rem;                    /* = bottom of .project-visual (19.2 + 60.8) */
+  top: 76.8rem;                  /* = bottom of .project-visual (16 + 60.8) */
   transform: translateY(-100%);  /* list grows upward: last line sits on the visual's bottom edge */
   width: 25.9rem;
 }
@@ -434,7 +434,7 @@ ul { padding: 0; list-style: none; }
 .project-visual {
   position: absolute;
   left: calc(var(--col-w) + var(--lw));
-  top: 19.2rem;
+  top: var(--section-content-top);   /* same first content row as About and Extracurricular */
   right: 0;
   height: 60.8rem;
   overflow: hidden;
@@ -750,7 +750,7 @@ ul { padding: 0; list-style: none; }
   /* Projects as a 2-column grid of cards: thumbnail, title, short description.
      There is no hover on a phone, so the single large visual is replaced. */
   .project-visual { display: none; }
-  .project-list { position: static; width: auto; transform: none; display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-6) var(--sp-4); }
+  .project-list { margin-top: 2.2rem; position: static; width: auto; transform: none; display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-6) var(--sp-4); }
   .project-list li { height: auto; }
   .project-link { padding: 0 0 var(--spacing-text-to-line); font-size: 1.5rem; color: var(--navy); }
   .project-link.is-active, .project-link:hover { color: var(--navy); }
@@ -761,11 +761,11 @@ ul { padding: 0; list-style: none; }
   .project-card__credit { position: absolute; left: 0.6rem; bottom: 0.6rem; padding: 0.2rem 0.6rem; font-size: 1.1rem; line-height: 1.4; color: #fff; background: rgba(11, 37, 69, 0.55); }
 
   .about .sheet { grid-template-columns: 1fr; padding: 0 0 var(--sp-10); min-height: 0; gap: var(--sp-6); }
-  .about-text { padding: 0; }
+  .about-text { padding: 0; margin-top: -0.5rem; }
   .about-img { height: 22rem; margin: 0; }
 
   .extracurricular .sheet { padding: 0 0 var(--sp-10); }
-  .ext-grid { grid-template-columns: 1fr; grid-auto-rows: auto; border-top: 0; }   /* no rule under the title, as in the other sections */
+  .ext-grid { margin-top: 0.2rem; grid-template-columns: 1fr; grid-auto-rows: auto; border-top: 0; }   /* no rule under the title, as in the other sections */
   .ext-cell--empty { display: none; }
   /* Phone: always title + text, then its picture (--m is set on each cell in the HTML) */
   .ext-cell { order: var(--m, 0); }
