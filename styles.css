@@ -452,6 +452,7 @@ ul { padding: 0; list-style: none; }
 }
 .project-visual__item img { width: 100%; height: 100%; object-fit: cover; }
 .project-visual__label { font-size: var(--fs-small); color: rgba(11, 37, 69, 0.3); user-select: none; }
+.project-card__img { display: none; }   /* phone-only thumbnails, see mobile block */
 .project-visual__credit { position: absolute; left: 1.2rem; bottom: 1rem; padding: 0.3rem 0.8rem; font-size: 1.3rem; line-height: 1.4; color: #fff; background: rgba(11, 37, 69, 0.55); user-select: none; }
 @media (prefers-reduced-motion: reduce) { .project-visual__item { transition: none; } }
 
@@ -748,10 +749,18 @@ ul { padding: 0; list-style: none; }
   .section-title { position: static; padding: var(--sp-16) 0 var(--sp-6); }
 
   .projects .sheet { min-height: 0; padding-bottom: var(--sp-10); }
-  .project-visual { position: relative; left: auto; top: auto; right: auto; width: 100%; height: 24rem; margin-bottom: var(--sp-4); }
-  .project-list { position: static; width: auto; transform: none; }
+  /* Projects as a 2-column grid of cards: thumbnail, title, short description.
+     There is no hover on a phone, so the single large visual is replaced. */
+  .project-visual { display: none; }
+  .project-list { position: static; width: auto; transform: none; display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-6) var(--sp-4); }
   .project-list li { height: auto; }
-  .project-link { padding: var(--sp-3) 0 var(--spacing-text-to-line); }
+  .project-link { padding: 0 0 var(--spacing-text-to-line); font-size: 1.5rem; color: var(--navy); }
+  .project-link.is-active, .project-link:hover { color: var(--navy); }
+  .project-link:active, .project-link:focus-visible { color: var(--accent); }
+  .project-link strong { display: block; }
+  .project-card__img { display: block; position: relative; aspect-ratio: 4 / 3; margin-bottom: var(--sp-2); background: var(--placeholder); overflow: hidden; }
+  .project-card__img img { width: 100%; height: 100%; object-fit: cover; }
+  .project-card__credit { position: absolute; left: 0.6rem; bottom: 0.6rem; padding: 0.2rem 0.6rem; font-size: 1.1rem; line-height: 1.4; color: #fff; background: rgba(11, 37, 69, 0.55); }
 
   .about .sheet { grid-template-columns: 1fr; padding: 0 0 var(--sp-10); min-height: 0; gap: var(--sp-6); }
   .about-text { padding: 0; }

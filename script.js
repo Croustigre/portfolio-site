@@ -165,6 +165,26 @@
     current.addEventListener("transitionend", () => current.remove(), { once: true });
   }
 
+  // Phone: one thumbnail per project, shown as a 2-column grid of cards
+  // (hidden on desktop by CSS, where the large hover visual is used instead).
+  links.forEach((link) => {
+    if (!link.dataset.image) return;
+    const fig = document.createElement("span");
+    fig.className = "project-card__img";
+    const img = document.createElement("img");
+    img.src = link.dataset.image;
+    img.alt = "";
+    img.loading = "lazy";
+    fig.appendChild(img);
+    if (link.dataset.credit) {
+      const credit = document.createElement("span");
+      credit.className = "project-card__credit";
+      credit.textContent = link.dataset.credit;
+      fig.appendChild(credit);
+    }
+    link.prepend(fig);
+  });
+
   links.forEach((link, i) => {
     link.addEventListener("mouseenter", () => setActive(i));
     link.addEventListener("focus", () => setActive(i));
