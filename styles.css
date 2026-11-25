@@ -72,7 +72,7 @@
   /* Type */
   --font-sans: "Inter", -apple-system, "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
   --font-serif: "Times New Roman", Times, "Liberation Serif", serif;
-  --fs-display: 10rem;   /* hero name           */
+  --fs-display: 9.4rem;  /* hero name (10 in Figma; reduced so the wider tracking keeps the same width) */
   --fs-title: 4rem;      /* section titles      */
   --fs-sheet-title: 3.2rem;
   --fs-cta: 3rem;
