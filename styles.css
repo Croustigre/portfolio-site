@@ -765,7 +765,7 @@ ul { padding: 0; list-style: none; }
   .about-img { height: 22rem; margin: 0; }
 
   .extracurricular .sheet { padding: 0 0 var(--sp-10); }
-  .ext-grid { grid-template-columns: 1fr; grid-auto-rows: auto; }
+  .ext-grid { grid-template-columns: 1fr; grid-auto-rows: auto; border-top: 0; }   /* no rule under the title, as in the other sections */
   .ext-cell--empty { display: none; }
   /* Phone: always title + text, then its picture (--m is set on each cell in the HTML) */
   .ext-cell { order: var(--m, 0); }
