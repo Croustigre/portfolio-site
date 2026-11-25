@@ -148,6 +148,25 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 body.has-overlay { overflow: hidden; }
+/* iPhone and iPad: the page scrolls inside <body> instead of the window.
+   Safari then keeps its toolbar still and does not rubber-band the window, so
+   the fixed background grid never moves (it used to shift when the toolbar
+   retracted or reappeared, and when the page bounced at the top or bottom). */
+@media (hover: none) and (pointer: coarse) {
+  html { height: 100%; overflow: hidden; }
+  body {
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: none;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+  body.has-overlay { overflow: hidden; }
+}
+@media (hover: none) and (pointer: coarse) and (prefers-reduced-motion: reduce) {
+  body { scroll-behavior: auto; }
+}
 
 img, svg { display: block; }
 a { color: inherit; }

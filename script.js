@@ -17,7 +17,8 @@
   // Both are cancelled so every page load starts at the top, on the hero.
   if ("scrollRestoration" in history) history.scrollRestoration = "manual";
   if (location.hash) history.replaceState(null, "", location.pathname + location.search);
-  const toTop = () => window.scrollTo(0, 0);
+  // On iPhone and iPad the page scrolls inside <body> (see styles.css).
+  const toTop = () => { window.scrollTo(0, 0); document.body.scrollTop = 0; };
   toTop();
   window.addEventListener("load", toTop);
   window.addEventListener("pageshow", (e) => { if (e.persisted) toTop(); });
@@ -126,6 +127,7 @@
       }
     };
     window.addEventListener("scroll", onScroll, { passive: true });
+    document.body.addEventListener("scroll", onScroll, { passive: true });   // iPhone / iPad
     window.addEventListener("resize", onScroll);
     update();
   }
