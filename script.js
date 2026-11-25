@@ -29,6 +29,7 @@
   // Values are set in em, so they stay valid when the layout scales.
   const heroName = document.getElementById("hero-name");
   const nameLines = heroName ? Array.from(heroName.querySelectorAll(".hero-name__line")) : [];
+  const MIN_TRACKING = -0.025;   // em
   function justifyHeroName() {
     if (nameLines.length < 2) return;
     const cs = getComputedStyle(heroName);
@@ -38,7 +39,13 @@
     const advance = nameLines.map((l) => l.getBoundingClientRect().width);
     const gaps = nameLines.map((l) => Math.max(1, l.textContent.trim().length - 1));
     const visible = advance.map((a, i) => a + gaps[i] * base);
-    const target = visible.reduce((sum, v) => sum + v, 0) / visible.length;
+    // Never track a line tighter than MIN_TRACKING: below that, the heavy
+    // letters of the wider line (ESTEBAN) touch. The other line is opened up
+    // instead, so both edges still align.
+    const minPx = MIN_TRACKING * fontSize;
+    const average = visible.reduce((sum, v) => sum + v, 0) / visible.length;
+    const floor = Math.max(...advance.map((a, i) => a + gaps[i] * minPx));
+    const target = Math.max(average, floor);
     nameLines.forEach((l, i) => {
       const ls = (target - advance[i]) / gaps[i];
       l.style.letterSpacing = (ls / fontSize).toFixed(4) + "em";
