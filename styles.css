@@ -168,8 +168,18 @@ ul { padding: 0; list-style: none; }
   white-space: nowrap; border: 0;
 }
 
-/* 40 px background grid, visible in the outer margins */
-.grid-bg {
+/* 40 px background grid, visible in the outer margins. It is drawn once on a
+   layer fixed to the window, so it stays still while the page scrolls
+   (background-attachment: fixed is ignored by Safari on iPhone). Sections are
+   transparent and let it show through. */
+body::before {
+  content: "";
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 100vh;
+  height: 100lvh;   /* covers the whole screen when the iPhone toolbar hides */
+  z-index: -1;
+  pointer-events: none;
   background-color: var(--white);
   background-image:
     linear-gradient(to right, var(--grid) 1px, transparent 1px),
@@ -177,6 +187,7 @@ ul { padding: 0; list-style: none; }
   background-size: 4rem 4rem;
   background-position: calc(50% - 2rem) 0;
 }
+.grid-bg { background: transparent; }
 
 /* ==========================================================================
    3. UTILITIES (the spacing system as classes, usable in the HTML)
@@ -729,7 +740,7 @@ ul { padding: 0; list-style: none; }
   html { font-size: 10px; }
 
   .frame { width: auto; padding: 0 var(--gutter); }
-  .grid-bg { background-position: 0 0; }
+  body::before { background-position: 0 0; }
 
   .logo { font-size: 1.8rem; }
   .btn-resume { width: auto; font-size: 1.6rem; min-height: var(--sp-8); }
