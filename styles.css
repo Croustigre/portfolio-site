@@ -354,11 +354,12 @@ body::before {
 /* ---------- Home / hero --------------------------------------------------- */
 .hero {
   position: relative;
-  height: 83.2rem;
+  height: var(--hero-h, 83.2rem);   /* --hero-h: set by script.js on a computer */
   overflow: hidden;
   background: var(--slate);
 }
-.hero .frame { height: 100%; }
+/* The frame keeps its 832 design height and is anchored to the hero's bottom */
+.hero .frame { position: relative; height: 83.2rem; top: calc(var(--hero-h, 83.2rem) - 83.2rem); }
 .hero-name {
   position: absolute;
   left: var(--gutter);
@@ -747,7 +748,7 @@ body::before {
   .btn-resume { width: auto; font-size: 1.6rem; min-height: var(--sp-8); }
 
   .hero { height: auto; padding-top: calc(var(--header-h) + var(--sp-6)); }
-  .hero .frame { display: flex; flex-direction: column; gap: var(--sp-6); }
+  .hero .frame { display: flex; flex-direction: column; gap: var(--sp-6); height: auto; top: 0; }
   .hero-name { position: static; width: auto; }
   .hero-side { position: static; width: auto; }
   .hero-cta { width: auto; }

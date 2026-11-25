@@ -71,15 +71,31 @@
   function stableHeight() {
     return svhProbe.offsetHeight || window.innerHeight;
   }
+  const isComputer = window.matchMedia("(hover: hover) and (pointer: fine)");
   function applyScale() {
     const root = document.documentElement;
-    const w = root.clientWidth;
+    // body.clientWidth excludes a reserved scrollbar gutter, so the frame
+    // stays centred when scrollbars are always shown.
+    const w = Math.min(root.clientWidth, document.body.clientWidth || root.clientWidth);
     const h = stableHeight();
     if (w >= 768) {
-      const scale = Math.max(6.5, Math.min(w / 128, h / 83.2));
+      let scale = Math.min(w / 128, h / 83.2);
+      // Computer only (mouse or trackpad): when the height limits the scale,
+      // enlarge everything so the sheet gains 1 grid square (4rem) on each
+      // side, as on iPad. Never wider than the 1280 frame (60 px gutters).
+      if (isComputer.matches) {
+        const visible = w / scale;                 // window width in rem
+        scale = Math.min(w / 128, w / Math.max(128, visible - 8));
+      }
+      scale = Math.max(6.5, scale);
       root.style.fontSize = scale.toFixed(3) + "px";
+      // The enlarged frame can be taller than the window: the hero is then cut
+      // to the window height, its content moving up so its bottom stays visible.
+      if (isComputer.matches && 83.2 * scale > h + 0.5) root.style.setProperty("--hero-h", h + "px");
+      else root.style.removeProperty("--hero-h");
     } else {
       root.style.fontSize = "";
+      root.style.removeProperty("--hero-h");
     }
   }
   applyScale();
