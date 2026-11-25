@@ -758,8 +758,11 @@ ul { padding: 0; list-style: none; }
   .ext-cell--empty { display: none; }
   /* Phone: always title + text, then its picture (--m is set on each cell in the HTML) */
   .ext-cell { order: var(--m, 0); }
-  .ext-cell--img { height: 20rem; }
+  .ext-cell--img { height: var(--h, 20rem); }
   .ext-cell--img::before, .ext-cell--img img { left: 0; width: 100%; }
+  /* Phone: the square pictures are cropped to a band; --pos (set per cell in
+     the HTML) chooses which part stays visible. */
+  .ext-cell--img img { object-position: var(--pos, 50% 50%); }
   .ext-cell--text { padding: var(--sp-4) 0 var(--sp-6); }
   .ext-desc { margin-top: var(--sp-3); }
 
@@ -778,6 +781,7 @@ ul { padding: 0; list-style: none; }
   .detail__meta > div:last-child { text-align: left; }
   .detail__meta dt { font-size: 1.4rem; }
   .detail__section h3 { width: auto; }
+  .detail__list { padding-left: 2rem; }   /* keeps the orange bullets off the edge */
   .detail__gallery { grid-template-columns: 1fr; column-gap: 0; margin-top: var(--sp-6); }
   .detail__gallery .ph--main { height: auto; aspect-ratio: 58 / 60.8; }
   .detail__gallery .ph--side { height: auto; aspect-ratio: 529 / 280; }
