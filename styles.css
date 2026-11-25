@@ -606,12 +606,6 @@ ul { padding: 0; list-style: none; }
 .detail__meta > div:last-child { text-align: right; }
 .detail__meta--4 { grid-template-columns: repeat(4, 1fr); }
 .detail__meta--4 > div:nth-child(3) { text-align: center; }
-/* Next project: same bracket button as [ Resume ], right-aligned under a rule */
-.detail__next { display: flex; justify-content: flex-end; padding-top: var(--sp-6); border-top: var(--lw) solid var(--line); }
-/* Same box as [ Resume ]: that button is 13.8rem wide, which leaves 0.8rem
-   between the brackets and its edges; the height, type size and colours come
-   from .btn. */
-.detail__next-btn { padding: 0 var(--sp-2); }
 .detail__meta dt { font-size: var(--fs-body); color: var(--muted); text-transform: uppercase; }
 .detail__meta dd { font-size: var(--fs-small); font-weight: 700; color: var(--navy); }
 
@@ -798,7 +792,6 @@ ul { padding: 0; list-style: none; }
   .detail__meta > div:last-child { text-align: left; }
   .detail__meta dt { font-size: 1.4rem; }
   .detail__meta--4 > div:nth-child(3) { text-align: left; }
-  .detail__next-btn { padding: 0 var(--sp-4); font-size: 1.6rem; }   /* as [ Resume ] on a phone */
   .detail__section h3 { width: auto; }
   .detail__list { padding-left: 2rem; }   /* keeps the orange bullets off the edge */
   .detail__gallery { grid-template-columns: 1fr; column-gap: 0; margin-top: var(--sp-6); }
